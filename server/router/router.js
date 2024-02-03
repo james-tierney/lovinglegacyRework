@@ -22,5 +22,6 @@ router.use(express.json());
 
 router.post("/generateQrCode", qrCodeController.generateQrCode);
 router.post("/createProfile", profileController.createProfile);
+router.get("/userProfile/:username", profileController.getProfileByUsername);
 
 module.exports = router;

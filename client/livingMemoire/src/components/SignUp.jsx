@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -31,7 +34,14 @@ const Signup = () => {
         // Assuming the server responds with a success message or user data
         const result = await response.json();
         console.log('Signup successful:', result);
+
+        // Redirect to the user's profile page
+        navigate(`/userProfile/${result.username}`);  // Use navigate for redirection
+
         // Optionally, you can redirect the user to another page or show a success message.
+      } else if (response.status === 409) {
+        console.error("Username already taken");
+        // Handle the case where the username is already taken, e.g., show an error message to the user
       } else {
         console.error('Signup failed');
         // Handle failure, e.g., show an error message to the user.
