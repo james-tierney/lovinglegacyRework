@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UserProfile = ({ username }) => {
   const [profileData, setProfileData] = useState({
-    username: '',
+    username: window.location.pathname.split('/userProfile/')[1],
     email: '',
     bio: '',
     profilePicture: '',
@@ -11,7 +11,7 @@ const UserProfile = ({ username }) => {
    useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/profile/${username}`);
+        const response = await fetch(`http://localhost:3001/userProfile/${username}`);
         
         if (response.ok) {
           const profile = await response.json();
