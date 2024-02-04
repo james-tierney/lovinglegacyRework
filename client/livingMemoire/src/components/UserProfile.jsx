@@ -1,32 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
-const UserProfile = ({ username }) => {
+const UserProfile = () => {
+  const location = useLocation();
+  console.log("location = ", location)
+  const {username} = location.state || {}
+  console.log("location.state = ", location.state);
+  console.log("username from state = ", username);
   const [profileData, setProfileData] = useState({
-    username: window.location.pathname.split('/userProfile/')[1],
+    username: username,
     email: '',
     bio: '',
     profilePicture: '',
   });
 
    useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/userProfile/${username}`);
-        
-        if (response.ok) {
-          const profile = await response.json();
-          setProfileData(profile);
-        } else {
-          console.error('Failed to fetch profile');
-          // Handle failure, e.g., show an error message
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      }
-    };
+
+const fetchProfile = async () => {
+  console.log("profile data = ", profileData);
+  try {
+    const response = await axios.get(`http://localhost:3001/userProfile/${username}`);
+    console.log("response from user profile fetch ", response);
+
+    if (response.status === 200) {
+      const profile = response.data;
+      setProfileData(profile);
+    } else {
+      console.error('Failed to fetch profile');
+      // Handle failure, e.g., show an error message
+    }
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+  }
+};
 
     fetchProfile();
-  }, [username]);
+  }, []);
 
   // Render your form here with appropriate input fields
 

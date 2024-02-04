@@ -1,5 +1,6 @@
 // profileController.js
 const Profile = require("../models/Profile");
+const { v4: uuidv4 } = require("uuid");
 
 const createProfile = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ const createProfile = async (req, res) => {
 
     // Create a new profile
     const newProfile = new Profile({
+      profileId: uuidv4(), // Generating a unique ID using uuid
       username,
       email,
       password,
@@ -47,12 +49,13 @@ const getProfileByUsername = async (req, res) => {
     console.log("user profile = ", JSON.stringify(userProfile));
     // Logic for user profile not existing
     if (!userProfile) {
+      console.log("error occurs in here ");
       return res.status(404).json({ error: "User profile not found" });
     }
 
     res.status(200).json(userProfile);
   } catch (error) {
-    console.error(error);
+    console.error("error is here", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

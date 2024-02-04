@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
+const QRCodeModel = require("../models/qrCodeSchema");
 // const port = 3001;
 
 // app.use(express.json());
@@ -34,6 +35,11 @@ module.exports.generateQrCode = async (req, res) => {
     );
     const qrCodeData = response.data;
 
+    // Save the generated qr_id without associating it with any user
+    const newQRCode = new QRCodeModel({
+      qrCodeData: qrCodeData.qr_id,
+    });
+    await newQRCode.save();
     // Log the generated QR code data to the console
     console.log("Generated QR Code Data:", qrCodeData);
     res.json(qrCodeData);

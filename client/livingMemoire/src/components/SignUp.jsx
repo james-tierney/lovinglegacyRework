@@ -36,7 +36,15 @@ const Signup = () => {
         console.log('Signup successful:', result);
 
         // Redirect to the user's profile page
-        navigate(`/userProfile/${result.username}`);  // Use navigate for redirection
+        //navigate(`/userProfile/${result.username}`);  // Use navigate for redirection
+
+        // Navigate to the user's profile page with username as a query param
+      // Redirect to the user's profile page with username as a state parameter
+      console.log("username to be passed ", result.username);
+      navigate('/userProfile', {
+        state: { username: result.username },
+        uName: result.username,
+      });
 
         // Optionally, you can redirect the user to another page or show a success message.
       } else if (response.status === 409) {
