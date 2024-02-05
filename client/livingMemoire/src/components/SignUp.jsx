@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const navigate = useNavigate();
 
+  const [qrCodeId, setQrCodeId] = useState(null);  // State to store the QR code ID
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -18,25 +20,59 @@ const Signup = () => {
     });
   };
 
+    const updateQRCodeWithUserProfile = async (username, qrId) => {
+    try {
+      const response = await fetch('http://localhost:3001/updateQRCodeWithUserProfile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, qrId }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('QR code updated with user profile:', result);
+      } else {
+        console.error('Failed to update QR code with user profile');
+      }
+    } catch (error) {
+      console.error('Error updating QR code with user profile:', error);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Extract QR code ID from the URL
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const qrCodeId = urlSearchParams.get('qr_id');
+
+
       const response = await fetch('http://localhost:3001/createProfile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          qrCodeId: qrCodeId,  // Pass the QR code ID to the backend
+        }),
       });
 
       if (response.ok) {
         // Assuming the server responds with a success message or user data
         const result = await response.json();
         console.log('Signup successful:', result);
-
+        
         // Redirect to the user's profile page
         //navigate(`/userProfile/${result.username}`);  // Use navigate for redirection
+        console.log("QR code ID ", qrCodeId);
+      // Associate the user's profile with the previously scanned QR code
+      // Update the QR code in your database with the user's profile information
+      await updateQRCodeWithUserProfile(result.username, qrCodeId );
 
         // Navigate to the user's profile page with username as a query param
       // Redirect to the user's profile page with username as a state parameter

@@ -4,9 +4,17 @@ const qrCodeSchema = new mongoose.Schema({
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Profile",
-    required: true,
+    required: false,
   },
   qrCodeData: {
+    type: String,
+    required: true,
+  },
+  targetUrl: {
+    type: String,
+    required: false,
+  },
+  qrCodeId: {
     type: String,
     required: true,
   },
