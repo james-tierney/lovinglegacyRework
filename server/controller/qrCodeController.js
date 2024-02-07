@@ -32,7 +32,7 @@ module.exports.updateQRCodeWithUserProfile = async (username, qrId) => {
   console.log("QR code id inside update code with profile func ", qrId);
   try {
     // Retrieve the QR code record based on qrId
-    const qrCodeRecord = await QRCodeModel.findOne({ qrCodeId: qrId });
+    const qrCodeRecord = await QRCodeModel.findOne({ generatedId: qrId });
 
     // Logic if the qrCode doesn't exist
     // TODO check if a profile is tied to the qr code
@@ -45,8 +45,14 @@ module.exports.updateQRCodeWithUserProfile = async (username, qrId) => {
 
     // Update the QR code record with the user's info
     // updating the profile part of schema just with username for now
-    qrCodeRecord.profile = username;
+    qrCodeRecord.profile = { username };
     // TODO add other user-related fields as needed
+    console.log("qr code record ", qrCodeRecord);
+    // Update the generated QR codes data
+    await this.updateQrCodeData({
+      qrCodeId: qrCodeRecord.qrCodeId,
+      qrData: qrCodeRecord.qrCodeData,
+    });
 
     // Save the updated QR code record to the database
     await qrCodeRecord.save();
@@ -56,6 +62,33 @@ module.exports.updateQRCodeWithUserProfile = async (username, qrId) => {
   }
 };
 
+module.exports.updateQrCodeData = async (qrCodeId, qrData, res) => {
+  try {
+    // const { qrCodeId } = qrCodeId; // Assuming you have the QR code ID in the request parameters
+    // const { qrData } = qrData; // New QR data and display name
+
+    const data = {
+      qr_data: qrCodeId.qrData + "lol", // New QR data
+    };
+    console.log("qr Code for update ", qrCodeId);
+    const response = await axios.put(
+      `https://hovercode.com/api/v2/hovercode/${qrCodeId.qrCodeId}/update/`,
+      data,
+      {
+        headers: {
+          Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
+          "Content-Type": "application/json",
+        },
+        timeout: 10000,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating QR code:", error);
+    //res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 module.exports.generateQrCode = async (req, res) => {
   try {
     // Generate a unique ID for the qr Code
@@ -93,7 +126,8 @@ module.exports.generateQrCode = async (req, res) => {
     const newQRCode = new QRCodeModel({
       qrCodeData: qrCodeData.qr_data,
       targetUrl: `http://localhost:5173/signUp?qr_id=${qrId}`,
-      qrCodeId: qrId,
+      qrCodeId: qrCodeData.id,
+      generatedId: qrId,
     });
     await newQRCode.save();
     console.log("New QR code stored ", newQRCode);

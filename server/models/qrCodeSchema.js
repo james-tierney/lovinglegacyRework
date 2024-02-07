@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 
 const qrCodeSchema = new mongoose.Schema({
   profile: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Profile",
-    required: false,
+    username: {
+      type: String,
+      required: false,
+    },
+    email: {
+      type: String,
+      required: false,
+    },
+    // Add other profile fields as needed
   },
   qrCodeData: {
     type: String,
@@ -15,6 +21,10 @@ const qrCodeSchema = new mongoose.Schema({
     required: false,
   },
   qrCodeId: {
+    type: String,
+    required: true,
+  },
+  generatedId: {
     type: String,
     required: true,
   },
