@@ -72,15 +72,16 @@ const Signup = () => {
         console.log("QR code ID ", qrCodeId);
       // Associate the user's profile with the previously scanned QR code
       // Update the QR code in your database with the user's profile information
-      await updateQRCodeWithUserProfile(result.username, qrCodeId );
+      await updateQRCodeWithUserProfile(result.username, qrCodeId);
 
         // Navigate to the user's profile page with username as a query param
       // Redirect to the user's profile page with username as a state parameter
       console.log("username to be passed ", result.username);
-      navigate('/userProfile', {
-        state: { username: result.username },
-        uName: result.username,
-      });
+      navigate(`/userProfile?username=${result.username}`);
+      // navigate('/userProfile', {
+      //   state: { username: result.username },
+      //   uName: result.username,
+      // });
 
         // Optionally, you can redirect the user to another page or show a success message.
       } else if (response.status === 409) {

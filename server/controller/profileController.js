@@ -34,8 +34,9 @@ const createProfile = async (req, res) => {
 };
 
 const getProfileByUsername = async (req, res) => {
+  console.log("req = ", req.query.username);
   try {
-    const { username } = req.params;
+    const username = req.query.username; //req.params;
 
     /** username is undefined here as it is part of the url
      * rather than it being a request param
@@ -43,7 +44,7 @@ const getProfileByUsername = async (req, res) => {
      * to retrieving user data from the db
      * do we encode the ID's or create our own id?
      */
-    console.log("username = ", username);
+    console.log("username in here = ", username);
     // Retrieve the user profile based on the username
     const userProfile = await Profile.findOne({ username });
     console.log("user profile = ", JSON.stringify(userProfile));
@@ -60,7 +61,17 @@ const getProfileByUsername = async (req, res) => {
   }
 };
 
+// const getUserNameFromQRCodeId = async (qrCodeId) => {
+//   try {
+//     const username
+//   } catch (error) {
+//     console.error("Erroing retrieving username from QR code ID: ", error);
+//     throw error;
+//   }
+// }
+
 module.exports = {
   createProfile,
   getProfileByUsername,
+  // getUserNameFromQRCodeId,
 };

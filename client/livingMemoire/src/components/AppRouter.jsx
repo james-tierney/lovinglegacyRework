@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import Signup from './SignUp';
 import UserProfile from './UserProfile';
+import BatchQRGeneration from './BatchQRGeneration';
 
 
 const AppRouter = () => {
@@ -13,6 +14,7 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signUp" element={<Signup />} />
         <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/batchGeneration" element={<BatchQRGeneration />} />
       </Routes>
     </Router>
   );

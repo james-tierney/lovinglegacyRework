@@ -2,6 +2,8 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 const QRCodeModel = require("../models/qrCodeSchema");
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
 // const port = 3001;
 
 // app.use(express.json());
@@ -48,10 +50,14 @@ module.exports.updateQRCodeWithUserProfile = async (username, qrId) => {
     qrCodeRecord.profile = { username };
     // TODO add other user-related fields as needed
     console.log("qr code record ", qrCodeRecord);
+
+    //update qr code data to be profile url with username
+    const profileURL = `http://localhost:5173/userProfile?username=${username}`;
     // Update the generated QR codes data
     await this.updateQrCodeData({
       qrCodeId: qrCodeRecord.qrCodeId,
-      qrData: qrCodeRecord.qrCodeData,
+      qrData: profileURL,
+      // qrData: qrCodeRecord.qrCodeData,
     });
 
     // Save the updated QR code record to the database
@@ -139,6 +145,141 @@ module.exports.generateQrCode = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// Function to export QR Codes to PDF
+const exportQrCodeImagesToPDF = async (qrCodesData) => {
+  try {
+    const doc = new PDFDocument();
+    for (const qrCodeData of qrCodesData) {
+      // Fetch the QR Code image from the data
+      const response = await axios.get(qrCodeData.png, {
+        responseType: "arraybuffer",
+      });
+      const qrCodeImage = Buffer.from(response.data, "binary");
+
+      // Embed the QR code Image in the PDF
+      doc.image(qrCodeImage, { width: 200, height: 200 });
+      doc.text(qrCodeData.qr_data);
+      doc.addPage();
+    }
+
+    // Save the PDF document
+    const outputPath = "../qrPDFS/qr_codes.pdf";
+    doc.pipe(fs.createWriteStream(outputPath));
+    doc.end();
+    return outputPath; // Return the path to the generated PDF
+  } catch (error) {
+    throw new Error(`Error exporting QR codes to PDF: ${error.message}`);
+  }
+};
+
+module.exports.batchGenerateQrCodes = async (req, res) => {
+  try {
+    const numberOfCodes = req.query.numberOfCodes;
+    const qrCodesData = [];
+
+    // Generate QR codes and collect their data
+    for (let i = 0; i < numberOfCodes; i++) {
+      // Generate a unique ID for each QR code
+      const qrId = generateUniqueId();
+
+      const data = {
+        workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
+        qr_data: `http://localhost:5173/signUp?qr_id=${qrId}`,
+        primary_color: "#3b81f6",
+        background_color: "#FFFFFF",
+        dynamic: false, // just for testing generate static
+        display_name: "Tester QR Code", // Customize as needed
+        frame: "border",
+        has_border: true,
+        logo_url: "https://hovercode.com/static/website/images/logo.png",
+        generate_png: true,
+      };
+
+      const response = await axios.post(
+        "https://hovercode.com/api/v2/hovercode/create/",
+        data,
+        {
+          headers: {
+            Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
+      const qrCodeData = response.data;
+
+      // Save the generated QR code data
+      qrCodesData.push(qrCodeData);
+    }
+
+    // Export QR code data to a PDF
+    const pdfPath = await exportQrCodeImagesToPDF(qrCodesData);
+    res.json({ message: "QR codes exported to PDF successfully", pdfPath });
+  } catch (error) {
+    console.error("Error generating QR codes:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// module.exports.batchGenerateQrCodes = async (req, res) => {
+//   try {
+//     const numberOfCodes = req.query.numberOfCodes; // Assuming the client sends the number of QR codes to generate in the request body
+//     console.log("number of codes = ", numberOfCodes);
+//     const qrCodesData = [];
+//     for (let i = 0; i < numberOfCodes; i++) {
+//       // Generate a unique ID for each QR code
+//       const qrId = generateUniqueId();
+
+//       const data = {
+//         workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
+//         qr_data: `http://localhost:5173/signUp?qr_id=${qrId}`,
+//         primary_color: "#3b81f6",
+//         background_color: "#FFFFFF",
+//         dynamic: false, // just for testing generate static
+//         display_name: "Tester QR Code", // Customize as needed
+//         frame: "border",
+//         has_border: true,
+//         logo_url: "https://hovercode.com/static/website/images/logo.png",
+//         generate_png: true,
+//       };
+
+//       const response = await axios.post(
+//         "https://hovercode.com/api/v2/hovercode/create/",
+//         data,
+//         {
+//           headers: {
+//             Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
+//             "Content-Type": "application/json",
+//           },
+//           timeout: 10000,
+//         }
+//       );
+//       const qrCodeData = response.data;
+
+//       // Save the generated QR code data without associating it with any user
+//       const newQRCode = new QRCodeModel({
+//         qrCodeData: qrCodeData.qr_data,
+//         targetUrl: `http://localhost:5173/signUp?qr_id=${qrId}`,
+//         qrCodeId: qrCodeData.id,
+//         generatedId: qrId,
+//       });
+//       // commented out saving to DB For now so DB not clogged when testing
+//       //await newQRCode.save();
+//       console.log("New QR code stored ", newQRCode);
+//       console.log("qr codes data array ", qrCodesData);
+
+//       qrCodesData.push(qrCodeData);
+//     }
+
+//     // Log the generated QR code data to the console
+//     console.log("Generated QR Code Data:", qrCodesData);
+//     res.json(qrCodesData);
+//   } catch (error) {
+//     console.error("Error generating QR Code:", error.message);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 // app.listen(port, () => {
 //   console.log(`Server is running on http://localhost:${port}`);

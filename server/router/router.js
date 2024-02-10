@@ -22,10 +22,11 @@ router.use(express.json());
 
 router.post("/generateQrCode", qrCodeController.generateQrCode);
 router.post("/createProfile", profileController.createProfile);
-router.get("/userProfile/:username", profileController.getProfileByUsername);
+router.get("/userProfile", profileController.getProfileByUsername);
 router.post(
   "/updateQRCodeWithUserProfile",
   qrCodeController.passQrCodeProfileData
 );
+router.get("/batchGenerateQrCodes", qrCodeController.batchGenerateQrCodes);
 
 module.exports = router;

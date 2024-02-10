@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const UserProfile = () => {
   const location = useLocation();
   console.log("location = ", location)
-  const {username} = location.state || {}
+  //const {username} = location.state || useParams();
+  //const {username} = useParams();
+  const queryString = location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const username = urlParams.get('username');
   console.log("location.state = ", location.state);
+  console.log("location.search = ", location.search);
   console.log("username from state = ", username);
   const [profileData, setProfileData] = useState({
     username: username,
@@ -20,7 +25,12 @@ const UserProfile = () => {
 const fetchProfile = async () => {
   console.log("profile data = ", profileData);
   try {
-    const response = await axios.get(`http://localhost:3001/userProfile/${username}`);
+    //const response = await axios.get(`http://localhost:3001/userProfile/${username}`);
+      const response = await axios.get('http://localhost:3001/userProfile', {
+      params: {
+        username: username
+      }
+    });
     console.log("response from user profile fetch ", response);
 
     if (response.status === 200) {

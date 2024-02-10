@@ -15,9 +15,11 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
     "nodemon": "^3.0.2",
+    "pdfkit": "^0.14.0",
     "qrcode": "^1.5.3",
     "stripe": "^14.14.0",
     "uuid": "^9.0.1"
