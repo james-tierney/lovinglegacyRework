@@ -1,6 +1,78 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
+const medallionProfileSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  middleName: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  title: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  relationship: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  profilePicture: {
+    data: Buffer, // Use Buffer type to store binary data (image)
+    contentType: String, // Store content type of the image
+  },
+  textOrPhrase: {
+    type: String,
+    required: false,
+    unqiue: false,
+  },
+  linkToObituary: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  BioInfo: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  birthDate: {
+    type: Date, // Use Date type to store dates
+    required: false,
+    unique: false,
+  },
+  deathDate: {
+    type: Date, // Use Date type to store dates
+    required: false,
+    unique: false,
+  },
+  city: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  state: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  textOrPhrase: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+});
+
 const profileSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -14,6 +86,7 @@ const profileSchema = new mongoose.Schema({
   },
   bio: String,
   // Add other profile-related fields as needed
+  medallionProfile: medallionProfileSchema, // Embed MedallionProfile schema
 
   salt: {
     type: String,
