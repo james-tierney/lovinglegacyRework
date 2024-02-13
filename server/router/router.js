@@ -17,19 +17,24 @@ const profileController = require("../controller/profileController");
 const Profile = require("../models/Profile");
 const qrCodeSchema = require("../models/qrCodeSchema");
 const multer = require("multer");
+const path = require("path");
 
 // ...
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Specify upload destination folder
+    cb(null, "Images"); // Specify upload destination folder
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use original filename
+    console.log("file = ", file);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // Adjust the file size limit as needed
+});
 
 router.use(express.json());
 

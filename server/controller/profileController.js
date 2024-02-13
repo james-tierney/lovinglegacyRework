@@ -1,6 +1,7 @@
 // profileController.js
 const Profile = require("../models/Profile");
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
 // const multer = require("multer");
 
 // // Set up multer storage configuration
@@ -81,7 +82,11 @@ const createMedallionProfile = async (req, res) => {
   console.log("medallionData = ", JSON.stringify(medallionData));
 
   const { username, firstName, lastName, email, bio } = req.body; // Access other form fields
-  const profilePicture = req.file; // Access uploaded file (if present)
+  // const profilePicture = req.file; // Access uploaded file (if present)
+  const profilePicture = {
+    data: fs.readFileSync(req.file.path), // Read file from disk and store as Buffer
+    contentType: req.file.mimetype, // Access content type of the uploaded file
+  };
   console.log("username ", username);
   console.log("bio ", bio);
   console.log("email ", email);
@@ -96,7 +101,13 @@ const createMedallionProfile = async (req, res) => {
       return res.status(404).json({ message: "Profile not found" });
     }
     // Add the medallionData to the profile's medallionProfile field
-    profile.medallionProfile = medallionData;
+    profile.medallionProfile = {
+      firstName,
+      lastName,
+      email,
+      bio,
+      profilePicture, // Assign the profilePicture object
+    };
     await profile.save();
     res.status(201).json({ message: "Medallion profile created successfully" });
   } catch (error) {

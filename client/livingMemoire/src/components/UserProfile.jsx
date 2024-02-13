@@ -51,6 +51,7 @@ const UserProfile = () => {
   // Handler to update form input values for medallion data
   const handleMedallionInputChange = (event) => {
     const { name, value, files } = event.target;
+    //console.log("event target", event.target);
     setMedallionFormData({
       ...medallionFormData,
       [name]: files ? files[0] : value,
@@ -70,13 +71,21 @@ const UserProfile = () => {
     const formDataToSend = new FormData();
     formDataToSend.append('username', profileData.username);
     formDataToSend.append('email', medallionFormData.email);
+    formDataToSend.append('firstName', medallionFormData.firstName);
+    formDataToSend.append('lastName', medallionFormData.lastName);
     formDataToSend.append('bio', medallionFormData.bio);
     formDataToSend.append('profilePicture', medallionFormData.profilePicture);
     formDataToSend.append("test", "text")
     console.log("form data to send = ", formDataToSend);
+
+    for (let x of formDataToSend.entries()) {
+      console.log("form pairs", x[0] + ', ' + x[1]);
+    }
+
     try {
+ 
       // Send POST request to server to create medallion account
-      const response = await axios.post('http://localhost:3001/createMedallionProfile', medallionFormData);
+      const response = await axios.post('http://localhost:3001/createMedallionProfile', formDataToSend);
       console.log('Response from create medallion account:', response);
       // Optionally update state or show a success message
     } catch (error) {
@@ -113,13 +122,13 @@ const UserProfile = () => {
             <div>
               {/* Content for Medallion tab */}
               <h3>Create Medallion Account</h3>
-              <form onSubmit={handleCreateMedallion}>
+              <form onSubmit={handleCreateMedallion} encType='multipart/form-data'>
                 {/* Add input fields for medallion details */}
                 {/* Example: email, bio, profilePicture */}
                 <input type="email" name="email" value={medallionFormData.email} onChange={handleMedallionInputChange} placeholder="Email" />
                 <input type="text" name="firstName" value={medallionFormData.firstName} onChange={handleMedallionInputChange} placeholder='First Name' />
                 <input type="text" name="lastName" value={medallionFormData.lastName} onChange={handleMedallionInputChange} placeholder='Last Name' />
-                <textarea name="bio" value={medallionFormData.bio} onChange={handleMedallionInputChange} placeholder="Bio"></textarea>
+                <textarea name="bio" id="bio" value={medallionFormData.bio} onChange={handleMedallionInputChange} placeholder="Bio"></textarea>
                 <input type="file" name="profilePicture" onChange={handleMedallionInputChange} accept="image/*" />
                 <button type="submit">Create Medallion Account</button>
               </form>
