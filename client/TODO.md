@@ -2,7 +2,9 @@
 
 ## Next Steps
 
-- SORT THE PROFILE PICTURE IMAGE NOT APPEARING ON SERVER SIDE
+- SORT THE PROFILE PICTURE IMAGE NOT APPEARING ON SERVER SIDE DONE NOW
+
+- Also want to style the cretea medallion profile form
 
 - Make it so that medallion profiles can be created and retrieved
 - Add in sessions for users and generate sessions with cookies after they sign up
