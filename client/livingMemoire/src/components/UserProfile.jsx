@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
+import CreateMedallionProfile from './temp/MedallionProfile';
 
 const UserProfile = () => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const UserProfile = () => {
   const [medallionFormData, setMedallionFormData] = useState({
     username: profileData.username,
     firstName: '',
+    middleName: '',
     lastName: '',
     email: '',
     bio: '',
@@ -121,17 +123,7 @@ const UserProfile = () => {
           {activeTab === 'medallion' && (
             <div>
               {/* Content for Medallion tab */}
-              <h3>Create Medallion Account</h3>
-              <form onSubmit={handleCreateMedallion} encType='multipart/form-data'>
-                {/* Add input fields for medallion details */}
-                {/* Example: email, bio, profilePicture */}
-                <input type="email" name="email" value={medallionFormData.email} onChange={handleMedallionInputChange} placeholder="Email" />
-                <input type="text" name="firstName" value={medallionFormData.firstName} onChange={handleMedallionInputChange} placeholder='First Name' />
-                <input type="text" name="lastName" value={medallionFormData.lastName} onChange={handleMedallionInputChange} placeholder='Last Name' />
-                <textarea name="bio" id="bio" value={medallionFormData.bio} onChange={handleMedallionInputChange} placeholder="Bio"></textarea>
-                <input type="file" name="profilePicture" onChange={handleMedallionInputChange} accept="image/*" />
-                <button type="submit">Create Medallion Account</button>
-              </form>
+              <CreateMedallionProfile username={profileData.username} />
             </div>
           )}
         </div>
