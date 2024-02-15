@@ -63,25 +63,33 @@ const Signup = () => {
       });
 
       if (response.ok) {
-        // Assuming the server responds with a success message or user data
-        const result = await response.json();
-        console.log('Signup successful:', result);
+      // Assuming the server responds with a success message or user data
+      const result = await response.json();
+      const profile = result.profile;
+      console.log('Signup successful:', result);
+
+        const token = result.token;
+
+        console.log("token in client side = ", token);
+
+        document.cookie = `token=${token}; path=/`;
         
         // Redirect to the user's profile page
         //navigate(`/userProfile/${result.username}`);  // Use navigate for redirection
         console.log("QR code ID ", qrCodeId);
       // Associate the user's profile with the previously scanned QR code
       // Update the QR code in your database with the user's profile information
-      await updateQRCodeWithUserProfile(result.username, qrCodeId);
+      await updateQRCodeWithUserProfile(profile.username, qrCodeId);
 
         // Navigate to the user's profile page with username as a query param
       // Redirect to the user's profile page with username as a state parameter
-      console.log("username to be passed ", result.username);
-      navigate(`/userProfile?username=${result.username}`);
+      console.log("username to be passed ", profile.username);
+      navigate(`/userProfile?username=${profile.username}`);
       // navigate('/userProfile', {
       //   state: { username: result.username },
       //   uName: result.username,
       // });
+      
 
         // Optionally, you can redirect the user to another page or show a success message.
       } else if (response.status === 409) {

@@ -2,6 +2,8 @@
 const Profile = require("../models/Profile");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 // const multer = require("multer");
 
 // // Set up multer storage configuration
@@ -41,7 +43,19 @@ const createProfile = async (req, res) => {
     // Save the profile to the database
     const savedProfile = await newProfile.save();
 
-    res.status(201).json(savedProfile);
+    // Generate JWT token
+    const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    console.log("token ", token);
+    // Send the token to the client via a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // http localhost development right now CHANGE
+      sameSite: "strict",
+    });
+
+    res.status(201).json({ profile: savedProfile, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
