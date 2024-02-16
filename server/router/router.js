@@ -14,6 +14,7 @@ const express = require("express");
 const router = express.Router();
 const qrCodeController = require("../controller/qrCodeController");
 const profileController = require("../controller/profileController");
+const authController = require("../controller/authController");
 const Profile = require("../models/Profile");
 const qrCodeSchema = require("../models/qrCodeSchema");
 const multer = require("multer");
@@ -51,4 +52,5 @@ router.post(
   upload.single("profilePicture"), // Assuming you're uploading a single file with the field name 'profilePicture'
   profileController.createMedallionProfile
 );
+router.post("/login", authController.handleLogin);
 module.exports = router;

@@ -7,6 +7,7 @@ import UserProfile from './UserProfile';
 import BatchQRGeneration from './BatchQRGeneration';
 import ProfilePage from './temp/Profile';
 import PrivateRoute from './PrivateRoute';
+import Login from './Login';
 
 
 const AppRouter = () => {
@@ -15,9 +16,24 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signUp" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/batchGeneration" element={<BatchQRGeneration />} />
-        <PrivateRoute path="/userProfile" element={<UserProfile />} />
-        <PrivateRoute path="/profile" element={<ProfilePage />} />
+        <Route 
+          path="/userProfile"
+          element={
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+          }
+        />
+        <Route 
+          path="/profile"
+          element={
+          <PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

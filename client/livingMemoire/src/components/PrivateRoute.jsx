@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import {Route, Navigate} from 'react-router-dom';
 import { useAuth } from "../context/AuthProvider";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         token ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/signup" /> // Redirect to signup page if token doesn't exist
+          <Navigate to="/signup" replace/>  // Redirect to signup page if token doesn't exist
         )
       }
     />
