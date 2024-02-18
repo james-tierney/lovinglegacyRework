@@ -1,19 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useParams } from 'react-router-dom';
-import CreateMedallionProfile from './temp/MedallionProfile';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import CreateMedallionProfile from './MedallionProfile';
+import NavBar from './NavBar';
+import CreateNewMedallionProfile from './CreateMedallionProfile';
+
 
 const UserProfile = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const queryString = location.search;
   const urlParams = new URLSearchParams(queryString);
-  const username = urlParams.get('username');
+  const usernameFromParams = urlParams.get('username'); 
+  const usernameFromState = location.state && location.state.username;
+  const username = usernameFromParams || usernameFromState;
+  const viewParam = urlParams.get('view');
+
+  let content;  // will be used to render diff component based on view
 
   const [profileData, setProfileData] = useState({
     username: username,
     email: '',
     bio: '',
   });
+
+  switch(viewParam) {
+    case 'createMedallionProfile':
+      content = <CreateMedallionProfile username={profileData.username} />
+      break;
+
+    case 'createNew':
+      content = <CreateNewMedallionProfile username={profileData.username} />
+      break;
+    default: 
+      
+  }
+
+    // Handler to switch active tab
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    console.log("active tab = ", activeTab)
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('view', tab);
+    const newUrl = `${location.pathname}?${searchParams.toString()}`;
+    navigate(newUrl);
+  };
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -38,6 +70,7 @@ const UserProfile = () => {
 
   // State to keep track of the active tab
   const [activeTab, setActiveTab] = useState('profile');
+  const [createProfile, setCreateProfile] = useState(false);
 
   // State to track form input values for medallion data
   const [medallionFormData, setMedallionFormData] = useState({
@@ -60,10 +93,7 @@ const UserProfile = () => {
     });
   };
 
-  // Handler to switch active tab
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+
 
   // Handler for form submission to create a new medallion account
   const handleCreateMedallion = async (event) => {
@@ -108,24 +138,34 @@ const UserProfile = () => {
         </div>
         {/* Bottom section for tab navigation and content */}
         <div>
+          <NavBar
+            items={[
+              { label: 'My favorites', children: '', onClick: () => handleTabClick('') },
+              { label: 'Posts', children: '', onClick: ''},
+              { label: 'Medallion', children:'', onClick: () => handleTabClick('createMedallionProfile') },
+              { label: 'My Account', children: '', onClick: ''},
+            ]}
+          />
+
+          {/* <NavBar
+            items={[
+              { label: 'Profile', href: '#' },
+              { label: 'Groups', href: '#' },
+            ]}
+          /> */}
+          
           {/* Tab navigation */}
-          <div>
+          {/* <div>
             <button onClick={() => handleTabClick('profile')}>Profile</button>
             <button onClick={() => handleTabClick('medallion')}>Medallion</button>
-          </div>
+          </div> */}
           {/* Content based on active tab */}
-          {activeTab === 'profile' && (
+          {/* {activeTab === 'medallion' && (
             <div>
-              {/* Content for Profile tab */}
-              <p>This is the profile tab content</p>
-            </div>
-          )}
-          {activeTab === 'medallion' && (
-            <div>
-              {/* Content for Medallion tab */}
               <CreateMedallionProfile username={profileData.username} />
             </div>
-          )}
+          )} */}
+          {content}
         </div>
       </div>
     </div>

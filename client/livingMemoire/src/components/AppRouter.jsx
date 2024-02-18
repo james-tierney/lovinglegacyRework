@@ -18,14 +18,15 @@ const AppRouter = () => {
         <Route path="/signUp" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/batchGeneration" element={<BatchQRGeneration />} />
-        <Route 
+        <Route path="/userProfile" element={<UserProfile />} />
+        {/* <Route 
           path="/userProfile"
           element={
           <PrivateRoute>
             <UserProfile />
           </PrivateRoute>
           }
-        />
+        /> */}
         <Route 
           path="/profile"
           element={

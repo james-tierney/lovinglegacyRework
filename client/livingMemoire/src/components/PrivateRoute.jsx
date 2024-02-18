@@ -1,20 +1,14 @@
 import React from 'react';
-import {Route, Navigate} from 'react-router-dom';
-import { useAuth } from "../context/AuthProvider";
+import { Route, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ children, ...rest }) => {
   const { token } = useAuth();
 
   return (
     <Route
       {...rest}
-      render={(props) =>
-        token ? (
-          <Component {...props} />
-        ) : (
-          <Navigate to="/signup" replace/>  // Redirect to signup page if token doesn't exist
-        )
-      }
+      element={token ? children : <Navigate to="/signup" replace />}
     />
   );
 };

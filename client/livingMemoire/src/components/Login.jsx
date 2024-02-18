@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
 
     const handleLogin = async () => {
@@ -20,6 +22,10 @@ const Login = () => {
             // based on response from the server
             console.log("Login Successful", response.data);
             setError('');
+                  navigate('/userProfile', {
+        state: { username: response.data.user.username },
+        uName: response.data.user.username,
+      });
         } catch (error) {
             // Handle login error (e.g. display error message)
             console.error("Login failed", error.response.data.message);
