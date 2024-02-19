@@ -1,28 +1,33 @@
-// AuthProvider.js
 import React, { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
+
   useEffect(() => {
-    // Check if token exists in localStorage
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
+    // Retrieve token from document.cookie
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split("=");
+      if (name === "token") {
+        setToken(value);
+        break;
+      }
     }
   }, []);
 
   const login = (token) => {
-    // Store the token in localStorage
-    localStorage.setItem("token", token);
+    // Store the token in cookies
+    Cookies.set("token", token);
     setToken(token);
   };
 
   const logout = () => {
-    // Remove the token from localStorage
-    localStorage.removeItem("token");
+    // Remove the token from cookies
+    Cookies.remove("token");
     setToken(null);
   };
 

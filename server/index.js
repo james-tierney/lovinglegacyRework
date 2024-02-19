@@ -7,10 +7,12 @@ const dburi =
 
 const port = 3001;
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
 app.use(cors());
 app.use("/", require("./router/router.js"));
+app.use(cookieParser());
 
 async function connect() {
   try {

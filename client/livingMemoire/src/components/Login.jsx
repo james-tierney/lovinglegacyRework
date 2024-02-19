@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -16,16 +17,26 @@ const Login = () => {
                 username, 
                 password,
             });
-
-            // Handle successful login e.g redirect to another page
-            // TODO add IF statement here for the success logic
-            // based on response from the server
-            console.log("Login Successful", response.data);
-            setError('');
-                  navigate('/userProfile', {
-        state: { username: response.data.user.username },
-        uName: response.data.user.username,
-      });
+                console.log("login response = ", response.data
+                )
+            if (response.status === 200) {
+                //const cookie = Cookies.get('token');
+                
+                const token = response.data.token;
+                
+                console.log("checking for cookie token in login ", token);
+                
+                document.cookie = `token=${token}; path=/`
+                // Handle successful login e.g redirect to another page
+                // TODO add IF statement here for the success logic
+                // based on response from the server
+                console.log("Login Successful", response.data);
+                setError('');
+                navigate('/userProfile', {
+                    state: { username: response.data.user.username },
+                    uName: response.data.user.username,
+                });
+            }
         } catch (error) {
             // Handle login error (e.g. display error message)
             console.error("Login failed", error.response.data.message);
