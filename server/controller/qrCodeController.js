@@ -99,33 +99,79 @@ module.exports.generateQrCode = async (req, res) => {
   try {
     // Generate a unique ID for the qr Code
     const qrId = generateUniqueId();
-
+    const url = `http://localhost:5173/signUp?qr_id=${qrId}`;
     const data = {
-      workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
-      qr_data: `http://localhost:5173/signUp?qr_id=${qrId}`,
-      //qr_data: req.body.qrData, // Assuming you send qrData in the request body
-      primary_color: "#3b81f6",
-      background_color: "#FFFFFF",
-      dynamic: true,
-      display_name: "Tester QR Code", // Customize as needed
-      frame: "border",
-      has_border: true,
-      logo_url: "https://hovercode.com/static/website/images/logo.png",
-      generate_png: true,
+      name: "MyQRCode",
+      type: "url",
+      // link_id: 123, // Optional: Replace with your desired value
+      // project_id: 456, // Optional: Replace with your desired value
+      style: "square", // Optional: Replace with your desired value
+      inner_eye_style: "square", // Optional: Replace with your desired value
+      outer_eye_style: "square", // Optional: Replace with your desired value
+      foreground_type: "color", // Optional: Replace with your desired value
+      foreground_color: "#000000", // Optional: Replace with your desired value
+      background_color: "#FFFFFF", // Optional: Replace with your desired value
+      url: url, // Add the URL parameter here
+      // Add more parameters as needed
     };
 
+    // const data = {
+    //   workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
+    //   qr_data: `http://localhost:5173/signUp?qr_id=${qrId}`,
+    //   //qr_data: req.body.qrData, // Assuming you send qrData in the request body
+    //   primary_color: "#3b81f6",
+    //   background_color: "#FFFFFF",
+    //   dynamic: true,
+    //   display_name: "Tester QR Code", // Customize as needed
+    //   frame: "border",
+    //   has_border: true,
+    //   logo_url: "https://hovercode.com/static/website/images/logo.png",
+    //   generate_png: true,
+    // };
+
+    // const response = await axios.post(
+    //   "https://hovercode.com/api/v2/hovercode/create/",
+    //   data,
+    //   {
+    //     headers: {
+    //       Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
+    //       "Content-Type": "application/json",
+    //     },
+    //     timeout: 10000,
+    //   }
+    // );
+    const formData = new FormData();
+    formData.append("name", "MyQRCode");
+    formData.append("type", "url");
+    formData.append("style", "square");
+    formData.append("inner_eye_style", "square");
+    formData.append("outer_eye_style", "square");
+    formData.append("foreground_type", "color");
+    formData.append("foreground_color", "#000000");
+    formData.append("background_color", "#FFFFFF");
+    formData.append("url", url);
+
+    const apiKey = "0cb3c873b79270cab5696d21be90f047"; // hide through env file
+    console.log("api key ", apiKey);
     const response = await axios.post(
-      "https://hovercode.com/api/v2/hovercode/create/",
-      data,
+      "https://qrcodedynamic.com/api/qr-codes",
+      formData,
       {
         headers: {
-          Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "multipart/form-data",
         },
-        timeout: 10000,
       }
     );
-    const qrCodeData = response.data;
+
+    // Extract data from the response
+    const qrCodeId = response.data.data.id;
+    console.log("response from generating qr code = ", qrCodeId);
+
+    const qrCodeData = await getQrCode(qrCodeId, apiKey);
+    console.log("get qr code = ", qrCodeData);
+    // const qrCodeData = await response.data;
+    // console.log("qr code data", qrCodeData);
     // console.log("qr code data ", qrCodeData);
 
     // Save the generated qr_id without associating it with any user
@@ -145,6 +191,26 @@ module.exports.generateQrCode = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const getQrCode = async (qrCodeId, apiKey) => {
+  try {
+    const response = await axios.get(
+      `https://qrcodedynamic.com/api/qr-codes/${qrCodeId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching QR code:", error.message);
+    throw error;
+  }
+};
+
+const storeQrCodes = (qrData) => {};
 
 // Function to export QR Codes to PDF
 const exportQrCodeImagesToPDF = async (qrCodesData) => {
