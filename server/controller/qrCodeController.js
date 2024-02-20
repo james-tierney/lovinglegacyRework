@@ -17,6 +17,7 @@ const generateUniqueId = () => {
 module.exports.passQrCodeProfileData = async (req, res) => {
   try {
     const { username, qrId } = req.body;
+    console.log("passing qr profile data ", req.body);
 
     // call the server side function
     await this.updateQRCodeWithUserProfile(username, qrId);
@@ -72,20 +73,27 @@ module.exports.updateQrCodeData = async (qrCodeId, qrData, res) => {
   try {
     // const { qrCodeId } = qrCodeId; // Assuming you have the QR code ID in the request parameters
     // const { qrData } = qrData; // New QR data and display name
-
+    const apiKey = "0cb3c873b79270cab5696d21be90f047";
     const data = {
       qr_data: qrCodeId.qrData + "lol", // New QR data
     };
     console.log("qr Code for update ", qrCodeId);
-    const response = await axios.put(
-      `https://hovercode.com/api/v2/hovercode/${qrCodeId.qrCodeId}/update/`,
-      data,
+    console.log("data = ", data);
+    console.log("code id ", qrCodeId.qrCodeId);
+
+    const formData = new FormData();
+    formData.append("url", qrCodeId.qrData);
+    const requestUrl = `https://qrcodedynamic.com/api/qr-codes/${qrCodeId.qrCodeId}`;
+    console.log("api req url = ", requestUrl);
+
+    const response = await axios.post(
+      `https://qrcodedynamic.com/api/qr-codes/${qrCodeId.qrCodeId}`,
+      formData,
       {
         headers: {
-          Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "multipart/form-data",
         },
-        timeout: 10000,
       }
     );
 
@@ -169,16 +177,17 @@ module.exports.generateQrCode = async (req, res) => {
     console.log("response from generating qr code = ", qrCodeId);
 
     const qrCodeData = await getQrCode(qrCodeId, apiKey);
-    console.log("get qr code = ", qrCodeData);
+    console.log("get qr code = ", JSON.stringify(qrCodeData.data));
+
     // const qrCodeData = await response.data;
     // console.log("qr code data", qrCodeData);
     // console.log("qr code data ", qrCodeData);
 
     // Save the generated qr_id without associating it with any user
     const newQRCode = new QRCodeModel({
-      qrCodeData: qrCodeData.qr_data,
+      qrCodeData: JSON.stringify(qrCodeData.data),
       targetUrl: `http://localhost:5173/signUp?qr_id=${qrId}`,
-      qrCodeId: qrCodeData.id,
+      qrCodeId: qrCodeData.data.id,
       generatedId: qrId,
     });
     await newQRCode.save();

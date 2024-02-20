@@ -10,8 +10,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Retrieve token from document.cookie
     const cookies = document.cookie.split("; ");
+    console.log("cookies = ", cookies);
     for (const cookie of cookies) {
       const [name, value] = cookie.split("=");
+      console.log("name and value = ", [name, value]);
       if (name === "token") {
         setToken(value);
         break;

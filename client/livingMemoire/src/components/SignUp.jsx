@@ -62,6 +62,8 @@ const Signup = () => {
         }),
       });
 
+
+      
       if (response.ok) {
       // Assuming the server responds with a success message or user data
       const result = await response.json();
