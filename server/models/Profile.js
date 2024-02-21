@@ -96,6 +96,10 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  token: {
+    type: String,
+    required: true,
+  },
 });
 
 // Virtual Field for handling plain text password during user registration

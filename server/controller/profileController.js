@@ -31,22 +31,28 @@ const createProfile = async (req, res) => {
       return res.status(409).json({ error: "Username already taken" });
     }
 
+    // Generate JWT token
+    const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     // Create a new profile
     const newProfile = new Profile({
       profileId: uuidv4(), // Generating a unique ID using uuid
       username,
       email,
       password,
+      token,
     });
 
     console.log("new profile created ", JSON.stringify(newProfile));
     // Save the profile to the database
     const savedProfile = await newProfile.save();
 
-    // Generate JWT token
-    const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    // // Generate JWT token
+    // const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
+    //   expiresIn: "1h",
+    // });
     console.log("token ", token);
     // Send the token to the client via a cookie
     res.cookie("token", token, {
