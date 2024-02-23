@@ -90,15 +90,15 @@ const profileSchema = new mongoose.Schema({
 
   salt: {
     type: String,
-    required: true,
+    required: false,
   },
   hashedPassword: {
     type: String,
-    required: true,
+    required: false,
   },
   token: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 

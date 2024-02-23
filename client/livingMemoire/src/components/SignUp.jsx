@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SignUp, useClerk } from '@clerk/clerk-react';
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
 const Signup = () => {
+  const { client } = useClerk();
   const navigate = useNavigate();
+  // Init firebase
+  const auth = getAuth();
 
   const [qrCodeId, setQrCodeId] = useState(null);  // State to store the QR code ID
 
@@ -42,26 +47,81 @@ const Signup = () => {
   };
 
 
-  const handleSubmit = async (e) => {
+  
+
+//  const handleSubmit = async (formData) => {
+//     try {
+//       console.log("form data ", formData);
+//       // Customize signup logic using Clerk client APIs
+//       const user = ''; //await client.signUp(formData);
+
+//       // Access user data from the returned user object
+//       const { username } = user;
+
+//       // Make your existing API call to create the profile
+//       const urlSearchParams = new URLSearchParams(window.location.search);
+//       const qrCodeId = urlSearchParams.get('qr_id');
+
+//       const response = await fetch('http://localhost:3001/createProfile', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           ...formData,
+//           qrCodeId: qrCodeId,
+//         }),
+//       });
+
+//       if (response.ok) {
+//         const result = await response.json();
+//         const profile = result.profile;
+
+//         // Redirect to the user's profile page
+//         navigate(`/userProfile?username=${profile.username}`);
+//       } else if (response.status === 409) {
+//         console.error("Username already taken");
+//       } else {
+//         console.error('Signup failed');
+//       }
+//     } catch (error) {
+//       console.error('Error during signup:', error);
+//     }
+//   };
+
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Extract QR code ID from the URL
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const qrCodeId = urlSearchParams.get('qr_id');
+       const { email, password } = formData;
 
+    // Create a new user with email and password using Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const firebaseUser = userCredential.user;
+    console.log("fire base user creds = ", firebaseUser);
 
-      const response = await fetch('http://localhost:3001/createProfile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          qrCodeId: qrCodeId,  // Pass the QR code ID to the backend
-        }),
-      });
+    // Update the user's displayName with the provided username
+    await updateProfile(firebaseUser, {
+      displayName: formData.username,
+    });
 
+    // Extract QR code ID from the URL
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const qrCodeId = urlSearchParams.get('qr_id');
+
+    // Call your backend function to create the user profile in MongoDB
+    const response = await fetch('http://localhost:3001/createProfile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: firebaseUser.email,
+        username: formData.username,
+        // Pass any other necessary data to create the profile
+        qrCodeId: qrCodeId,
+      }),
+    });
 
       
       if (response.ok) {
@@ -106,9 +166,18 @@ const Signup = () => {
     }
   };
 
+const signUpWithGoogle = () => {
+  signInWithPopup(auth, new GoogleAuthProvider()).then((userCred) => {
+    console.log("user creds ", userCred);
+  }).catch((error) => {
+    console.error("Error signing in with Google:", error);
+  });
+};
+
   return (
     <div>
       <h2>Signup</h2>
+      {/* <SignUp onSubmit={handleSubmit} afterSignUpUrl={"/signUp"} /> */}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -145,6 +214,7 @@ const Signup = () => {
         </div>
         <div>
           <button type="submit">Sign Up</button>
+          <button onClick={signUpWithGoogle}>Sign up with Google</button>
         </div>
       </form>
     </div>

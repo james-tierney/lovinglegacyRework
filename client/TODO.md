@@ -2,6 +2,11 @@
 
 ## Next Steps
 
+- Get the sessions and private routing setup with firebase!
+
+- !!! FIX THE JWT TOKEN FOR PRIVATE ROUTING WHEN USER SCANS QR CODE
+  CHECK TOKEN EXISTS WITH THAT PROFILE TO ALLOW ACCESS TO ROUTE !!!
+
 - SORT THE PROFILE PICTURE IMAGE NOT APPEARING ON SERVER SIDE DONE NOW
 
 - Also want to style the cretea medallion profile form

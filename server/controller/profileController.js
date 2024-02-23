@@ -3,6 +3,7 @@ const Profile = require("../models/Profile");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const clerk = require("@clerk/clerk-sdk-node");
 require("dotenv").config();
 // const multer = require("multer");
 
@@ -16,14 +17,69 @@ require("dotenv").config();
 //   },
 // });
 
+const clerkClient = clerk.createClerkClient({
+  apiKey: "pk_test_Zmx1ZW50LXB1cC0xLmNsZXJrLmFjY291bnRzLmRldiQ",
+});
+
 // // Create multer instance with storage configuration
 // const upload = multer({ storage: storage });
 
+// const createProfile = async (req, res) => {
+//   try {
+//     const { username, email, password } = req.body;
+
+//     // Check if the username already exists
+//     const existingProfile = await Profile.findOne({ username });
+
+//     if (existingProfile) {
+//       // Username already taken, send a response with a 409 status code (Conflict)
+//       return res.status(409).json({ error: "Username already taken" });
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
+//       expiresIn: "1h",
+//     });
+
+//     // Create a new profile
+//     const newProfile = new Profile({
+//       profileId: uuidv4(), // Generating a unique ID using uuid
+//       username,
+//       email,
+//       password,
+//       token,
+//     });
+
+//     console.log("new profile created ", JSON.stringify(newProfile));
+//     // Save the profile to the database
+//     const savedProfile = await newProfile.save();
+
+//     // // Generate JWT token
+//     // const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
+//     //   expiresIn: "1h",
+//     // });
+//     console.log("token ", token);
+//     // Send the token to the client via a cookie
+//     res.cookie("token", token, {
+//       httpOnly: true,
+//       secure: false, // http localhost development right now CHANGE
+//       sameSite: "strict",
+//     });
+
+//     res.status(201).json({ profile: savedProfile, token });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
 const createProfile = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email } = req.body;
+    console.log("username = ", username);
+    console.log("email = ", email);
 
-    // Check if the username already exists
+    // Check if the username already exists in MongoDB
     const existingProfile = await Profile.findOne({ username });
 
     if (existingProfile) {
@@ -31,36 +87,34 @@ const createProfile = async (req, res) => {
       return res.status(409).json({ error: "Username already taken" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    // Create a new profile
+    // Create a new profile in MongoDB
     const newProfile = new Profile({
+      username: username,
       profileId: uuidv4(), // Generating a unique ID using uuid
-      username,
-      email,
-      password,
-      token,
+      email: email,
+      // Add other profile properties if needed
     });
 
-    console.log("new profile created ", JSON.stringify(newProfile));
-    // Save the profile to the database
+    // Save the profile to MongoDB
     const savedProfile = await newProfile.save();
 
-    // // Generate JWT token
-    // const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
-    //   expiresIn: "1h",
-    // });
-    console.log("token ", token);
-    // Send the token to the client via a cookie
+    // Generate JWT token (optional)
+    const token = jwt.sign(
+      { profileId: savedProfile.profileId },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    // Send the token to the client via a cookie (optional)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // http localhost development right now CHANGE
+      secure: false, // Change this to true in production
       sameSite: "strict",
     });
 
+    // Respond with the profile and token
     res.status(201).json({ profile: savedProfile, token });
   } catch (error) {
     console.error(error);
