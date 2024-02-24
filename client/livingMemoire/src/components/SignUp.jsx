@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignUp, useClerk } from '@clerk/clerk-react';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword} from 'firebase/auth';
+import axios from 'axios';
 
 const Signup = () => {
   const { client } = useClerk();
@@ -105,9 +106,13 @@ const handleSubmit = async (e) => {
       displayName: formData.username,
     });
 
+    // Sign in the user through firebase immediately after signing up
+    await signInWithEmailAndPassword(auth, email, password);
+
     // Extract QR code ID from the URL
     const urlSearchParams = new URLSearchParams(window.location.search);
     const qrCodeId = urlSearchParams.get('qr_id');
+    console.log("qr code in sign up page ", qrCodeId);
 
     // Call your backend function to create the user profile in MongoDB
     const response = await fetch('http://localhost:3001/createProfile', {
@@ -129,7 +134,8 @@ const handleSubmit = async (e) => {
       const result = await response.json();
       const profile = result.profile;
       console.log('Signup successful:', result);
-
+               const updateResponse = await axios.post('http://localhost:3001/updateQRCode', {qrCodeId: qrCodeId});
+       console.log("response from after sign up ", updateResponse);
         const token = result.token;
 
         console.log("token in client side = ", token);
@@ -143,10 +149,14 @@ const handleSubmit = async (e) => {
       // Update the QR code in your database with the user's profile information
       await updateQRCodeWithUserProfile(profile.username, qrCodeId);
 
-        // Navigate to the user's profile page with username as a query param
+
+
+       // Navigate to the user's profile page with username as a query param
       // Redirect to the user's profile page with username as a state parameter
       console.log("username to be passed ", profile.username);
-      navigate(`/userProfile?username=${profile.username}`);
+      navigate(`/userProfile?username=${profile.username}`, {
+        state: { qrCodeId }
+      });
       // navigate('/userProfile', {
       //   state: { username: result.username },
       //   uName: result.username,

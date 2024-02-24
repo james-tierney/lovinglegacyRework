@@ -84,6 +84,11 @@ const profileSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  qrCodeId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   bio: String,
   // Add other profile-related fields as needed
   medallionProfile: medallionProfileSchema, // Embed MedallionProfile schema

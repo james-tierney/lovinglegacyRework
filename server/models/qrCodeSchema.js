@@ -28,6 +28,10 @@ const qrCodeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hasProfileAssociated: {
+    type: Boolean,
+    required: true,
+  },
   // Add other QR code-related fields as needed
 });
 

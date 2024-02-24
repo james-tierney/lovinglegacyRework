@@ -96,18 +96,74 @@ module.exports.updateQrCodeData = async (qrCodeId, qrData, res) => {
         },
       }
     );
-
+    console.log("response data fron the update of qr code ", response.data);
     return response.data;
   } catch (error) {
     console.error("Error updating QR code:", error);
     //res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+module.exports.updateQrCode = async (req, res) => {
+  const { qrCodeId } = req.body;
+  console.log("qr code id in update qr code method ", qrCodeId);
+  try {
+    const qrCodeRecord = await QRCodeModel.findOneAndUpdate(
+      { generatedId: qrCodeId },
+      { hasProfileAssociated: true }
+    );
+    if (!qrCodeRecord) {
+      // if the qr code record doesn't exist, return an error
+      return res.status(404).json({ error: "Qr code not found" });
+    }
+
+    return res.status(200).json({ message: "QR code updated successfully" });
+  } catch (error) {
+    console.error("Error updating QR code with user profile", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Function to check if a QR code has a profile associated with it
+module.exports.doesQrCodeHaveProfile = async (req, res, qrIdParam) => {
+  console.log("QR code id inside update code with profile func ", qrIdParam);
+  console.log("req.body = ", req.body);
+  const { qrId } = req.body;
+  console.log("qr code id from req.body ", qrId);
+  try {
+    // Retrieve the QR code record based on qrId
+    const qrCodeRecord = await QRCodeModel.findOne({ generatedId: qrId });
+
+    // If the QR code record exists and has a profile, return true
+    if (qrCodeRecord) {
+      console.log("QR code exists");
+      console.log("QR code record = ", qrCodeRecord);
+
+      // Retrieve the value of hasProfileAssociated field from the record
+      const hasProfileAssociated = qrCodeRecord.hasProfileAssociated;
+
+      console.log("Has profile: ", hasProfileAssociated);
+
+      // Return true/false based on whether the QR code has a profile associated with it
+      return res.json(hasProfileAssociated);
+    } else {
+      console.log("QR code does not exist");
+      // If the QR code record doesn't exist, return false
+      return res.json(hasProfileAssociated);
+    }
+  } catch (error) {
+    console.error("Error checking QR code existence: ", error);
+    // If there's an error, return false
+    return res.json(hasProfileAssociated);
+  }
+};
+
 module.exports.generateQrCode = async (req, res) => {
   try {
     // Generate a unique ID for the qr Code
     const qrId = generateUniqueId();
-    const url = `http://localhost:5173/signUp?qr_id=${qrId}`;
+
+    const url = `http://localhost:5173/qrCode?qr_id=${qrId}`;
     const data = {
       name: "MyQRCode",
       type: "url",
@@ -125,7 +181,7 @@ module.exports.generateQrCode = async (req, res) => {
 
     // const data = {
     //   workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
-    //   qr_data: `http://localhost:5173/signUp?qr_id=${qrId}`,
+    //   qr_data: `http://localhost:5173/signUp?qrCode=${qrId}`,
     //   //qr_data: req.body.qrData, // Assuming you send qrData in the request body
     //   primary_color: "#3b81f6",
     //   background_color: "#FFFFFF",
@@ -186,9 +242,11 @@ module.exports.generateQrCode = async (req, res) => {
     // Save the generated qr_id without associating it with any user
     const newQRCode = new QRCodeModel({
       qrCodeData: JSON.stringify(qrCodeData.data),
-      targetUrl: `http://localhost:5173/signUp?qr_id=${qrId}`,
+      // targetUrl: `http://localhost:5713/qrCode?qr_id=${qrCodeData.data.id}`,
+      targetUrl: `http://localhost:5173/qrCode?qr_id=${qrId}`,
       qrCodeId: qrCodeData.data.id,
       generatedId: qrId,
+      hasProfileAssociated: false,
     });
     await newQRCode.save();
     console.log("New QR code stored ", newQRCode);

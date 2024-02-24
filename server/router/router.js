@@ -42,6 +42,7 @@ router.use(express.json());
 router.post("/generateQrCode", qrCodeController.generateQrCode);
 router.post("/createProfile", profileController.createProfile);
 router.get("/userProfile", profileController.getProfileByUsername);
+router.get("/getProfile", profileController.getProfileByQrId);
 router.post(
   "/updateQRCodeWithUserProfile",
   qrCodeController.passQrCodeProfileData
@@ -53,4 +54,6 @@ router.post(
   profileController.createMedallionProfile
 );
 router.post("/login", authController.handleLogin);
+router.post("/checkProfileExists", qrCodeController.doesQrCodeHaveProfile);
+router.post("/updateQRCode", qrCodeController.updateQrCode);
 module.exports = router;

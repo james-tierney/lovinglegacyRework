@@ -13,6 +13,7 @@ const UserProfile = () => {
   const urlParams = new URLSearchParams(queryString);
   const usernameFromParams = urlParams.get('username'); 
   const usernameFromState = location.state && location.state.username;
+  const qrCodeId = location.state.qrCodeId;
   const username = usernameFromParams || usernameFromState;
   const viewParam = urlParams.get('view');
 
@@ -49,12 +50,19 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      console.log("qr code from state ", qrCodeId);
       try {
-        const response = await axios.get('http://localhost:3001/userProfile', {
+        // const response = await axios.get('http://localhost:3001/userProfile', {
+        //   params: {
+        //     username: username
+        //   }
+        // });
+        const response = await axios.get('http://localhost:3001/getProfile', {
           params: {
-            username: username
+            qr_id: qrCodeId
           }
         });
+        
         if (response.status === 200) {
           const profile = response.data;
           setProfileData(profile);

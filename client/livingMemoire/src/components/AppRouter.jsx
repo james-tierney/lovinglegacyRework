@@ -8,6 +8,7 @@ import BatchQRGeneration from './BatchQRGeneration';
 import ProfilePage from './temp/Profile';
 import PrivateRoutes from './PrivateRoutes';
 import Login from './Login';
+import QRCode from './QRCode';
 
 
 const AppRouter = () => {
@@ -18,11 +19,14 @@ const AppRouter = () => {
         <Route path="/signUp" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/batchGeneration" element={<BatchQRGeneration />} />
+        <Route path="/qrCode" element={<QRCode />} />
         {/* <Route path="/userProfile" element={<UserProfile />} /> */}
-        <Route element={<PrivateRoutes />}>
+        {/* <Route element={<PrivateRoutes />}> */}
           <Route path="/userProfile" element={<UserProfile/>} />
           <Route path="/profile" element={<ProfilePage />} />
-        </Route>
+        
+        {/* </Route> */}
+        
         {/* <Route 
           path="/userProfile"
           element={

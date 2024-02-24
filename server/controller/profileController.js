@@ -75,7 +75,7 @@ const clerkClient = clerk.createClerkClient({
 
 const createProfile = async (req, res) => {
   try {
-    const { username, email } = req.body;
+    const { username, email, qrCodeId } = req.body;
     console.log("username = ", username);
     console.log("email = ", email);
 
@@ -92,6 +92,7 @@ const createProfile = async (req, res) => {
       username: username,
       profileId: uuidv4(), // Generating a unique ID using uuid
       email: email,
+      qrCodeId: qrCodeId, // this is the qr code associated with this users profile
       // Add other profile properties if needed
     });
 
@@ -136,6 +137,35 @@ const getProfileByUsername = async (req, res) => {
     console.log("username in here = ", username);
     // Retrieve the user profile based on the username
     const userProfile = await Profile.findOne({ username });
+    console.log("user profile = ", JSON.stringify(userProfile));
+    // Logic for user profile not existing
+    if (!userProfile) {
+      console.log("error occurs in here ");
+      return res.status(404).json({ error: "User profile not found" });
+    }
+
+    res.status(200).json(userProfile);
+  } catch (error) {
+    console.error("error is here", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getProfileByQrId = async (req, res) => {
+  const { qr_id } = req.query;
+  console.log("qr id from query ", qr_id);
+  try {
+    //req.params;
+
+    /** username is undefined here as it is part of the url
+     * rather than it being a request param
+     * we should look at the best approach methods
+     * to retrieving user data from the db
+     * do we encode the ID's or create our own id?
+     */
+
+    // Retrieve the user profile based on the username
+    const userProfile = await Profile.findOne({ qrCodeId: qr_id });
     console.log("user profile = ", JSON.stringify(userProfile));
     // Logic for user profile not existing
     if (!userProfile) {
@@ -202,5 +232,6 @@ module.exports = {
   createProfile,
   getProfileByUsername,
   createMedallionProfile,
+  getProfileByQrId,
   // getUserNameFromQRCodeId,
 };
