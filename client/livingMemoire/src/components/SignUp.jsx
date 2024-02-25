@@ -9,8 +9,12 @@ const Signup = () => {
   const navigate = useNavigate();
   // Init firebase
   const auth = getAuth();
+  // Extract QR code ID from the URL
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const qrCodeId = urlSearchParams.get('qr_id');
+  console.log("qr code in sign up page ", qrCodeId);
 
-  const [qrCodeId, setQrCodeId] = useState(null);  // State to store the QR code ID
+  // const [qrCodeId, setQrCodeId] = useState(null);  // State to store the QR code ID
 
   const [formData, setFormData] = useState({
     username: '',
@@ -109,10 +113,7 @@ const handleSubmit = async (e) => {
     // Sign in the user through firebase immediately after signing up
     await signInWithEmailAndPassword(auth, email, password);
 
-    // Extract QR code ID from the URL
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const qrCodeId = urlSearchParams.get('qr_id');
-    console.log("qr code in sign up page ", qrCodeId);
+
 
     // Call your backend function to create the user profile in MongoDB
     const response = await fetch('http://localhost:3001/createProfile', {
@@ -134,7 +135,7 @@ const handleSubmit = async (e) => {
       const result = await response.json();
       const profile = result.profile;
       console.log('Signup successful:', result);
-               const updateResponse = await axios.post('http://localhost:3001/updateQRCode', {qrCodeId: qrCodeId});
+      const updateResponse = await axios.post('http://localhost:3001/updateQRCode', {qrCodeId: qrCodeId});
        console.log("response from after sign up ", updateResponse);
         const token = result.token;
 

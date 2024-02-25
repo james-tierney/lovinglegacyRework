@@ -13,10 +13,10 @@ const UserProfile = () => {
   const urlParams = new URLSearchParams(queryString);
   const usernameFromParams = urlParams.get('username'); 
   const usernameFromState = location.state && location.state.username;
-  const qrCodeId = location.state.qrCodeId;
+  const qr_id = location.state.qr_id;
   const username = usernameFromParams || usernameFromState;
   const viewParam = urlParams.get('view');
-
+console.log("qr code ID in user profile page ", qr_id);
   let content;  // will be used to render diff component based on view
 
   const [profileData, setProfileData] = useState({
@@ -50,18 +50,25 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      console.log("qr code from state ", qrCodeId);
+      console.log("qr code from state ", qr_id);
       try {
-        // const response = await axios.get('http://localhost:3001/userProfile', {
-        //   params: {
-        //     username: username
-        //   }
-        // });
-        const response = await axios.get('http://localhost:3001/getProfile', {
-          params: {
-            qr_id: qrCodeId
-          }
-        });
+          let response; 
+          if(username) {
+          response = await axios.get('http://localhost:3001/userProfile', {
+            params: {
+              username: username
+            }
+          });
+        } else if(qr_id) {
+            response = await axios.get('http://localhost:3001/getProfile', {
+            params: {
+              qr_id: qr_id
+            }
+          });
+        } else {
+          console.error("Neither User nor qr_id is defined ");
+        }
+
         
         if (response.status === 200) {
           const profile = response.data;

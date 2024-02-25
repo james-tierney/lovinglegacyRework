@@ -86,7 +86,10 @@ const createProfile = async (req, res) => {
       // Username already taken, send a response with a 409 status code (Conflict)
       return res.status(409).json({ error: "Username already taken" });
     }
-
+    console.log(
+      "QR Code ID that is being used in the createProfile ",
+      qrCodeId
+    );
     // Create a new profile in MongoDB
     const newProfile = new Profile({
       username: username,
@@ -152,6 +155,7 @@ const getProfileByUsername = async (req, res) => {
 };
 
 const getProfileByQrId = async (req, res) => {
+  console.log("in get profile by id req.query = ", req.query);
   const { qr_id } = req.query;
   console.log("qr id from query ", qr_id);
   try {

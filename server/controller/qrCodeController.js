@@ -128,11 +128,11 @@ module.exports.updateQrCode = async (req, res) => {
 module.exports.doesQrCodeHaveProfile = async (req, res, qrIdParam) => {
   console.log("QR code id inside update code with profile func ", qrIdParam);
   console.log("req.body = ", req.body);
-  const { qrId } = req.body;
-  console.log("qr code id from req.body ", qrId);
+  const { qr_id } = req.body;
+  console.log("qr code id from req.body ", qr_id);
   try {
     // Retrieve the QR code record based on qrId
-    const qrCodeRecord = await QRCodeModel.findOne({ generatedId: qrId });
+    const qrCodeRecord = await QRCodeModel.findOne({ generatedId: qr_id });
 
     // If the QR code record exists and has a profile, return true
     if (qrCodeRecord) {
