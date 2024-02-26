@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Cookies from 'js-cookie';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -11,6 +14,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const auth = getAuth();
+    const { loginUser, loading, user} = useContext(AuthContext);
 
     // const handleLogin = async () => {
     //     try {

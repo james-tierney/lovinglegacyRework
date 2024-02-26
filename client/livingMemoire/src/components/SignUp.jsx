@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignUp, useClerk } from '@clerk/clerk-react';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword} from 'firebase/auth';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthProvider';
+
 
 const Signup = () => {
-  const { client } = useClerk();
   const navigate = useNavigate();
+  const { createUser, user, loading } = useContext(AuthContext);
   // Init firebase
   const auth = getAuth();
   // Extract QR code ID from the URL
@@ -29,6 +30,10 @@ const Signup = () => {
       [name]: value,
     });
   };
+
+  if(user) {
+
+  }
 
     const updateQRCodeWithUserProfile = async (username, qrId) => {
     try {

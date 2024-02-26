@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthProvider';
+// import { useAuth } from '../context/AuthProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const PrivateRoutes = () => {
-  const { token } = useAuth();
+  // const { token } = useAuth();
   const [user, setUser] = useState(null);
   const auth = getAuth();
 
@@ -20,7 +20,7 @@ const PrivateRoutes = () => {
     };
   }, [auth]);
 
-  console.log("token in private route, ", token)
+  // console.log("token in private route, ", token)
   console.log("user in private route ", user);
   return (
     user ? <Outlet/> : <Navigate to={"/login"} />

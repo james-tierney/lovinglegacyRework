@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
 
 function Home() {
   const [qrCodeData, setQrCodeData] = useState(null);
   const navigate = useNavigate();
-  const { isSignedIn, user, isLoaded } = useUser();
 
   const generateQrCode = async () => {
     try {
@@ -18,7 +16,7 @@ function Home() {
     } catch (error) {
       console.error('Error generating QR Code:', error.message);
     }
-  }; if (!isSignedIn) {
+  };
   return (
     <div>
       <h1>Dynamic QR Code Generator</h1>
@@ -35,15 +33,9 @@ function Home() {
         </div>
       )}
     </div>
-  );}
+  );
 
-  if (isSignedIn) {
-    console.log("user = ", user);
-    return (
-      
-      <div>Hello {user.username}</div>
-    )
-  }
+
 }
 
 export default Home;

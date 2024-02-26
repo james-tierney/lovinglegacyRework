@@ -1,43 +1,58 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
+// AuthProvider.js
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { getAuth } from 'firebase/auth';
 
-const AuthContext = createContext();
+export const AuthContext = createContext(null);
+
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const createUser = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
 
+  const loginUser = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const logOut = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
 
   useEffect(() => {
-    // Retrieve token from document.cookie
-    const cookies = document.cookie.split("; ");
-    console.log("cookies = ", cookies);
-    for (const cookie of cookies) {
-      const [name, value] = cookie.split("=");
-      console.log("name and value = ", [name, value]);
-      if (name === "token") {
-        setToken(value);
-        break;
-      }
-    }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  const login = (token) => {
-    // Store the token in cookies
-    Cookies.set("token", token);
-    setToken(token);
+  const authValue = {
+    createUser,
+    user,
+    loginUser,
+    logOut,
+    loading,
   };
 
-  const logout = () => {
-    // Remove the token from cookies
-    Cookies.remove("token");
-    setToken(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
