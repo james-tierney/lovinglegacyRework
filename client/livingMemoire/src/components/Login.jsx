@@ -5,6 +5,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Cookies from 'js-cookie';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
+import SiteNavigation from './SiteNavigation';
 
 
 const Login = () => {
@@ -73,6 +74,7 @@ const Login = () => {
 
     return (
         <div>
+            <SiteNavigation/>
             <h2>Login</h2>
             <div>
                 <label>Username:</label>

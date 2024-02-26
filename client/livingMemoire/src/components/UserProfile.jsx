@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import CreateMedallionProfile from './CreateMedallionProfile';
 import CreateNewMedallionProfile from './CreateMedallionProfile';
-import { useProfile } from './context/ProfileContext';
+import SiteNavigation from './SiteNavigation';
+import { fetchProfileByUsername, fetchProfileByQrId } from '../redux/ProfileSlicer';
 
 const UserProfile = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const queryString = location.search;
@@ -16,67 +19,57 @@ const UserProfile = () => {
   const qr_id = location.state?.qr_id;
   const username = usernameFromParams || usernameFromState;
   const viewParam = urlParams.get('view');
-  const { profileData, updateProfileData } = useProfile(); // Use the context hook 
-  
-  const [isLoading, setIsLoading] = useState(true); // Track loading state
-  
-  let content;  // will be used to render diff component based on view
+  const profileData = useSelector(state => state.profile.data);
+  const isLoading = useSelector(state => state.profile.isLoading);
+  const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
+  console.log("profile data = ", profileData);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchProfile = async () => {
-      // Check if profile data exists in context
-      console.log("profile data context ", profileData);
-      if (!profileData || profileData === null) {
-        console.log("profile data context in if", profileData);
-        try {
-          let response; 
-          if(username) {
-            response = await axios.get('http://localhost:3001/userProfile', {
-              params: {
-                username: username
-              }
-            });
-          } else if(qr_id) {
-            response = await axios.get('http://localhost:3001/getProfile', {
-              params: {
-                qr_id: qr_id
-              }
-            });
+      try {
+        // Check if navigation was initiated by the app, useNavigate hook or by direct URL manipulation
+        if (isNavigatedByApp || location.state) { // checks if by app or useNavigate hook 
+          // location.state only set when useNavigate hook used
+          console.log("navigated by app ")
+          if (username) {
+            await dispatch(fetchProfileByUsername(username));
+            localStorage.setItem('username', username); // set username in local storage
+          } else if (qr_id) {
+            await dispatch(fetchProfileByQrId(qr_id));
+            localStorage.setItem('qr_id', qr_id);  // Set the qr_id in local storage
           } else {
-            console.error("Neither User nor qr_id is defined ");
+            console.error("Neither User nor qr_id is defined");
           }
-          
-          if (response.status === 200) {
-            const profile = response.data;
-            console.log("profile = ", profile);
-            updateProfileData(profile); // Update profile data in the context
+        } else {
+          // If navigation was not initiated by the app, fetch data from local storage
+          const storedUsername = localStorage.getItem('username');
+          const storedQrId = localStorage.getItem('qr_id');
+          if (storedUsername) {
+            await dispatch(fetchProfileByUsername(storedUsername));
+          } else if (storedQrId) {
+            await dispatch(fetchProfileByQrId(storedQrId));
           } else {
-            console.error('Failed to fetch profile');
+            console.error("Neither User nor qr_id is stored in local storage");
           }
-        } catch (error) {
-          console.error('Error fetching profile:', error);
-        } finally {
-          setIsLoading(false); // Set loading state to false when done fetching
         }
-      } else {
-        setIsLoading(false); // If profile data exists, set loading state to false
+      } catch (error) {
+        console.error('Error fetching profile:', error);
       }
     };
     fetchProfile();
-  }, []);
+  }, [dispatch, username, qr_id, isNavigatedByApp]);
 
-  switch(viewParam) {
+  let content;
+  switch (viewParam) {
     case 'createMedallionProfile':
-      content = <CreateMedallionProfile username={profileData.username} />
+      content = <CreateMedallionProfile username={profileData?.username} />;
       break;
-
     case 'createNew':
-      content = <CreateNewMedallionProfile username={profileData.username} />
+      content = <CreateNewMedallionProfile username={profileData?.username} />;
       break;
-    default: 
+    default:
   }
 
-  // Handler to switch active tab
   const handleTabClick = (tab) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('view', tab);
@@ -85,28 +78,25 @@ const UserProfile = () => {
   };
 
   return (
-    
     <div>
-      {console.log("profile data context in the render = ", profileData)}
-      {isLoading || !profileData  ? (
+      <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
+      {isLoading || !profileData ? (
         <p>Loading...</p>
       ) : (
         <div>
-          {/* Top section for displaying profile data */}
           <div>
             <h2>{profileData.username}'s Profile</h2>
             <p>Username: {profileData.username}</p>
             <p>Email: {profileData.email}</p>
             <p>Bio: {profileData.bio}</p>
           </div>
-          {/* Bottom section for tab navigation and content */}
           <div>
             <NavBar
               items={[
                 { label: 'My favorites', children: '', onClick: () => handleTabClick('') },
-                { label: 'Posts', children: '', onClick: ''},
-                { label: 'Medallion', children:'', onClick: () => handleTabClick('createMedallionProfile') },
-                { label: 'My Account', children: '', onClick: ''},
+                { label: 'Posts', children: '', onClick: '' },
+                { label: 'Medallion', children: '', onClick: () => handleTabClick('createMedallionProfile') },
+                { label: 'My Account', children: '', onClick: '' },
               ]}
             />
             {content}
