@@ -4,6 +4,7 @@ const app = express();
 const QRCodeModel = require("../models/qrCodeSchema");
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
+require("dotenv").config();
 // const port = 3001;
 
 // app.use(express.json());
@@ -73,7 +74,7 @@ module.exports.updateQrCodeData = async (qrCodeId, qrData, res) => {
   try {
     // const { qrCodeId } = qrCodeId; // Assuming you have the QR code ID in the request parameters
     // const { qrData } = qrData; // New QR data and display name
-    const apiKey = "0cb3c873b79270cab5696d21be90f047";
+    const apiKey = process.env.QR_DYNAMIC_API_KEY;
     const data = {
       qr_data: qrCodeId.qrData + "lol", // New QR data
     };
@@ -215,7 +216,7 @@ module.exports.generateQrCode = async (req, res) => {
     formData.append("background_color", "#FFFFFF");
     formData.append("url", url);
 
-    const apiKey = "0cb3c873b79270cab5696d21be90f047"; // hide through env file
+    const apiKey = process.env.QR_DYNAMIC_API_KEY; // hide through env file
     console.log("api key ", apiKey);
     const response = await axios.post(
       "https://qrcodedynamic.com/api/qr-codes",
