@@ -14,13 +14,46 @@ const express = require("express");
 const router = express.Router();
 const qrCodeController = require("../controller/qrCodeController");
 const profileController = require("../controller/profileController");
+const authController = require("../controller/authController");
 const Profile = require("../models/Profile");
 const qrCodeSchema = require("../models/qrCodeSchema");
+const multer = require("multer");
+const path = require("path");
+
 // ...
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "Images"); // Specify upload destination folder
+  },
+  filename: function (req, file, cb) {
+    console.log("file = ", file);
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // Adjust the file size limit as needed
+});
 
 router.use(express.json());
 
 router.post("/generateQrCode", qrCodeController.generateQrCode);
 router.post("/createProfile", profileController.createProfile);
-
+router.get("/userProfile", profileController.getProfileByUsername);
+router.get("/getProfile", profileController.getProfileByQrId);
+router.post(
+  "/updateQRCodeWithUserProfile",
+  qrCodeController.passQrCodeProfileData
+);
+router.get("/batchGenerateQrCodes", qrCodeController.batchGenerateQrCodes);
+router.post(
+  "/createMedallionProfile",
+  upload.single("profilePicture"), // Assuming you're uploading a single file with the field name 'profilePicture'
+  profileController.createMedallionProfile
+);
+router.post("/login", authController.handleLogin);
+router.post("/checkProfileExists", qrCodeController.doesQrCodeHaveProfile);
+router.post("/updateQRCode", qrCodeController.updateQrCode);
 module.exports = router;
