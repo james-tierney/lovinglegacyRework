@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const dburi = process.env.MONGO_DB_URI;
 
-const port = 3001;
+const port = process.env.PORT;
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
