@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchProfileByUsername = createAsyncThunk("profile/fetchByUsername", async (username) => {
-    const response = await axios.get('http://localhost:3001/userProfile', {
+    const response = await axios.get('https://lovinglegacy.onrender.com/userProfile', {
         params: {
             username: username
         }
@@ -11,7 +11,7 @@ export const fetchProfileByUsername = createAsyncThunk("profile/fetchByUsername"
 });
 
 export const fetchProfileByQrId = createAsyncThunk("profile/fetchByQrId", async (qr_id) => {
-    const response = await axios.get('http://localhost:3001/getProfile', {
+    const response = await axios.get('https://lovinglegacy.onrender.com/getProfile', {
         params: {
             qr_id: qr_id
         }

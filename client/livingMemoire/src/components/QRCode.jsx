@@ -15,7 +15,7 @@ const QRCode = () => {
         // logic to check if the qr code has a profile associated with it 
         const checkQRCodeProfile = async () => {
             try {
-                const response = await axios.post('http://localhost:3001/checkProfileExists', {qr_id: qr_id});
+                const response = await axios.post('https://lovinglegacy.onrender.com/checkProfileExists', {qr_id: qr_id});
                 const data = response.data;
                 console.log("response in qrCode loading = ", response);
                 console.log("data in qrCode loading = ", data);

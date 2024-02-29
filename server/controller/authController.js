@@ -24,7 +24,7 @@ module.exports.handleLogin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // http localhost development right now CHANGE
+      secure: true, // http localhost development right now CHANGE
       sameSite: "strict",
     });
 
