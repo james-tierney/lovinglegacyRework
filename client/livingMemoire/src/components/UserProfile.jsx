@@ -28,7 +28,7 @@ const UserProfile = () => {
     const fetchProfile = async () => {
       try {
         // Check if navigation was initiated by the app, useNavigate hook or by direct URL manipulation
-        if (isNavigatedByApp || location.state) { // checks if by app or useNavigate hook 
+        if (isNavigatedByApp || location.state || usernameFromParams) { // checks if by app or useNavigate hook 
           // location.state only set when useNavigate hook used
           console.log("navigated by app ")
           if (username) {
