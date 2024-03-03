@@ -1,9 +1,23 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 export default function Profile() {
+  
+  // Access profile data from the Redux store 
+  const profileData  = useSelector(state => state.profile.data);
+  console.log("profile data from redux store = ", profileData);
+
+  // Check if profile data exists before rendering 
+  if(!profileData) {
+    return (
+      <div>Loading...</div>
+    );
+  }
+  
   return (
     <div className="bg-gray-100 p-4">
       <div className="text-center">
+        <h1>Profile Username for medallion {profileData.username}</h1>
         <header className="mb-4">
           <h1 className="text-2xl font-bold text-gray-700">timeless tiles</h1>
         </header>

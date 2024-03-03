@@ -66,7 +66,7 @@ const viewParam = urlParams.get('view');
     try {
  
       // Send POST request to server to create medallion account
-      const response = await axios.post('https://lovinglegacy.onrender.com/createMedallionProfile', formDataToSend);
+      const response = await axios.post('http://localhost:3002/createMedallionProfile', formDataToSend);
       console.log('Response from create medallion account:', response);
       // Optionally update state or show a success message
     } catch (error) {

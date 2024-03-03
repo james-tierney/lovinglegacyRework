@@ -37,7 +37,7 @@ const Signup = () => {
 
     const updateQRCodeWithUserProfile = async (username, qrId) => {
     try {
-      const response = await fetch('https://lovinglegacy.onrender.com/updateQRCodeWithUserProfile', {
+      const response = await fetch('http://localhost:3002/updateQRCodeWithUserProfile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const handleSubmit = async (e) => {
 
 
     // Call your backend function to create the user profile in MongoDB
-    const response = await fetch('https://lovinglegacy.onrender.com/createProfile', {
+    const response = await fetch('http://localhost:3002/createProfile', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ const handleSubmit = async (e) => {
       const result = await response.json();
       const profile = result.profile;
       console.log('Signup successful:', result);
-      const updateResponse = await axios.post('https://lovinglegacy.onrender.com/updateQRCode', {qrCodeId: qrCodeId});
+      const updateResponse = await axios.post('http://localhost:3002/updateQRCode', {qrCodeId: qrCodeId});
        console.log("response from after sign up ", updateResponse);
         const token = result.token;
 
