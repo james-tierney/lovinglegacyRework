@@ -7,7 +7,7 @@ function BatchQRGeneration() {
 
     const generateQrCodes = async () => {
         try {
-            const response = await axios.get(`https://lovinglegacy.onrender.com/batchGenerateQrCodes?numberOfCodes=${numberOfCodes}`);
+            const response = await axios.get(`http://localhost:3002/batchGenerateQrCodes?numberOfCodes=${numberOfCodes}`);
             const qrCodesData = response.data;
             console.log('Generated QR Codes:', qrCodesData);
             // Handle the generated QR codes data as needed
