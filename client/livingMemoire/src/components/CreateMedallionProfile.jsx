@@ -21,9 +21,18 @@ const viewParam = urlParams.get('view');
     middleName: '',
     lastName: '',
     title: '',
-    email: '',
+    relationship: '',
     bio: '',
     profilePicture: null,
+    isVeteran: false,
+    headlineText: '',
+    linkToObituary: '',
+    birthDate: '',
+    deathDate: '',
+    city: '',
+    state: '',
+    quoteSection: '',
+
   });
 
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -49,13 +58,20 @@ const viewParam = urlParams.get('view');
     // Create FormData object for medallion data
     const formDataToSend = new FormData();
     formDataToSend.append('username', username);
-    formDataToSend.append('email', medallionFormData.email);
     formDataToSend.append('firstName', medallionFormData.firstName);
     formDataToSend.append('middleName', medallionFormData.middleName);
     formDataToSend.append('lastName', medallionFormData.lastName);
     formDataToSend.append('title', medallionFormData.title);
+    formDataToSend.append('relationship', medallionFormData.relationship);
     formDataToSend.append('bio', medallionFormData.bio);
     formDataToSend.append('profilePicture', medallionFormData.profilePicture);
+    formDataToSend.append('headlineText', medallionFormData.headlineText);
+    formDataToSend.append('linkToObituary', medallionFormData.linkToObituary);
+    formDataToSend.append('birthDate', medallionFormData.birthDate);
+    formDataToSend.append('deathDate', medallionFormData.deathDate);
+    formDataToSend.append('city', medallionFormData.city);
+    formDataToSend.append('state', medallionFormData.state);
+    formDataToSend.append('quoteSection', medallionFormData.quoteSection);
     formDataToSend.append("test", "text")
     console.log("form data to send = ", formDataToSend);
 
@@ -88,11 +104,33 @@ const viewParam = urlParams.get('view');
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <input className="border p-2" type="text" name="title" value={medallionFormData.title} onChange={handleMedallionInputChange} placeholder="Title:" />
-                <select className="border p-2">
-                  <option>-- Relationship Select an option --</option>
+                <select className="border p-2" name="relationship" onChange={handleMedallionInputChange}>
+                  <option value="" selected>-- Select an option --</option>
+                  <option value="aunt">Aunt</option>
+                  <option value="boyfriend">Boyfriend</option>
+                  <option value="brother">Brother</option>
+                  <option value="cousin">Cousin</option>
+                  <option value="daughter">Daughter</option>
+                  <option value="father">Father</option>
+                  <option value="girlfriend">Girlfriend</option>
+                  <option value="granddaughter">Granddaughter</option>
+                  <option value="grandfather">Grandfather</option>
+                  <option value="grandmother">Grandmother</option>
+                  <option value="grandson">Grandson</option>
+                  <option value="great-grandfather">Great grandfather</option>
+                  <option value="great-grandmother">Great grandmother</option>
+                  <option value="husband">Husband</option>
+                  <option value="mother">Mother</option>
+                  <option value="nephew">Nephew</option>
+                  <option value="niece">Niece</option>
+                  <option value="sister">Sister</option>
+                  <option value="son">Son</option>
+                  <option value="uncle">Uncle</option>
+                  <option value="wife">Wife</option>
+
                 </select>
                 <label className="flex items-center space-x-2">
-                  <input type="checkbox" />
+                  <input type="checkbox" name="isVeteran" checked={medallionFormData.isVeteran} onChange={handleMedallionInputChange}/>
                   <span>Is a Veteran?</span>
                 </label>
               </div>
@@ -102,14 +140,29 @@ const viewParam = urlParams.get('view');
               </div>
               <div className="mb-4">
                 <label className="block mb-2">Headline text</label>
-                <input className="border p-2 w-full" type="text" placeholder="In loving memory of" />
+                <input className="border p-2 w-full" name="headlineText" value={medallionFormData.headlineText} type="text" onChange={handleCreateMedallion} placeholder="In loving memory of" />
                 <p className="text-sm mt-1">This headline text is the one that shows above the name of the person. If this field is null, the headline text won't be added.</p>
               </div>
               <div className="mb-4">
                 <label className="block mb-2">Obituary Information</label>
-                <textarea className="border p-2 w-full h-32"></textarea>
+                <label>Link to Obituary: </label>
+                <textarea className="border p-2 w-full h-32" name="linkToObituary" value={medallionFormData.linkToObituary} onChange={handleMedallionInputChange}></textarea>
               </div>
               <textarea name="bio" id="bio" value={medallionFormData.bio} onChange={handleMedallionInputChange} placeholder="Bio"></textarea>
+              <div className='lifetime'>
+                <h5>Lifetime</h5>
+                <input className="border p-2" type="date" name="birthDate" value={medallionFormData.birthDate} onChange={handleMedallionInputChange} />
+                <input className="border p-2" type="date" name="deathDate" value={medallionFormData.deathDate} onChange={handleMedallionInputChange} />
+              </div>
+              <div className='location-details'>
+                <h5>Location Details</h5>
+                <input type="text" name="city" value={medallionFormData.city} onChange={handleMedallionInputChange}></input>
+                <input type="text" name="state" value={medallionFormData.state} onChange={handleMedallionInputChange}></input>
+              </div>
+              <div className='quote-section'>
+                <h5>Quote Section</h5>
+                <input type="text" name="quoteSection" value={medallionFormData.quoteSection} onChange={handleMedallionInputChange}></input>
+              </div>
               <button type="submit">Create Medallion Account</button>
             </form>
           </div>

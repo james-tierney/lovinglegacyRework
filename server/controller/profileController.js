@@ -3,7 +3,11 @@ const Profile = require("../models/Profile");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const clerk = require("@clerk/clerk-sdk-node");
+const sharp = require("sharp");
+const path = require("path");
+const { profile } = require("console");
+const { file } = require("pdfkit");
+
 require("dotenv").config();
 // const multer = require("multer");
 
@@ -16,10 +20,6 @@ require("dotenv").config();
 //     cb(null, file.profilePicture); // Use the original file name
 //   },
 // });
-
-const clerkClient = clerk.createClerkClient({
-  apiKey: "pk_test_Zmx1ZW50LXB1cC0xLmNsZXJrLmFjY291bnRzLmRldiQ",
-});
 
 // // Create multer instance with storage configuration
 // const upload = multer({ storage: storage });
@@ -184,17 +184,59 @@ const getProfileByQrId = async (req, res) => {
   }
 };
 
+const compressAndSaveImage = async (profilePicture, imagePath) => {
+  try {
+    await sharp(profilePicture)
+      .resize({ width: 800 })
+      .jpeg({ quality: 80 })
+      .toFile(imagePath);
+    console.log("image compressed and saved successfully ", imagePath);
+  } catch (error) {
+    console.error("Error compressing and saving image:", error);
+    throw error; // Rethrow error to be handled by the caller
+  }
+};
+
 const createMedallionProfile = async (req, res) => {
   // console.log("req = ", req);
   const medallionData = req.body;
   console.log("medallionData = ", JSON.stringify(medallionData));
-
-  const { username, firstName, lastName, email, bio } = req.body; // Access other form fields
-  // const profilePicture = req.file; // Access uploaded file (if present)
+  console.log("image file path ", req.file.path);
+  console.log("image file ", req.file);
   const profilePicture = {
     data: fs.readFileSync(req.file.path), // Read file from disk and store as Buffer
     contentType: req.file.mimetype, // Access content type of the uploaded file
   };
+
+  const { username, firstName, lastName, email, bio } = req.body; // Access other form fields
+  // const profilePicture = req.file; // Access uploaded file (if present)
+
+  // Compress and resize the image using Sharp
+
+  // sharp(profilePicture)
+  //   .resize({ width: 800 })
+  //   .jpeg({ quality: 80 })
+  //   .toFile(imagePath, (err, info) => {
+  //     if (err) {
+  //       console.error("Error compressing image ", err);
+  //     } else {
+  //       console.log("Image compressed: ", info);
+  //     }
+  //   });
+
+  const fileExtension = path.extname(req.file.filename);
+
+  // Generate unique filename using content hashing
+  const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
+
+  // construct path to store the image
+  const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
+
+  // Compress and save the image using the helper function
+  await compressAndSaveImage(profilePicture.data, imagePath);
+
+  console.log("image path = ", imagePath);
+
   console.log("username ", username);
   console.log("bio ", bio);
   console.log("email ", email);
@@ -213,8 +255,8 @@ const createMedallionProfile = async (req, res) => {
       firstName,
       lastName,
       email,
-      bio,
-      profilePicture, // Assign the profilePicture object
+      bioInfo: bio,
+      profilePicture: imagePath, // Assign the profilePicture object
     };
     await profile.save();
     res.status(201).json({ message: "Medallion profile created successfully" });

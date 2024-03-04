@@ -1,14 +1,76 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
 
 export default function Profile() {
   
   // Access profile data from the Redux store 
   const profileData  = useSelector(state => state.profile.data);
+  const dispatch = useDispatch();
   console.log("profile data from redux store = ", profileData);
+  const [medallionProfile, setMedallionProfile] = useState(null); // state to store medallion data
+  const [image, setImage] = useState(null);
+  // Now that we have the profile data from the redux store
+  // we can extract the username and use it to make
+  // a call to the server func getProfileByUsername 
+  // @ route -> /userProfile
 
-  // Check if profile data exists before rendering 
-  if(!profileData) {
+
+  function fixPath(path) {
+    return path.replace(/\\/g, '/');
+  }
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    const qr_id = localStorage.getItem('qr_id');
+    if(username) {
+      console.log("username from local storage ")
+      dispatch(fetchProfileByUsername(username));
+      
+    }
+    else if(qr_id) {
+      console.log("qr_id from local storage");
+      dispatch(fetchProfileByQrId(qr_id));
+    }
+    // Dispatch action to fetch profile data only on page refresh
+    
+  }, [])
+
+  // Effect to make GET request to sever function when profileData changes
+  useEffect(() => {
+    if(profileData) {
+      // Extract the username from profileData
+      const username = profileData.username;
+      console.log("in here");
+    
+
+    // make a GET request to the server-side function
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3002/userProfile`, {
+          params : {
+            username: username
+          }
+        });
+        console.log("Response from server: ", response.data);
+        setMedallionProfile(response.data.medallionProfile); // store fetched data in the state
+        const fixedPath = fixPath(response.data.medallionProfile.profilePicture);
+        console.log("fixed path = ", fixedPath);
+        setImage(fixedPath);
+        // Handle the response data as needed here 
+      } catch(error) {
+        console.error('Error fetching data: ', error);
+        // Rest of handling the error show error msg client side??
+        }
+      };
+    fetchData() // Call the fetchData function
+    }
+  }, [profileData])   // dependancy to run the effect when ever profile data changes
+
+
+  // Check if profile data exists before rendering ai
+  if(!profileData || !medallionProfile) {
     return (
       <div>Loading...</div>
     );
@@ -21,12 +83,9 @@ export default function Profile() {
         <header className="mb-4">
           <h1 className="text-2xl font-bold text-gray-700">timeless tiles</h1>
         </header>
-        <img
-          src="https://file.rendit.io/n/SWhoOo69tRsDmIiEtPiN.png"
-          alt="Kelli Maroney"
-          className="mx-auto rounded shadow-md mb-4"
-        />
-        <h2 className="text-lg font-semibold">Kelli Maroney</h2>
+ 
+        <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
+        <img src="C:\\Users\\James\\Documents\\LivingMemoirePoc\\server\\medallionImages\\testMarch-1709578295810-profile-pic.png" alt="Profile Picture"></img>
         <p className="text-sm text-gray-600 mb-2">15-10-1943 - 17-12-2018</p>
         <div className="text-sm text-gray-600 mb-4">
           <p>Forest Lawn Memorial Park</p>
@@ -37,6 +96,7 @@ export default function Profile() {
         <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors mb-4">
           Click to share!
         </button>
+        <p>{medallionProfile.bio}</p>
         <footer className="flex justify-around text-sm text-gray-600 border-t pt-2">
           <a href="#" className="hover:text-blue-500 transition-colors">Bio</a>
           <a href="#" className="hover:text-blue-500 transition-colors">Photos</a>

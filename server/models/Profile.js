@@ -28,9 +28,15 @@ const medallionProfileSchema = new mongoose.Schema({
     unique: false,
   },
   profilePicture: {
-    data: Buffer, // Use Buffer type to store binary data (image)
-    contentType: String, // Store content type of the image
+    type: String,
+    contentType: String,
+    required: false,
+    unique: false,
   },
+  // profilePicture: {
+  //   data: Buffer, // Use Buffer type to store binary data (image)
+  //   contentType: String, // Store content type of the image
+  // },
   textOrPhrase: {
     type: String,
     required: false,
@@ -41,7 +47,7 @@ const medallionProfileSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
-  BioInfo: {
+  bioInfo: {
     type: String,
     required: false,
     unique: false,
@@ -66,7 +72,7 @@ const medallionProfileSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
-  textOrPhrase: {
+  quoteSection: {
     type: String,
     required: false,
     unique: false,

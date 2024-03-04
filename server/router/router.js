@@ -24,7 +24,7 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "Images"); // Specify upload destination folder
+    cb(null, "medallionImages"); // Specify upload destination folder
   },
   filename: function (req, file, cb) {
     console.log("file = ", file);
