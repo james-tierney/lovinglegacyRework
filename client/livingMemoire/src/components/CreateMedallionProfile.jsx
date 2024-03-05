@@ -72,7 +72,6 @@ const viewParam = urlParams.get('view');
     formDataToSend.append('city', medallionFormData.city);
     formDataToSend.append('state', medallionFormData.state);
     formDataToSend.append('quoteSection', medallionFormData.quoteSection);
-    formDataToSend.append("test", "text")
     console.log("form data to send = ", formDataToSend);
 
     for (let x of formDataToSend.entries()) {
@@ -140,7 +139,7 @@ const viewParam = urlParams.get('view');
               </div>
               <div className="mb-4">
                 <label className="block mb-2">Headline text</label>
-                <input className="border p-2 w-full" name="headlineText" value={medallionFormData.headlineText} type="text" onChange={handleCreateMedallion} placeholder="In loving memory of" />
+                <input className="border p-2 w-full" name="headlineText" value={medallionFormData.headlineText} type="text" onChange={handleMedallionInputChange} placeholder="In loving memory of" />
                 <p className="text-sm mt-1">This headline text is the one that shows above the name of the person. If this field is null, the headline text won't be added.</p>
               </div>
               <div className="mb-4">

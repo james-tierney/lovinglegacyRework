@@ -24,6 +24,25 @@ const UserProfile = () => {
   const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
   console.log("profile data = ", profileData);
 
+
+
+  //   useEffect(() => {
+  //   const username = localStorage.getItem('username');
+  //   const qr_id = localStorage.getItem('qr_id');
+  //   console.log("username from local storage --- ", username);
+  //   if(username) {
+  //     console.log("username from local storage ")
+  //     dispatch(fetchProfileByUsername(username));
+      
+  //   }
+  //   else if(qr_id) {
+  //     console.log("qr_id from local storage");
+  //     dispatch(fetchProfileByQrId(qr_id));
+  //   }
+  //   // Dispatch action to fetch profile data only on page refresh
+    
+  // }, [])
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {

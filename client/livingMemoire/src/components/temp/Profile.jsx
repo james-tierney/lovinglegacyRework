@@ -85,9 +85,11 @@ export default function Profile() {
         </header>
  
         <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
-        <img src="C:\\Users\\James\\Documents\\LivingMemoirePoc\\server\\medallionImages\\testMarch-1709578295810-profile-pic.png" alt="Profile Picture"></img>
-        <p className="text-sm text-gray-600 mb-2">15-10-1943 - 17-12-2018</p>
+        <img src='http://localhost:3002/medallionImages/testMarch-1709578295810-profile-pic.png'></img>
+        <p className="text-sm text-gray-600 mb-2">{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
         <div className="text-sm text-gray-600 mb-4">
+          <p>City: {medallionProfile.city}</p>
+          <p>State: {medallionProfile.state}</p>
           <p>Forest Lawn Memorial Park</p>
           <p>Hollywood Hills, California</p>
           <p>Plot Number: Lincoln Terrace section, Map #H89, Lot 5245, Companion Garden Crypt 2</p>

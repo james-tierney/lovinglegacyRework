@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const app = express();
 require("dotenv").config();
 
@@ -13,6 +14,10 @@ app.use(express.json());
 app.use(cors());
 app.use("/", require("./router/router.js"));
 app.use(cookieParser());
+app.use(
+  "/medallionImages",
+  express.static(path.join(__dirname, "medallionImages"))
+);
 
 async function connect() {
   try {

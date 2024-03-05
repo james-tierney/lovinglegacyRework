@@ -9,69 +9,6 @@ const { profile } = require("console");
 const { file } = require("pdfkit");
 
 require("dotenv").config();
-// const multer = require("multer");
-
-// // Set up multer storage configuration
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/"); // Destination directory for uploaded files
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.profilePicture); // Use the original file name
-//   },
-// });
-
-// // Create multer instance with storage configuration
-// const upload = multer({ storage: storage });
-
-// const createProfile = async (req, res) => {
-//   try {
-//     const { username, email, password } = req.body;
-
-//     // Check if the username already exists
-//     const existingProfile = await Profile.findOne({ username });
-
-//     if (existingProfile) {
-//       // Username already taken, send a response with a 409 status code (Conflict)
-//       return res.status(409).json({ error: "Username already taken" });
-//     }
-
-//     // Generate JWT token
-//     const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
-//       expiresIn: "1h",
-//     });
-
-//     // Create a new profile
-//     const newProfile = new Profile({
-//       profileId: uuidv4(), // Generating a unique ID using uuid
-//       username,
-//       email,
-//       password,
-//       token,
-//     });
-
-//     console.log("new profile created ", JSON.stringify(newProfile));
-//     // Save the profile to the database
-//     const savedProfile = await newProfile.save();
-
-//     // // Generate JWT token
-//     // const token = jwt.sign({ username, email }, process.env.JWT_SECRET, {
-//     //   expiresIn: "1h",
-//     // });
-//     console.log("token ", token);
-//     // Send the token to the client via a cookie
-//     res.cookie("token", token, {
-//       httpOnly: true,
-//       secure: false, // http localhost development right now CHANGE
-//       sameSite: "strict",
-//     });
-
-//     res.status(201).json({ profile: savedProfile, token });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
 
 const createProfile = async (req, res) => {
   try {
@@ -187,7 +124,7 @@ const getProfileByQrId = async (req, res) => {
 const compressAndSaveImage = async (profilePicture, imagePath) => {
   try {
     await sharp(profilePicture)
-      .resize({ width: 800 })
+      .resize({ width: 400 })
       .jpeg({ quality: 80 })
       .toFile(imagePath);
     console.log("image compressed and saved successfully ", imagePath);
@@ -207,8 +144,21 @@ const createMedallionProfile = async (req, res) => {
     data: fs.readFileSync(req.file.path), // Read file from disk and store as Buffer
     contentType: req.file.mimetype, // Access content type of the uploaded file
   };
-
-  const { username, firstName, lastName, email, bio } = req.body; // Access other form fields
+  console.log("req.body", req.body);
+  const {
+    username,
+    firstName,
+    middleName,
+    lastName,
+    bio,
+    headlineText,
+    linkToObituary,
+    birthDate,
+    deathDate,
+    city,
+    state,
+    quoteSection,
+  } = req.body; // Access other form fields
   // const profilePicture = req.file; // Access uploaded file (if present)
 
   // Compress and resize the image using Sharp
@@ -223,6 +173,25 @@ const createMedallionProfile = async (req, res) => {
   //       console.log("Image compressed: ", info);
   //     }
   //   });
+
+  // Call google maps geocoding API to get coordinates
+  const apiKey = "GOOGLE_API_KEY";
+  const address = `${city}, ${state}`;
+  const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    address
+  )}&key=${apiKey}`;
+
+  try {
+    const response = await axios.get(geocodingUrl);
+    const { results } = response.data;
+    if (results.length > 0) {
+      const { lat, lng } = results[0].geometry.location;
+      // Store lat and lng in your database
+      // Example: profile.medallionProfile.coordinates = { lat, lng };
+    }
+  } catch (error) {
+    console.error("Error fetching coordinates:", error);
+  }
 
   const fileExtension = path.extname(req.file.filename);
 
@@ -239,7 +208,6 @@ const createMedallionProfile = async (req, res) => {
 
   console.log("username ", username);
   console.log("bio ", bio);
-  console.log("email ", email);
   console.log("first name = ", firstName);
   console.log("last name = ", lastName);
   console.log("profile picture = ", profilePicture);
@@ -253,10 +221,17 @@ const createMedallionProfile = async (req, res) => {
     // Add the medallionData to the profile's medallionProfile field
     profile.medallionProfile = {
       firstName,
+      middleName,
       lastName,
-      email,
       bioInfo: bio,
       profilePicture: imagePath, // Assign the profilePicture object
+      textOrPhrase: headlineText,
+      linkToObituary,
+      birthDate,
+      deathDate,
+      city,
+      state,
+      quoteSection,
     };
     await profile.save();
     res.status(201).json({ message: "Medallion profile created successfully" });
