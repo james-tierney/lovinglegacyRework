@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
+import Map from '../Map';
 
 export default function Profile() {
   
@@ -10,16 +11,16 @@ export default function Profile() {
   const dispatch = useDispatch();
   console.log("profile data from redux store = ", profileData);
   const [medallionProfile, setMedallionProfile] = useState(null); // state to store medallion data
-  const [image, setImage] = useState(null);
+  const [showMap, setShowMap] = useState(false);
   // Now that we have the profile data from the redux store
   // we can extract the username and use it to make
   // a call to the server func getProfileByUsername 
   // @ route -> /userProfile
 
-
-  function fixPath(path) {
-    return path.replace(/\\/g, '/');
+  const toggleMap = () => {
+    setShowMap(!showMap);
   }
+  
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -55,9 +56,6 @@ export default function Profile() {
         });
         console.log("Response from server: ", response.data);
         setMedallionProfile(response.data.medallionProfile); // store fetched data in the state
-        const fixedPath = fixPath(response.data.medallionProfile.profilePicture);
-        console.log("fixed path = ", fixedPath);
-        setImage(fixedPath);
         // Handle the response data as needed here 
       } catch(error) {
         console.error('Error fetching data: ', error);
@@ -93,7 +91,10 @@ export default function Profile() {
           <p>Forest Lawn Memorial Park</p>
           <p>Hollywood Hills, California</p>
           <p>Plot Number: Lincoln Terrace section, Map #H89, Lot 5245, Companion Garden Crypt 2</p>
-          <button className="text-blue-500 underline">Map</button>
+          <div className='map-container'>
+            {showMap && <Map lat={medallionProfile.coordinates[0]} lng={medallionProfile.coordinates[1]} />}
+          </div>
+          <button className="text-blue-500 underline" onClick={toggleMap}>Map</button>
         </div>
         <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors mb-4">
           Click to share!

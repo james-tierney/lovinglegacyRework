@@ -72,6 +72,17 @@ const medallionProfileSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"], // ensure the type is a point
+      required: false,
+    },
+  },
+  coordinates: {
+    type: [Number], // array of numbers [longitude, latitude]
+    required: false,
+  },
   quoteSection: {
     type: String,
     required: false,

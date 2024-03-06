@@ -38,14 +38,16 @@ const viewParam = urlParams.get('view');
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createProfile, setCreateProfile] = useState(false);
   // Handler to update form input values for medallion data
-  const handleMedallionInputChange = (event) => {
-    const { name, value, files } = event.target;
-    //console.log("event target", event.target);
-    setMedallionFormData({
-      ...medallionFormData,
-      [name]: files ? files[0] : value,
-    });
-  };
+const handleMedallionInputChange = (event) => {
+  const { name, value, files, type, checked } = event.target;
+  const inputValue = type === 'checkbox' ? checked : files ? files[0] : value;
+  
+  setMedallionFormData({
+    ...medallionFormData,
+    [name]: inputValue,
+  });
+};
+
 
   const handleCreateProfileButton = () => {
     setCreateProfile((prevState) => !prevState);
