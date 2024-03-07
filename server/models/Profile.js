@@ -54,12 +54,12 @@ const medallionProfileSchema = new mongoose.Schema({
   },
   birthDate: {
     type: Date, // Use Date type to store dates
-    required: false,
+    required: true,
     unique: false,
   },
   deathDate: {
     type: Date, // Use Date type to store dates
-    required: false,
+    required: true,
     unique: false,
   },
   city: {

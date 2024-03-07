@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate} from 'react-router-dom';
-
+import '../styles/medallionForm.css';
 
 
 
@@ -26,6 +26,7 @@ const viewParam = urlParams.get('view');
     profilePicture: null,
     isVeteran: false,
     headlineText: '',
+    includeHeadlineText: false,
     linkToObituary: '',
     birthDate: '',
     deathDate: '',
@@ -68,6 +69,7 @@ const handleMedallionInputChange = (event) => {
     formDataToSend.append('bio', medallionFormData.bio);
     formDataToSend.append('profilePicture', medallionFormData.profilePicture);
     formDataToSend.append('headlineText', medallionFormData.headlineText);
+    formDataToSend.append('includeHeadlineText', medallionFormData.includeHeadlineText);
     formDataToSend.append('linkToObituary', medallionFormData.linkToObituary);
     formDataToSend.append('birthDate', medallionFormData.birthDate);
     formDataToSend.append('deathDate', medallionFormData.deathDate);
@@ -95,17 +97,42 @@ const handleMedallionInputChange = (event) => {
     <div style={{ backgroundColor: 'green' }}> {/* Apply background color to this div */}
         <div className='container'>
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h1 className="text-2xl font-semibold mb-6">Create new profile</h1>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {/* Other content */}
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <ChevronLeftIcon style={{ width: "20px", height: "20px" }} />
+          <span>Create new profile</span>
+        </button>
+      </div>
+            <div className='flex items-center mb-6 border-bottom'>
+              <p>Personal Details</p>
+            </div>
             <p className="mb-4">Start by entering as much info as you can about your loved one. You will have a chance to update this later.</p>
             <form onSubmit={handleCreateMedallion} encType='multipart/form-data'>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                <input className="border p-2" type="text" name="firstName" value={medallionFormData.firstName} required onChange={handleMedallionInputChange} placeholder='First Name: *' />
-                <input className="border p-2" type="text" name="middleName" value={medallionFormData.middleName} onChange={handleMedallionInputChange} placeholder="Middle name:" />
-                <input className="border p-2" type="text" name="lastName" value={medallionFormData.lastName} required onChange={handleMedallionInputChange} placeholder='Last Name: *' />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                <input className="border p-2" type="text" name="title" value={medallionFormData.title} onChange={handleMedallionInputChange} placeholder="Title:" />
-                <select className="border p-2" name="relationship" onChange={handleMedallionInputChange}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+          
+          <div className='firstname-label'>
+            <label className="name-labels" htmlFor="firstname" style={{float: 'left'}}>First Name:</label>
+          </div>
+          <div className='middlename-label'>
+            <label className="name-labels" htmlFor="middlename" style={{float: 'left'}}>Middle Name:</label>
+          </div>
+          <div className='lastname-label'>
+            <label className="name-labels" htmlFor='lastname' style={{float: 'left'}}>Last Name</label>
+          </div>
+          <input className='name-inputs' name="firstname" placeholder="First name: *" />
+          <input className='name-inputs' name="middlename" placeholder="Middle name:" />
+          <input className='name-inputs' name="lastname" placeholder="Last Name: *" />
+        </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                <div className='title-relation-label'>
+                  <label className="labels" htmlFor="title" style={{float: 'left'}}>Title:</label>
+                </div>
+                <div className='title-relation-label'>
+                  <label className="labels" htmlFor='relationship' style={{float: 'left'}}>Relationship: </label>
+                </div>
+                <input className="title-and-relation" type="text" name="title" value={medallionFormData.title} onChange={handleMedallionInputChange} placeholder="Title:" />
+                <select className="title-and-relation" name="relationship" onChange={handleMedallionInputChange}>
                   <option value="" selected>-- Select an option --</option>
                   <option value="aunt">Aunt</option>
                   <option value="boyfriend">Boyfriend</option>
@@ -130,45 +157,200 @@ const handleMedallionInputChange = (event) => {
                   <option value="wife">Wife</option>
 
                 </select>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" name="isVeteran" checked={medallionFormData.isVeteran} onChange={handleMedallionInputChange}/>
-                  <span>Is a Veteran?</span>
-                </label>
+   
               </div>
-              <div className="mb-4">
-                <label className="block mb-2">Profile picture:</label>
-                <input className="border p-2 file:border-none file:px-4 file:py-2 file:bg-blue-600 file:text-white file:rounded hover:file:bg-blue-700" type="file" name="profilePicture" onChange={handleMedallionInputChange} accept="image/*" />
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                
+              <div className='label-under'>
+                  <label style={{float: 'left'}}>(Example Jr - Sr)</label>
               </div>
-              <div className="mb-4">
+                </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "16px" }}>
+              <div >
+                <label className="label-above" htmlFor='profilepicture' style={{float: 'left'}}>Profile picture: </label>
+              </div>
+            </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+ 
+            <input
+              id="profile-picture"
+              name='profilepicture'
+              type="file"
+              onChange={handleMedallionInputChange}
+              accept='image/*'
+              style={{
+                width: '80%',
+                fontSize: "14px",
+                fontWeight: "bold",
+                backgroundColor: "#EFF6FF",
+                color: "#1E40AF",
+                border: "none",
+                borderRadius: "9999px",
+                padding: "10px 16px",
+                cursor: "pointer",
+              }}
+            />
+            <label className="checkbox-label flex items-center space-x-2">
+              <input type="checkbox" name="isVeteran" checked={medallionFormData.isVeteran} onChange={handleMedallionInputChange}/>
+              <span>Is a Veteran?</span>
+            </label>
+          </div>
+
+           
+              <div className='flex items-center mb-6 border-bottom'>
                 <label className="block mb-2">Headline text</label>
-                <input className="border p-2 w-full" name="headlineText" value={medallionFormData.headlineText} type="text" onChange={handleMedallionInputChange} placeholder="In loving memory of" />
-                <p className="text-sm mt-1">This headline text is the one that shows above the name of the person. If this field is null, the headline text won't be added.</p>
               </div>
-              <div className="mb-4">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "16px" }}>
+              <div >
+                <label className="label-above" htmlFor='headlineText' style={{float: 'left'}}>Headline Text </label>
+              </div>
+              
+            </div>
+               <div className='flex items-center'>
+                  <input className="single-row-inputs" name="headlineText" value={medallionFormData.headlineText} type="text" onChange={handleMedallionInputChange} placeholder="In loving memory of" />
+               </div>
+               
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)"}}>
+                <p className="label-under">This headline text is the one that shows above the name of the person. If this field is null, the headline text won't be added.</p>
+                      <label className="checkbox-label flex items-center space-x-2">
+              <input type="checkbox" name="include-headline-text" value={medallionFormData.includeHeadlineText} onChange={handleMedallionInputChange}/>
+              <span>Don't include headline text</span>
+            </label>
+              </div>
+
+  
+
+
+
+              
+                
+                <div className='flex items-center mb-6 border-bottom'>
                 <label className="block mb-2">Obituary Information</label>
-                <label>Link to Obituary: </label>
-                <textarea className="border p-2 w-full h-32" name="linkToObituary" value={medallionFormData.linkToObituary} onChange={handleMedallionInputChange}></textarea>
+                </div>
+
+                <div className='flex items-center'>
+                  <label className="single-row-labels" htmlFor='linkToObituary'>Link to Obituary: </label>
+                </div>        
+                
+                <div className='flex items-center'>
+                  <textarea className="single-row-inputs" name="linkToObituary" value={medallionFormData.linkToObituary} onChange={handleMedallionInputChange}></textarea>
+                </div>
+
+                <div className='flex items-center'>
+                  <label className="single-row-labels" htmlFor='bio'>Bio information: </label>
+                </div>
+  
+                <div className='flex items-center'>
+                  <textarea name="bio" className="single-row-inputs" value={medallionFormData.bio} onChange={handleMedallionInputChange} ></textarea>
+                </div>
+
+
+              <div className='flex items-center mb-6 border-bottom'>
+                <label className="block mb-2">Lifetime</label>
               </div>
-              <textarea name="bio" id="bio" value={medallionFormData.bio} onChange={handleMedallionInputChange} placeholder="Bio"></textarea>
-              <div className='lifetime'>
-                <h5>Lifetime</h5>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                
+                <div className='label-above'>
+                  <label style={{float: 'left'}}>Birth date: *</label>    
+                </div>
+                <div className='label-above'>
+                  <label style={{float: 'left'}}>Death date: *</label>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>  
                 <input className="border p-2" type="date" name="birthDate" value={medallionFormData.birthDate} onChange={handleMedallionInputChange} />
                 <input className="border p-2" type="date" name="deathDate" value={medallionFormData.deathDate} onChange={handleMedallionInputChange} />
               </div>
-              <div className='location-details'>
-                <h5>Location Details</h5>
+
+
+              <div className='flex items-center mb-6 border-bottom'>
+                <label className="block mb-2">Location Details</label>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)"}}>
+                
+                <div className='label-above'>
+                  <label style={{float: 'left'}}>City: </label>    
+                </div>
+                <div className='label-above'>
+                  <label style={{float: 'left'}}>State: </label>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>  
                 <input type="text" name="city" value={medallionFormData.city} onChange={handleMedallionInputChange}></input>
                 <input type="text" name="state" value={medallionFormData.state} onChange={handleMedallionInputChange}></input>
               </div>
-              <div className='quote-section'>
-                <h5>Quote Section</h5>
-                <input type="text" name="quoteSection" value={medallionFormData.quoteSection} onChange={handleMedallionInputChange}></input>
+
+              <div className='flex items-center mb-6 border-bottom'>
+                <label className="block mb-2">Quote Section</label>
               </div>
+
+
+              <div className='flex items-center'>
+                  <label className="single-row-labels" htmlFor='bio'>Text or Phrase: </label>
+              </div>
+
+              <div className='flex items-center'>
+                  <textarea name="bio" className="single-row-inputs" value={medallionFormData.bio} onChange={handleMedallionInputChange} ></textarea>
+              </div>
+
+              <div className='flex items-center'>
+                  <label className="single-row-labels" htmlFor='bio'>This headline text is the one that shows above the name of the person.</label>
+              </div>
+              
+
+
+     
               <button type="submit">Create Medallion Account</button>
             </form>
           </div>
         </div>
       </div>
+  )
+}
+
+function CalendarIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+      <line x1="16" x2="16" y1="2" y2="6" />
+      <line x1="8" x2="8" y1="2" y2="6" />
+      <line x1="3" x2="21" y1="10" y2="10" />
+    </svg>
+  )
+}
+
+function ChevronLeftIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
   )
 }
 

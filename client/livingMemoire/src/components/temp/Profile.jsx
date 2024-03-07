@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
 import Map from '../Map';
+import ProfileHeader from '../ProfileHeader';
 
 export default function Profile() {
   
@@ -76,6 +77,7 @@ export default function Profile() {
   
   return (
     <div className="bg-gray-100 p-4">
+      <ProfileHeader />
       <div className="text-center">
         <h1>Profile Username for medallion {profileData.username}</h1>
         <header className="mb-4">
