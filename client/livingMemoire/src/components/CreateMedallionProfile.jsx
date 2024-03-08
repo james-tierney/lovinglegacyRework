@@ -112,17 +112,17 @@ const handleMedallionInputChange = (event) => {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
           
           <div className='firstname-label'>
-            <label className="name-labels" htmlFor="firstname" style={{float: 'left'}}>First Name:</label>
+            <label className="name-labels" htmlFor="firstName" style={{float: 'left'}}>First name: *</label>
           </div>
           <div className='middlename-label'>
-            <label className="name-labels" htmlFor="middlename" style={{float: 'left'}}>Middle Name:</label>
+            <label className="name-labels" htmlFor="middleName" style={{float: 'left'}}>Middle Name:</label>
           </div>
           <div className='lastname-label'>
-            <label className="name-labels" htmlFor='lastname' style={{float: 'left'}}>Last Name</label>
+            <label className="name-labels" htmlFor='lastName' style={{float: 'left'}}>Last Name: *</label>
           </div>
-          <input className='name-inputs' name="firstname" placeholder="First name: *" />
-          <input className='name-inputs' name="middlename" placeholder="Middle name:" />
-          <input className='name-inputs' name="lastname" placeholder="Last Name: *" />
+          <input className='name-inputs' name="firstName" placeholder="" value={medallionFormData.firstName} required onChange={handleMedallionInputChange} />
+          <input className='name-inputs' name="middleName" placeholder="Middle name:" value={medallionFormData.middleName} onChange={handleMedallionInputChange}/>
+          <input className='name-inputs' name="lastName" placeholder="" value={medallionFormData.lastName} required onChange={handleMedallionInputChange}/>
         </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
                 <div className='title-relation-label'>
@@ -167,7 +167,7 @@ const handleMedallionInputChange = (event) => {
                 </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "16px" }}>
               <div >
-                <label className="label-above" htmlFor='profilepicture' style={{float: 'left'}}>Profile picture: </label>
+                <label className="label-above" htmlFor='profilePicture' style={{float: 'left'}}>Profile picture: </label>
               </div>
             </div>
 
@@ -175,10 +175,10 @@ const handleMedallionInputChange = (event) => {
  
             <input
               id="profile-picture"
-              name='profilepicture'
+              name='profilePicture'
               type="file"
               onChange={handleMedallionInputChange}
-              accept='image/*'
+              accept="image/*" 
               style={{
                 width: '80%',
                 fontSize: "14px",
@@ -291,15 +291,15 @@ const handleMedallionInputChange = (event) => {
 
 
               <div className='flex items-center'>
-                  <label className="single-row-labels" htmlFor='bio'>Text or Phrase: </label>
+                  <label className="single-row-labels" htmlFor='quoteSection'>Text or Phrase: </label>
               </div>
 
               <div className='flex items-center'>
-                  <textarea name="bio" className="single-row-inputs" value={medallionFormData.bio} onChange={handleMedallionInputChange} ></textarea>
+                  <textarea name="quoteSection" className="single-row-inputs" value={medallionFormData.quoteSection} onChange={handleMedallionInputChange} ></textarea>
               </div>
 
               <div className='flex items-center'>
-                  <label className="single-row-labels" htmlFor='bio'>This headline text is the one that shows above the name of the person.</label>
+                  <label className="single-row-labels" htmlFor='headlineText'>This headline text is the one that shows above the name of the person.</label>
               </div>
               
 

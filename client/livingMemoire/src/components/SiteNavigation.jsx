@@ -1,6 +1,7 @@
 // Navigation.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import MaterialNavBar from './MaterialNavBar';
 
 const routes = [
   { path: '/', label: 'Home' },
@@ -23,16 +24,21 @@ const SiteNavigation = ({ setIsNavigatedByApp }) => {
     }
 
   return (
-    <nav className="border-b mb-4">
-      <ul className="flex space-x-6 p-4">
-        {routes.map(route => (
-          <li key={route.path}>
-            <Link to={route.path} onClick={handleNavigationClick}>{route.label}</Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    
+    <div>
+      <MaterialNavBar routes={routes} handleNavigationClick={handleNavigationClick}/>
+    </div>
+    // <nav className="border-b mb-4">
+    //   <ul className="flex space-x-6 p-4">
+    //     {routes.map(route => (
+    //       <li key={route.path}>
+    //         <Link to={route.path} onClick={handleNavigationClick}>{route.label}</Link>
+    //       </li>
+    //     ))}
+    //   </ul>
+    // </nav>
   );
 };
+
 
 export default SiteNavigation;
