@@ -177,6 +177,7 @@ module.exports.generateQrCode = async (req, res) => {
       foreground_color: "#000000", // Optional: Replace with your desired value
       background_color: "#FFFFFF", // Optional: Replace with your desired value
       url: url, // Add the URL parameter here
+
       // Add more parameters as needed
     };
 
@@ -235,10 +236,7 @@ module.exports.generateQrCode = async (req, res) => {
 
     const qrCodeData = await getQrCode(qrCodeId, apiKey);
     console.log("get qr code = ", JSON.stringify(qrCodeData.data));
-
-    // const qrCodeData = await response.data;
-    // console.log("qr code data", qrCodeData);
-    // console.log("qr code data ", qrCodeData);
+    console.log("qr code logo svg ", qrCodeData.data.qr_code);
 
     // Save the generated qr_id without associating it with any user
     const newQRCode = new QRCodeModel({
