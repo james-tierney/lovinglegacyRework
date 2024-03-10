@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
 import Map from '../Map';
 import ProfileHeader from '../ProfileHeader';
+import '../../styles/userProfile.css';
 
 export default function Profile() {
   
@@ -85,7 +86,7 @@ export default function Profile() {
         </header>
  
         <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
-        <img src='http://localhost:3002/medallionImages/testMarch-1709578295810-profile-pic.png'></img>
+        <img style={{height: '300px', width: 'auto'}}src='http://localhost:3002/medallionImages/testMarch-1709578295810-profile-pic.png'></img>
         <p className="text-sm text-gray-600 mb-2">{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
         <div className="text-sm text-gray-600 mb-4">
           <p>City: {medallionProfile.city}</p>
@@ -103,10 +104,10 @@ export default function Profile() {
         </button>
         <p>{medallionProfile.bio}</p>
         <footer className="flex justify-around text-sm text-gray-600 border-t pt-2">
-          <a href="#" className="hover:text-blue-500 transition-colors">Bio</a>
-          <a href="#" className="hover:text-blue-500 transition-colors">Photos</a>
-          <a href="#" className="hover:text-blue-500 transition-colors">Videos</a>
-          <a href="#" className="hover:text-blue-500 transition-colors">Links</a>
+          <a href="#" className="footer-links hover:text-blue-500 transition-colors">Bio</a>
+          <a href="#" className="footer-links hover:text-blue-500 transition-colors">Photos</a>
+          <a href="#" className="footer-links hover:text-blue-500 transition-colors">Videos</a>
+          <a href="#" className="footer-links hover:text-blue-500 transition-colors">Links</a>
         </footer>
       </div>
     </div>
