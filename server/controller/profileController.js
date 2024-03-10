@@ -3,13 +3,13 @@ const Profile = require("../models/Profile");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const sharp = require("sharp");
 const path = require("path");
 const { profile } = require("console");
 const { file } = require("pdfkit");
 const axios = require("axios");
-
 require("dotenv").config();
+
+const { formatDate } = require("../utils");
 
 const createProfile = async (req, res) => {
   try {
@@ -141,6 +141,7 @@ const createMedallionProfile = async (req, res) => {
   console.log("medallionData = ", JSON.stringify(medallionData));
   // console.log("image file path ", req.file.path);
   // console.log("image file ", req.file);
+
   const profilePicture = {
     data: fs.readFileSync(req.file.path), // Read file from disk and store as Buffer
     contentType: req.file.mimetype, // Access content type of the uploaded file
@@ -160,6 +161,9 @@ const createMedallionProfile = async (req, res) => {
     state,
     quoteSection,
   } = req.body; // Access other form fields
+
+  const formattedBirthDate = formatDate(birthDate);
+  const formattedDeathDate = formatDate(deathDate);
 
   let latitude, longitude;
   const address = `${city}, ${state}`;
@@ -217,8 +221,8 @@ const createMedallionProfile = async (req, res) => {
       profilePicture: imagePath, // Assign the profilePicture object
       textOrPhrase: headlineText,
       linkToObituary,
-      birthDate,
-      deathDate,
+      birthDate: formattedBirthDate,
+      deathDate: formattedDeathDate,
       city,
       state,
       coordinates: [latitude, longitude],
