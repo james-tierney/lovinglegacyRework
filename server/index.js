@@ -15,6 +15,11 @@ app.use(cors());
 app.use("/", require("./router/router.js"));
 app.use(cookieParser());
 app.use(
+  cors({
+    origin: "https://lovinglegacy.vercel.app",
+  })
+);
+app.use(
   "/medallionImages",
   express.static(path.join(__dirname, "medallionImages"))
 );
