@@ -193,7 +193,9 @@ const createMedallionProfile = async (req, res) => {
   const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
 
   // construct path to store the image
-  const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
+  //const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
+  const serverURL = "https://lovinglegacy.onrender.com";
+  const imagePath = `${serverURL}/medallionImages/${fileName}`;
 
   // Compress and save the image using the helper function
   await compressAndSaveImage(profilePicture.data, imagePath);
