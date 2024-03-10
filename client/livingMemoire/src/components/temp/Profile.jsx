@@ -51,7 +51,7 @@ export default function Profile() {
     // make a GET request to the server-side function
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3002/userProfile`, {
+        const response = await axios.get(`https://lovinglegacy.onrender.com/userProfile`, {
           params : {
             username: username
           }
@@ -86,7 +86,7 @@ export default function Profile() {
         </header>
  
         <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
-        <img style={{height: '300px', width: 'auto'}}src='http://localhost:3002/medallionImages/testMarch-1709578295810-profile-pic.png'></img>
+        <img style={{height: '300px', width: 'auto'}}src='https://lovinglegacy.onrender.com/medallionImages/testMarch-1709578295810-profile-pic.png'></img>
         <p className="text-sm text-gray-600 mb-2">{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
         <div className="text-sm text-gray-600 mb-4">
           <p>City: {medallionProfile.city}</p>
