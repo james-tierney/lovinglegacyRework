@@ -8,6 +8,7 @@ const { profile } = require("console");
 const { file } = require("pdfkit");
 const axios = require("axios");
 require("dotenv").config();
+const sharp = require("sharp");
 
 const { formatDate } = require("../utils");
 
