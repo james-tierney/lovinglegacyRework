@@ -17,6 +17,21 @@ function Home() {
       console.error('Error generating QR Code:', error.message);
     }
   };
+
+  const saveSVGAsFile = () => {
+    const svgData = qrCodeData.qr_code; 
+    const rotatedSvgData = svgData.replace('<svg', '<svg width="200" height="200" transform="rotate(-45)"')
+    const blob = new Blob([rotatedSvgData], { type: 'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'qr_code.svg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div>
       <h1>Dynamic QR Code Generator</h1>
@@ -31,6 +46,7 @@ function Home() {
             style={{ width: '189px', height: '189px', transform: 'rotate(-45deg)', margin: '1rem', }} // Adjust the size as needed 
             // qr code rotated 45 degrees anti clockwise
           />
+          <button onClick={saveSVGAsFile}>Download SVG</button>
         </div>
       )}
     </div>
