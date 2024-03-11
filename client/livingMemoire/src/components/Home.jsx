@@ -20,7 +20,7 @@ function Home() {
 
   const saveSVGAsFile = () => {
     const svgData = qrCodeData.qr_code; 
-    const rotatedSvgData = svgData.replace('<svg', '<svg width="200" height="200" transform="rotate(-45)"')
+    const rotatedSvgData = svgData.replace('<svg', '<svg width="189" height="189" transform="rotate(-45)"')
     const blob = new Blob([rotatedSvgData], { type: 'image/svg+xml'});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
