@@ -28,7 +28,7 @@ function Home() {
           <img
             src={qrCodeData.data.qr_code}
             alt="QR Code"
-            style={{ width: '150px', height: '150px', transform: 'rotate(-45deg)', margin: '1rem', }} // Adjust the size as needed 
+            style={{ width: '189px', height: '189px', transform: 'rotate(-45deg)', margin: '1rem', }} // Adjust the size as needed 
             // qr code rotated 45 degrees anti clockwise
           />
         </div>
