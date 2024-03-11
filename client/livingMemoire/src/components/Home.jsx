@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import canvg from 'canvg';
 
 function Home() {
   const [qrCodeData, setQrCodeData] = useState(null);
   const navigate = useNavigate();
+  const imageRef = useRef(null);
 
   const generateQrCode = async () => {
     try {
@@ -12,25 +14,29 @@ function Home() {
         qrData: 'https://lovinglegacy.onrender.com/signUp', // Replace with your desired QR data
       });
       setQrCodeData(response.data);
-      console.log("qr code data = ", qrCodeData.data)
     } catch (error) {
       console.error('Error generating QR Code:', error.message);
     }
   };
 
-  const saveSVGAsFile = () => {
-    const svgData = qrCodeData.data.qr_code; 
-    const rotatedSvgData = svgData.replace('<svg', '<svg width="189" height="189" transform="rotate(-45)"')
-    const blob = new Blob([rotatedSvgData], { type: 'image/svg+xml'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'qr_code.svg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
+  const saveImage = () => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = qrCodeData.data.qr_code;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const dataUrl = canvas.toDataURL(); // Convert canvas to data URL
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'qr_code.png'; // Set the download filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  };
 
   return (
     <div>
@@ -41,18 +47,17 @@ function Home() {
         <div>
           <h2>Generated QR Code:</h2>
           <img
+            ref={imageRef}
             src={qrCodeData.data.qr_code}
             alt="QR Code"
             style={{ width: '189px', height: '189px', transform: 'rotate(-45deg)', margin: '1rem', }} // Adjust the size as needed 
             // qr code rotated 45 degrees anti clockwise
           />
-          <button onClick={saveSVGAsFile}>Download SVG</button>
+          <button onClick={saveImage}>Download Image</button>
         </div>
       )}
     </div>
   );
-
-
 }
 
 export default Home;
