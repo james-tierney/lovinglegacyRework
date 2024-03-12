@@ -195,18 +195,18 @@ const createMedallionProfile = async (req, res) => {
     console.error("Error fetching coordinates:", error);
   }
 
-  const fileExtension = path.extname(req.file.filename);
+  // const fileExtension = path.extname(req.file.filename);
 
-  // Generate unique filename using content hashing
-  const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
+  // // Generate unique filename using content hashing
+  // const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
 
-  // construct path to store the image
-  //const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
-  const serverURL = "https://lovinglegacy.onrender.com";
-  const imagePath = `${serverURL}/medallionImages/${fileName}`;
+  // // construct path to store the image
+  // //const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
+  // const serverURL = "https://lovinglegacy.onrender.com";
+  // const imagePath = `${serverURL}/medallionImages/${fileName}`;
 
-  // Compress and save the image using the helper function
-  await compressAndSaveImage(profilePicture.data, imagePath);
+  // // Compress and save the image using the helper function
+  // await compressAndSaveImage(profilePicture.data, imagePath);
 
   let cloudinaryImageUrl;
   // cloudinary async func
@@ -217,7 +217,7 @@ const createMedallionProfile = async (req, res) => {
     console.log("cloudinary result = ", result);
   });
 
-  console.log("image path = ", imagePath);
+  // console.log("image path = ", imagePath);
 
   console.log("username ", username);
   console.log("bio ", bio);
