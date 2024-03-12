@@ -15,6 +15,120 @@ const generateUniqueId = () => {
   return uuidv4();
 };
 
+// let qrCodeURL;
+
+const setQrCodeURL = (url) => {};
+
+module.exports.getQRCodeSVGUrl = (res, url) => {
+  console.log("svg url = ", res);
+  const qrCodeURL = url;
+  //console.log("url =", qrCodeURL);
+  //return res.json({ url: qrCodeURL });
+};
+
+module.exports.generateQrCode = async (req, res) => {
+  try {
+    // Generate a unique ID for the qr Code
+    const qrId = generateUniqueId();
+
+    const url = `https://lovinglegacy.vercel.app//qrCode?qr_id=${qrId}`;
+    const data = {
+      name: "MyQRCode",
+      type: "url",
+      // link_id: 123, // Optional: Replace with your desired value
+      // project_id: 456, // Optional: Replace with your desired value
+      style: "square", // Optional: Replace with your desired value
+      inner_eye_style: "square", // Optional: Replace with your desired value
+      outer_eye_style: "square", // Optional: Replace with your desired value
+      foreground_type: "color", // Optional: Replace with your desired value
+      foreground_color: "#000000", // Optional: Replace with your desired value
+      background_color: "#FFFFFF", // Optional: Replace with your desired value
+      url: url, // Add the URL parameter here
+
+      // Add more parameters as needed
+    };
+
+    // const data = {
+    //   workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
+    //   qr_data: `http://localhost:5173/signUp?qrCode=${qrId}`,
+    //   //qr_data: req.body.qrData, // Assuming you send qrData in the request body
+    //   primary_color: "#3b81f6",
+    //   background_color: "#FFFFFF",
+    //   dynamic: true,
+    //   display_name: "Tester QR Code", // Customize as needed
+    //   frame: "border",
+    //   has_border: true,
+    //   logo_url: "https://hovercode.com/static/website/images/logo.png",
+    //   generate_png: true,
+    // };
+
+    // const response = await axios.post(
+    //   "https://hovercode.com/api/v2/hovercode/create/",
+    //   data,
+    //   {
+    //     headers: {
+    //       Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
+    //       "Content-Type": "application/json",
+    //     },
+    //     timeout: 10000,
+    //   }
+    // );
+    const formData = new FormData();
+    formData.append("name", "MyQRCode");
+    formData.append("type", "url");
+    formData.append("style", "square");
+    formData.append("inner_eye_style", "square");
+    formData.append("outer_eye_style", "square");
+    formData.append("foreground_type", "color");
+    formData.append("foreground_color", "#000000");
+    formData.append("background_color", "#FFFFFF");
+    formData.append("url", url);
+
+    const apiKey = process.env.QR_DYNAMIC_API_KEY; // hide through env file
+    console.log("api key ", apiKey);
+    const response = await axios.post(
+      "https://qrcodedynamic.com/api/qr-codes",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    // Extract data from the response
+    const qrCodeId = response.data.data.id;
+    console.log("response from generating qr code = ", qrCodeId);
+
+    const qrCodeData = await getQrCode(qrCodeId, apiKey);
+    console.log("get qr code = ", JSON.stringify(qrCodeData.data));
+    console.log("qr code logo svg ", qrCodeData.data.qr_code);
+    const SVGresponse = await fetch(qrCodeData.data.qr_code);
+
+    console.log("SVG response = ", SVGresponse);
+    // this.getQRCodeSVGUrl(res, qrCodeData.data.qr_code);
+
+    // Save the generated qr_id without associating it with any user
+    const newQRCode = new QRCodeModel({
+      qrCodeData: JSON.stringify(qrCodeData.data),
+      // targetUrl: `http://localhost:5713/qrCode?qr_id=${qrCodeData.data.id}`,
+      targetUrl: `https://lovinglegacy.vercel.app/qrCode?qr_id=${qrId}`,
+      qrCodeId: qrCodeData.data.id,
+      generatedId: qrId,
+      hasProfileAssociated: false,
+    });
+    await newQRCode.save();
+    console.log("New QR code stored ", newQRCode);
+    // Log the generated QR code data to the console
+    console.log("Generated QR Code Data:", qrCodeData);
+    res.json(qrCodeData);
+  } catch (error) {
+    console.error("Error generating QR Code:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports.passQrCodeProfileData = async (req, res) => {
   try {
     const { username, qrId } = req.body;
@@ -156,105 +270,6 @@ module.exports.doesQrCodeHaveProfile = async (req, res, qrIdParam) => {
     console.error("Error checking QR code existence: ", error);
     // If there's an error, return false
     return res.json(hasProfileAssociated);
-  }
-};
-
-module.exports.generateQrCode = async (req, res) => {
-  try {
-    // Generate a unique ID for the qr Code
-    const qrId = generateUniqueId();
-
-    const url = `https://lovinglegacy.vercel.app//qrCode?qr_id=${qrId}`;
-    const data = {
-      name: "MyQRCode",
-      type: "url",
-      // link_id: 123, // Optional: Replace with your desired value
-      // project_id: 456, // Optional: Replace with your desired value
-      style: "square", // Optional: Replace with your desired value
-      inner_eye_style: "square", // Optional: Replace with your desired value
-      outer_eye_style: "square", // Optional: Replace with your desired value
-      foreground_type: "color", // Optional: Replace with your desired value
-      foreground_color: "#000000", // Optional: Replace with your desired value
-      background_color: "#FFFFFF", // Optional: Replace with your desired value
-      url: url, // Add the URL parameter here
-
-      // Add more parameters as needed
-    };
-
-    // const data = {
-    //   workspace: "87f85a47-1d7f-4114-8ce8-8bdeb544c4ca",
-    //   qr_data: `http://localhost:5173/signUp?qrCode=${qrId}`,
-    //   //qr_data: req.body.qrData, // Assuming you send qrData in the request body
-    //   primary_color: "#3b81f6",
-    //   background_color: "#FFFFFF",
-    //   dynamic: true,
-    //   display_name: "Tester QR Code", // Customize as needed
-    //   frame: "border",
-    //   has_border: true,
-    //   logo_url: "https://hovercode.com/static/website/images/logo.png",
-    //   generate_png: true,
-    // };
-
-    // const response = await axios.post(
-    //   "https://hovercode.com/api/v2/hovercode/create/",
-    //   data,
-    //   {
-    //     headers: {
-    //       Authorization: "Token c32d9270112fc2dd35d011071bcf8643a6446bae",
-    //       "Content-Type": "application/json",
-    //     },
-    //     timeout: 10000,
-    //   }
-    // );
-    const formData = new FormData();
-    formData.append("name", "MyQRCode");
-    formData.append("type", "url");
-    formData.append("style", "square");
-    formData.append("inner_eye_style", "square");
-    formData.append("outer_eye_style", "square");
-    formData.append("foreground_type", "color");
-    formData.append("foreground_color", "#000000");
-    formData.append("background_color", "#FFFFFF");
-    formData.append("url", url);
-
-    const apiKey = process.env.QR_DYNAMIC_API_KEY; // hide through env file
-    console.log("api key ", apiKey);
-    const response = await axios.post(
-      "https://qrcodedynamic.com/api/qr-codes",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    // Extract data from the response
-    const qrCodeId = response.data.data.id;
-    console.log("response from generating qr code = ", qrCodeId);
-
-    const qrCodeData = await getQrCode(qrCodeId, apiKey);
-    console.log("get qr code = ", JSON.stringify(qrCodeData.data));
-    console.log("qr code logo svg ", qrCodeData.data.qr_code);
-
-    // Save the generated qr_id without associating it with any user
-    const newQRCode = new QRCodeModel({
-      qrCodeData: JSON.stringify(qrCodeData.data),
-      // targetUrl: `http://localhost:5713/qrCode?qr_id=${qrCodeData.data.id}`,
-      targetUrl: `https://lovinglegacy.vercel.app/qrCode?qr_id=${qrId}`,
-      qrCodeId: qrCodeData.data.id,
-      generatedId: qrId,
-      hasProfileAssociated: false,
-    });
-    await newQRCode.save();
-    console.log("New QR code stored ", newQRCode);
-    // Log the generated QR code data to the console
-    console.log("Generated QR Code Data:", qrCodeData);
-    res.json(qrCodeData);
-  } catch (error) {
-    console.error("Error generating QR Code:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

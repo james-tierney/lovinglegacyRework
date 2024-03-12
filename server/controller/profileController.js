@@ -9,6 +9,13 @@ const { file } = require("pdfkit");
 const axios = require("axios");
 require("dotenv").config();
 const sharp = require("sharp");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const { formatDate } = require("../utils");
 
@@ -201,6 +208,15 @@ const createMedallionProfile = async (req, res) => {
   // Compress and save the image using the helper function
   await compressAndSaveImage(profilePicture.data, imagePath);
 
+  let cloudinaryImageUrl;
+  // cloudinary async func
+  (async function run() {
+    const result = await cloudinary.uploader.upload(profilePicture);
+    cloudinaryImageUrl = result.url;
+    console.log("cloudinary image url = ", cloudinaryImageUrl);
+    console.log("cloudinary result = ", result);
+  });
+
   console.log("image path = ", imagePath);
 
   console.log("username ", username);
@@ -221,7 +237,7 @@ const createMedallionProfile = async (req, res) => {
       middleName,
       lastName,
       bioInfo: bio,
-      profilePicture: imagePath, // Assign the profilePicture object
+      profilePicture: cloudinaryImageUrl, // Assign the profilePicture object
       textOrPhrase: headlineText,
       linkToObituary,
       birthDate: formattedBirthDate,

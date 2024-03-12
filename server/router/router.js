@@ -56,4 +56,5 @@ router.post(
 router.post("/login", authController.handleLogin);
 router.post("/checkProfileExists", qrCodeController.doesQrCodeHaveProfile);
 router.post("/updateQRCode", qrCodeController.updateQrCode);
+router.get("/getQrUrl", qrCodeController.getQRCodeSVGUrl);
 module.exports = router;
