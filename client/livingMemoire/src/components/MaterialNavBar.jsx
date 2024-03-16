@@ -41,7 +41,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
-      <Toolbar disableGutters>
+      <Toolbar disableGutters style={{backgroundColor: 'green', height: '100%'}}>
         {isMobile ? (
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '80%', backgroundColor: 'red'}}>
             <img src={logoSVG} style={{ width: '20%', }} alt="Logo" className="logo" />
