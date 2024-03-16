@@ -100,7 +100,7 @@ const UserProfile = () => {
 
   // background color for full background could be ECF4F4?
   return (
-    <div style={{width: '100vw'}}>
+    <div style={{width: '80vw'}}>
       <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
       {isLoading || !profileData ? (
         <p>Loading...</p>
