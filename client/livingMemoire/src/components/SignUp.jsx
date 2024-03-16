@@ -193,8 +193,8 @@ const signUpWithGoogle = () => {
           <button onClick={signUpWithGoogle}>Sign up with Google</button>
         </div>
         <div>
-          <p>Already have an account?</p>
-          <Link to="/login">Login Here!</Link>
+          <p>Already have an account? <Link to="/login">Login Here!</Link></p>
+          
         </div>
       </form>
     </div>
