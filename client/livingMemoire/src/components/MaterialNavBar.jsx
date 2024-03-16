@@ -43,7 +43,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, }}>
           <Box>
             <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
           </Box>
