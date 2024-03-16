@@ -4,6 +4,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPas
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
 
+// comment
 
 const Signup = () => {
   const navigate = useNavigate();
