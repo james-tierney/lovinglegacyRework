@@ -157,7 +157,7 @@ const handleSubmit = async (e) => {
 
 
 
-       // Navigate to the user's profile page with username as a query param
+       // Navigate to the user's profile page with username as a query parameter
       // Redirect to the user's profile page with username as a state parameter
       console.log("username to be passed ", profile.username);
       navigate(`/userProfile?username=${profile.username}`, {
