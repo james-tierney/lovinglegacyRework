@@ -44,7 +44,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
       <Toolbar disableGutters>
         {isMobile ? (
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
+            <img src={logoSVG} style={{ width: '20%', height: '80%' }} alt="Logo" className="logo" />
             <IconButton
               size="large"
               aria-label="menu"
