@@ -42,6 +42,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
           src={logoSVG} 
           alt="Logo" 
           className="logo" 
+          style={{width: '20%', height: 'auto'}}
           
           />
    
