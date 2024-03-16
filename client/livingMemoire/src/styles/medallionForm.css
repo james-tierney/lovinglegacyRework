@@ -4,8 +4,56 @@
     /* Use flexbox */
 }
 
+.form-container {
+    background-color: white;
+    color: #444242;
+    padding: 10px;
+    
+}
+
+.input-field, .text-input {
+    border: 1px solid #ccc;
+    color: #444242;
+    /* Grey outline */
+    border-radius: 10px;
+    /* 70-degree rounded corners */
+    padding: 10px;
+    /* Adjust padding as needed */
+    width: 100%;
+    /* Adjust width as needed */
+    box-sizing: border-box;
+    /* Include border and padding in the width */
+    outline: none;
+    /* Remove default outline */
+    background-color: transparent;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);  /* style for the calnedar in date input fields */
+}
+
+.img-input {
+    width: 80%;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #EFF6FF;
+    color: #1E40AF;
+    border: none;
+    border-radius: 9999px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+/* Optional: Style the input field when focused */
+.input-field:focus {
+    border-color: #007bff;
+    /* Change border color on focus */
+    /* Add additional styling as needed */
+}
+
 .back-btn {
     background: transparent;
+    color: #444242;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
@@ -20,7 +68,7 @@
 .name-inputs {
     width: 80%;
     margin: -0.75rem 0.25rem 0.25rem 0.25rem;
-    
+
 }
 
 .name-labels {

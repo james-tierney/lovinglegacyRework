@@ -1,41 +1,50 @@
 import React, { useState } from 'react';
+import '../styles/navbar.css'
 
 const NavBar = ({ items }) => {
+    const [activeIndex, setActiveIndex] = useState(null);
+
     const handleItemClick = (index) => {
         if (items[index].onClick) {
             items[index].onClick();
         }
+        setActiveIndex(index); // Update the active index
     };
 
-    console.log("nav bar time ")
-
     return (
-        <nav className="border-b mb-4">
-            <ul className="flex space-x-6 p-4"> {/* Added list-none class */}
-                {items.map((item, index) => (
-                    <NavItem key={index} label={item.label} onClick={() => handleItemClick(index)} href={item.href}>
-                        
-                    </NavItem>
-                ))}
-            </ul>
-        </nav>
+        <div>
+            <nav className="border-b mb-4">
+                <ul className="nav-items flex space-x-6 p-4"> {/* Added list-none class */}
+                    {items.map((item, index) => (
+                        <NavItem
+                            key={index}
+                            label={item.label}
+                            onClick={() => handleItemClick(index)}
+                            href={item.href}
+                            isActive={index === activeIndex} // Pass isActive prop
+                        />
+                    ))}
+                </ul>
+            </nav>
+            <div className='nav-underline'></div>
+        </div>
     );
 };
 
-const NavItem = ({ label, children, onClick, href }) => {
-    const [isActive, setIsActive] = useState(false);
-
+const NavItem = ({ label, onClick, href, isActive }) => {
     const handleClick = () => {
         onClick(); // Call the onClick function passed from NavBar
-        setIsActive(true);
     };
 
     return (
-        <li style={{marginRight: '25px'}}>
-            <a href={href} className={`text-blue-600 hover:text-blue-800 ${isActive ? 'active' : ''}`} onClick={handleClick}>
+        <li style={{ marginRight: '25px' }}>
+            <a
+                href={href}
+                className={`nav-item-content ${isActive ? 'active' : ''}`}
+                onClick={handleClick}
+            >
                 {label}
             </a>
-            {isActive && children}
         </li>
     );
 };

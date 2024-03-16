@@ -11,6 +11,16 @@ require("dotenv").config();
 const sharp = require("sharp");
 const cloudinary = require("cloudinary").v2;
 
+const admin = require("firebase-admin");
+const { getStorage, getDownloadURL } = require("firebase-admin/storage");
+
+const serviceAccount = require("../lovinglegacy-24acc-firebase-adminsdk-klemw-28879c9685.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "gs://lovinglegacy-24acc.appspot.com",
+});
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -42,7 +52,7 @@ const createProfile = async (req, res) => {
       profileId: uuidv4(), // Generating a unique ID using uuid
       email: email,
       qrCodeId: qrCodeId, // this is the qr code associated with this users profile
-      // Add other profile properties if needed
+      dateCreated: new Date(), // Account creation date
     });
 
     // Save the profile to MongoDB
@@ -143,12 +153,29 @@ const compressAndSaveImage = async (profilePicture, imagePath) => {
   }
 };
 
+async function uploadProfilePicture(path) {
+  console.log("inside profile pciture func path = ", path);
+  const bucket = admin.storage().bucket();
+  const uploadedFile = await bucket.upload(path);
+  console.log("uploaded file = ", uploadedFile);
+  const [metadata] = await uploadedFile[0].getMetadata();
+  console.log("upload file metadata = ", metadata);
+  const unsignedUrl = await getDownloadURL(uploadedFile[0]);
+  console.log("unsigned url = ", unsignedUrl);
+  const downloadUrl = uploadedFile[0].getSignedUrl({
+    action: "read",
+    expires: "01-01-2028",
+  });
+  console.log("download url = ", downloadUrl[0]);
+  return unsignedUrl;
+}
+
 const createMedallionProfile = async (req, res) => {
   // console.log("req = ", req);
   const medallionData = req.body;
   console.log("medallionData = ", JSON.stringify(medallionData));
   // console.log("image file path ", req.file.path);
-  // console.log("image file ", req.file);
+  console.log("image file ", req.file);
 
   const profilePicture = {
     data: fs.readFileSync(req.file.path), // Read file from disk and store as Buffer
@@ -195,27 +222,35 @@ const createMedallionProfile = async (req, res) => {
     console.error("Error fetching coordinates:", error);
   }
 
-  // const fileExtension = path.extname(req.file.filename);
+  const fileExtension = path.extname(req.file.filename);
 
   // // Generate unique filename using content hashing
-  // const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
+  const fileName = `${username}-${Date.now()}-profile-pic${fileExtension}`;
 
   // // construct path to store the image
-  // //const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
+  const imagePath = path.join(__dirname, "..", "medallionImages", fileName);
   // const serverURL = "https://lovinglegacy.onrender.com";
   // const imagePath = `${serverURL}/medallionImages/${fileName}`;
+  //const imagePath = `../medallionImages/${fileName}`;
 
-  // // Compress and save the image using the helper function
-  // await compressAndSaveImage(profilePicture.data, imagePath);
+  // Compress and save the image using the helper function
+  await compressAndSaveImage(profilePicture.data, imagePath);
+  const imageUrl = await uploadProfilePicture(imagePath);
+  console.log("firebase image url = ", imageUrl);
 
   let cloudinaryImageUrl;
   // cloudinary async func
-  (async function run() {
-    const result = await cloudinary.uploader.upload(profilePicture);
-    cloudinaryImageUrl = result.url;
-    console.log("cloudinary image url = ", cloudinaryImageUrl);
-    console.log("cloudinary result = ", result);
-  });
+  // (async function run() {
+  //   console.log("In cloudinary");
+  //   const result = await cloudinary.uploader.upload(profilePicture);
+  //   cloudinaryImageUrl = result.url;
+  //   console.log("cloudinary image url = ", cloudinaryImageUrl);
+  //   console.log("cloudinary result = ", result);
+  // });
+
+  // cloudinary.uploader.upload(imagePath).then((result) => {
+  //   console.log("cloudinary result = ", result);
+  // });
 
   // console.log("image path = ", imagePath);
 
@@ -237,7 +272,7 @@ const createMedallionProfile = async (req, res) => {
       middleName,
       lastName,
       bioInfo: bio,
-      profilePicture: cloudinaryImageUrl, // Assign the profilePicture object
+      profilePicture: imageUrl, // Assign the profilePicture object
       textOrPhrase: headlineText,
       linkToObituary,
       birthDate: formattedBirthDate,

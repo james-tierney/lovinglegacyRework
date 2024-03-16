@@ -31,7 +31,7 @@ module.exports.generateQrCode = async (req, res) => {
     // Generate a unique ID for the qr Code
     const qrId = generateUniqueId();
 
-    const url = `https://lovinglegacy.vercel.app//qrCode?qr_id=${qrId}`;
+    const url = `http://localhost:5173/qrCode?qr_id=${qrId}`;
     const data = {
       name: "MyQRCode",
       type: "url",
@@ -113,7 +113,7 @@ module.exports.generateQrCode = async (req, res) => {
     const newQRCode = new QRCodeModel({
       qrCodeData: JSON.stringify(qrCodeData.data),
       // targetUrl: `http://localhost:5713/qrCode?qr_id=${qrCodeData.data.id}`,
-      targetUrl: `https://lovinglegacy.vercel.app/qrCode?qr_id=${qrId}`,
+      targetUrl: `http://localhost:5173//qrCode?qr_id=${qrId}`,
       qrCodeId: qrCodeData.data.id,
       generatedId: qrId,
       hasProfileAssociated: false,

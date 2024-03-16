@@ -15,6 +15,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import logoSVG from '../assets/logo/logo.svg'
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import '../styles/materialNavBar.css';
+import { useLocation } from 'react-router-dom';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -24,6 +26,8 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 function MaterialNavBar({routes, handleNavigationClick}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const location = useLocation();
+  console.log("location in material nav bar = ", location.pathname);
 
 //   const routes = [
 //     { path: '/', label: 'Home' },
@@ -51,7 +55,7 @@ function MaterialNavBar({routes, handleNavigationClick}) {
   };
   // nav bar color #EBF0EE
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#EBF0EE'}} >   
+    <AppBar position="fixed" sx={{backgroundColor: '#EBF0EE', height: '100px',}} >   
       
 
         
@@ -63,25 +67,9 @@ function MaterialNavBar({routes, handleNavigationClick}) {
           className="logo" 
           
           />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            
-          </Typography>
+   
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -134,30 +122,46 @@ function MaterialNavBar({routes, handleNavigationClick}) {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex',  }, justifyContent: 'space-between'}}>
-            {routes.map((route, index) => (
-                <Link key={index}
-                    to={route.path}
-                    onClick={handleNavigationClick}
-                    sx={{
-                        marginRight: '10px',
-                        textDecoration: 'none', // Remove default underline
-                        color: 'inherit', // Inherit text color
-                        '&:hover': {
-                        textDecoration: 'underline', // Add underline on hover
-                        color: '#D6A82F', // Change color on hover
-                            },
-                        }}>
-                    {route.label}
-                </Link>
-            ))}
-          </Box>
+<Box   
+    sx={{
+        flexGrow: 1,
+        display: { xs: 'none', md: 'flex' },
+        justifyContent: 'space-between',
+    }}
+>
+    {routes.map((route, index) => (
+        <Link key={index}
+            to={route.path}
+            onClick={handleNavigationClick}
+            className={`link ${location.pathname === route.path ? 'active' : ''}`}
+ sx={{
+        textDecoration: 'none',
+        backgroundColor: 'red',
+        color: '#838383',
+        marginRight: '10px',
+        '&:last-child': {
+            marginRight: 0,
+        },
+        '&:hover': {
+            textDecoration: 'underline',
+            color: '#C9B292',
+        },
+        '&.MuiLink-root': { // Adding more specificity
+            color: '#838383',
+        },
+        '&.MuiLink-root:hover': { // Adding more specificity for hover state
+            color: '#C9B292',
+        },
+    }}
+        >
+            {route.label}
+        </Link>
+    ))}
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+     <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: '15px'}}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
@@ -183,6 +187,11 @@ function MaterialNavBar({routes, handleNavigationClick}) {
                 </MenuItem>
               ))}
             </Menu>
+      </Box>
+
+
+          <Box sx={{ flexGrow: 0 }}>
+           
           </Box>
         </Toolbar>
       {/* </Container> */}

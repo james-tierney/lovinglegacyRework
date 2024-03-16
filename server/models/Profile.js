@@ -106,6 +106,11 @@ const profileSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  dateCreated: {
+    type: Date,
+    required: false,
+    unique: false,
+  },
   bio: String,
   // Add other profile-related fields as needed
   medallionProfile: medallionProfileSchema, // Embed MedallionProfile schema

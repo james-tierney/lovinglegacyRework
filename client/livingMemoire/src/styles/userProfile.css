@@ -1,3 +1,104 @@
+.logo-img {
+    width: 200px;
+}
+
+
+.profile-picture {
+    position: relative;
+    z-index: -1;
+}
+
+/* Container styles */
+.max-w-sm {
+    max-width: 24rem;
+    /* Equivalent to max-w-sm in Tailwind CSS */
+    margin-left: auto;
+    /* Equivalent to mx-auto in Tailwind CSS */
+    margin-right: auto;
+    /* Equivalent to mx-auto in Tailwind CSS */
+
+    /* Equivalent to bg-white in Tailwind CSS */
+    padding: 1rem;
+    /* Equivalent to p-4 in Tailwind CSS */
+
+}
+
+
 .footer-links {
     margin: 0.5rem;
+    text-decoration: none;
+    /* Remove underline */
+    color: #838383;
+    font-weight: 500;
+    padding-bottom: 2px;
+    /* Add space between text and underline */
 }
+
+.footer-links:hover {
+    color: #C9B292;
+    /* Change color on hover */
+}
+
+/* Hover styles for touch devices */
+@media (hover: none) {
+    .footer-links:hover {
+        text-decoration: none;
+        border-bottom: 2px solid #C9B292;
+        color: #C9B292;
+    }
+}
+
+.footer-links:active {
+    border-bottom: 2px solid #C9B292;
+    /* Adds border bottom when active */
+    color: #C9B292;
+    text-decoration: none;
+    /* Remove default underline */
+}
+
+.active {
+    border-bottom: 2px solid rgb(56, 96, 228);
+    /* Adds border bottom when active */
+    color: rgb(56, 96, 228);
+    text-decoration: none;
+    /* Remove default underline */
+}
+
+.map-btn {
+   background-color: transparent; 
+   color: rgb(56, 96, 228);
+}
+
+.share-btn {
+    background-color: #C9B292;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.993);
+    border: 1px solid #cccccc31;
+    /* Add a 1px solid gray border */
+    border-radius: 8px;
+    /* Optional: Add border radius for rounded corners */
+    padding: 8px 16px;
+    /* Optional: Adjust padding for button size */
+    color: #fff;
+    /* Optional: Set text color */
+    font-weight: bold;
+    /* Optional: Set font weight */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    background-color: #242C54;
+    color:#ccc;
+}
+
+.underline-div {
+    border-bottom: 1px solid #ccc;
+    width: 20%;
+        /* Adjust the width as needed */
+        margin: auto;
+        /* Center the div horizontally */
+}
+

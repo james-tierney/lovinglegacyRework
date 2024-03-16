@@ -1,0 +1,39 @@
+/* Add margin to the list items for the gap between each item */
+ul.nav-items {
+    display: flex;
+    justify-content: center;
+    /* Center the items horizontally */
+    gap: 20px;
+    /* Adjust the value as needed */
+    padding: 0;
+    /* Remove default padding */
+    list-style: none;
+    /* Remove default list styles */
+   
+}
+
+.nav-item-content {
+    color: #838383;
+    font-weight: 500;  
+    padding-bottom: 2px; /* Add space between text and underline */
+}
+
+.nav-item-content:hover {
+    color: #C9B292;
+}
+
+.nav-item-content.active {
+    border-bottom: 2px solid #C9B292; /* Adds border bottom when active */
+    color: #C9B292;
+    text-decoration: none; /* Remove default underline */
+}
+
+
+.nav-underline {
+    border-bottom: 1px solid #838383;
+    margin: 10px;
+    width: 90%;
+    /* Adjust the width as needed */
+    margin: auto;
+    /* Center the div horizontally */
+}

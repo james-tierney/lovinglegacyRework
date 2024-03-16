@@ -121,7 +121,7 @@ const handleSubmit = async (e) => {
 
 
     // Call your backend function to create the user profile in MongoDB
-    const response = await fetch('https://lovinglegacy.onrender.com/createProfile', {
+    const response = await fetch('http://localhost:3002/createProfile', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

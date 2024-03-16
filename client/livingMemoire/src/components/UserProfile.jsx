@@ -6,7 +6,9 @@ import NavBar from './NavBar';
 import CreateMedallionProfile from './CreateMedallionProfile';
 import CreateNewMedallionProfile from './CreateMedallionProfile';
 import SiteNavigation from './SiteNavigation';
+import ProfileHeader from './ProfileHeader';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../redux/ProfileSlicer';
+
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -96,6 +98,7 @@ const UserProfile = () => {
     navigate(newUrl);
   };
 
+  // background color for full background could be ECF4F4?
   return (
     <div>
       <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
@@ -107,9 +110,14 @@ const UserProfile = () => {
             <h2>{profileData.username}'s Profile</h2>
             <p>Username: {profileData.username}</p>
             <p>Email: {profileData.email}</p>
-            <p>Bio: {profileData.bio}</p>
           </div>
-          <div>
+          <div style={{ backgroundColor: 'white', borderRadius: '8px', border: '2px solid #ccc' }}>
+            <ProfileHeader 
+              username={profileData.username}
+              email={profileData.email}
+              dateCreated={profileData.dateCreated}
+              profilePicture={""}
+            />
             <NavBar
               items={[
                 { label: 'My favorites', children: '', onClick: () => handleTabClick('') },
