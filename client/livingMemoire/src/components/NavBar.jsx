@@ -37,7 +37,7 @@ const NavItem = ({ label, onClick, href, isActive }) => {
     };
 
     return (
-        <li style={{ marginRight: '25px' }}>
+        <li style={{ marginRight: '25px', marginLeft: '25px' }}>
             <a
                 href={href}
                 className={`nav-item-content ${isActive ? 'active' : ''}`}

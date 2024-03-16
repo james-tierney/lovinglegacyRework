@@ -5,7 +5,7 @@ ul.nav-items {
     /* Center the items horizontally */
     gap: 20px;
     /* Adjust the value as needed */
-    padding: 1.5rem;
+    padding: 0;
     /* Remove default padding */
     list-style: none;
     /* Remove default list styles */
