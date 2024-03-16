@@ -15,7 +15,6 @@ import logoSVG from '../assets/logo/logo.svg';
 import '../styles/materialNavBar.css';
 import { useLocation } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function MaterialNavBar({ routes, handleNavigationClick }) {
@@ -44,8 +43,46 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
+        <Box sx={{ flexGrow: 1 }}>
+          <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
+        </Box>
+
         {isMobile && (
-          <img src={logoSVG} style={{ width: '20%', marginRight: 'auto' }} alt="Logo" className="logo" />
+          <>
+            <IconButton
+              size="large"
+              aria-label="menu"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+            >
+              {routes.map((route) => (
+                <MenuItem key={route.label} onClick={handleCloseNavMenu}>
+                  <Link to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {route.label}
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+          </>
         )}
 
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
@@ -60,20 +97,6 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             </Link>
           ))}
         </Box>
-
-        {isMobile && (
-            <IconButton
-              size="large"
-              aria-label="menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="#444242"
-              backgroundColor="red"
-            >
-            <MenuIcon />
-          </IconButton>
-        )}
 
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Tooltip title="Open settings">
@@ -104,28 +127,6 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             ))}
           </Menu>
         </Box>
-
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorElNav}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          open={Boolean(anchorElNav)}
-          onClose={handleCloseNavMenu}
-        >
-          {pages.map((page) => (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">{page}</Typography>
-            </MenuItem>
-          ))}
-        </Menu>
       </Toolbar>
     </AppBar>
   );
