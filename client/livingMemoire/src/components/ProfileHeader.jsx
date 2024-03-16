@@ -23,7 +23,7 @@ const ProfileHeader = ({ username, email, dateCreated, profilePicture }) => {
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', margin: 'auto' }}>
-          <img style={{ width: '100%', height: '100%' }} alt="Profile picture" src="/placeholder.svg?height=100&width=100" />
+          <img style={{ width: '100%', height: '100%' }} alt="Profile picture Image" src="/placeholder.svg?height=100&width=100" />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <h1 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{username}</h1>

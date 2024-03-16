@@ -84,15 +84,7 @@
     /* Optional: Set font weight */
 }
 
-.btn-container {
-    display: flex;
-    justify-content: flex-end;
-}
 
-.submit-btn {
-    background-color: #242C54;
-    color:#ccc;
-}
 
 .underline-div {
     border-bottom: 1px solid #ccc;
