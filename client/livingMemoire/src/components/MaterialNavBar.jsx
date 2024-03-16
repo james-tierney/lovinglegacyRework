@@ -15,7 +15,6 @@ import logoSVG from '../assets/logo/logo.svg';
 import '../styles/materialNavBar.css';
 import { useLocation } from 'react-router-dom';
 
-
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -45,60 +44,35 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
-        {/* <img src={logoSVG} style={{width: '20%'}} alt="Logo" className="logo" /> */}
-        
-        {isMobile ? (
-          <>
-           <img src={logoSVG} style={{width: '50%', height: 'auto'}} alt="Logo" className="logo" />
+        {isMobile && (
+          <img src={logoSVG} style={{ width: '20%', marginRight: 'auto' }} alt="Logo" className="logo" />
+        )}
+
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
+          {routes.map((route) => (
+            <Link
+              key={route.label}
+              to={route.path}
+              onClick={handleNavigationClick}
+              className={`link ${location.pathname === route.path ? 'active' : ''}`}
+            >
+              {route.label}
+            </Link>
+          ))}
+        </Box>
+
+        {isMobile && (
             <IconButton
               size="large"
               aria-label="menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="#444242"
+              backgroundColor="red"
             >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-            >
-              {routes.map((route) => (
-                <MenuItem key={route.label} onClick={handleCloseNavMenu}>
-                  <Link to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {route.label}
-                  </Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </>
-        ) : (
-          
-          <Box sx={{ flexGrow: 1 }}>
-             <img src={logoSVG} style={{width: '20%'}} alt="Logo" className="logo" />
-            {routes.map((route) => (
-              <Link
-                key={route.label}
-                to={route.path}
-                onClick={handleNavigationClick}
-                className={`link ${location.pathname === route.path ? 'active' : ''}`}
-              >
-                {route.label}
-              </Link>
-            ))}
-          </Box>
+            <MenuIcon />
+          </IconButton>
         )}
 
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -130,6 +104,28 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             ))}
           </Menu>
         </Box>
+
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorElNav}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          open={Boolean(anchorElNav)}
+          onClose={handleCloseNavMenu}
+        >
+          {pages.map((page) => (
+            <MenuItem key={page} onClick={handleCloseNavMenu}>
+              <Typography textAlign="center">{page}</Typography>
+            </MenuItem>
+          ))}
+        </Menu>
       </Toolbar>
     </AppBar>
   );
