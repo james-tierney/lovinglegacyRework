@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword} from 'firebase/auth';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthProvider';
@@ -192,10 +192,7 @@ const signUpWithGoogle = () => {
           <button type="submit">Sign Up</button>
           <button onClick={signUpWithGoogle}>Sign up with Google</button>
         </div>
-        <div>
-          <p>Already have an account? <Link to="/login">Login Here!</Link></p>
-          
-        </div>
+
       </form>
     </div>
   );
