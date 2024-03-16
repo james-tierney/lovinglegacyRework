@@ -15,6 +15,10 @@ import logoSVG from '../assets/logo/logo.svg';
 import '../styles/materialNavBar.css';
 import { useLocation } from 'react-router-dom';
 
+
+const pages = ['Products', 'Pricing', 'Blog'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 function MaterialNavBar({ routes, handleNavigationClick }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
