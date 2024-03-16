@@ -5,16 +5,14 @@ ul.nav-items {
     /* Center the items horizontally */
     gap: 20px;
     /* Adjust the value as needed */
-    padding: 0;
+    padding: 1.5rem;
     /* Remove default padding */
     list-style: none;
     /* Remove default list styles */
    
 }
 
-.nav-container {
-    padding: 1rem;
-}
+
 
 .nav-item-content {
     color: #838383;
