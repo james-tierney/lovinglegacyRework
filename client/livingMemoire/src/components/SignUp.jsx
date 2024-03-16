@@ -59,46 +59,6 @@ const Signup = () => {
 
   
 
-//  const handleSubmit = async (formData) => {
-//     try {
-//       console.log("form data ", formData);
-//       // Customize signup logic using Clerk client APIs
-//       const user = ''; //await client.signUp(formData);
-
-//       // Access user data from the returned user object
-//       const { username } = user;
-
-//       // Make your existing API call to create the profile
-//       const urlSearchParams = new URLSearchParams(window.location.search);
-//       const qrCodeId = urlSearchParams.get('qr_id');
-
-//       const response = await fetch('http://localhost:3001/createProfile', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           ...formData,
-//           qrCodeId: qrCodeId,
-//         }),
-//       });
-
-//       if (response.ok) {
-//         const result = await response.json();
-//         const profile = result.profile;
-
-//         // Redirect to the user's profile page
-//         navigate(`/userProfile?username=${profile.username}`);
-//       } else if (response.status === 409) {
-//         console.error("Username already taken");
-//       } else {
-//         console.error('Signup failed');
-//       }
-//     } catch (error) {
-//       console.error('Error during signup:', error);
-//     }
-//   };
-
 const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -232,6 +192,7 @@ const signUpWithGoogle = () => {
           <button type="submit">Sign Up</button>
           <button onClick={signUpWithGoogle}>Sign up with Google</button>
         </div>
+
       </form>
     </div>
   );
