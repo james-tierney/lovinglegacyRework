@@ -96,7 +96,7 @@ export default function Profile() {
   
   return (
     <div className="bg-gray-100 p-4">
-<SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
+      <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
       <div className="max-w-sm mx-auto my-8 bg-white p-4 rounded-lg shadow-md">
       <div className="flex items-center justify-between">
        <img src={LogoSVG} alt="loving-legacy-logo" className='logo-img'/>
