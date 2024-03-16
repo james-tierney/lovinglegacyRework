@@ -1,3 +1,8 @@
+.root-div {
+    width: 100vw;
+}
+
+
 /* Add this CSS to your stylesheet */
 .flex.items-center {
     display: flex;

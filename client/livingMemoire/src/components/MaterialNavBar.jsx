@@ -36,7 +36,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px', width: '100vw'}}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px'}}>
       <Toolbar disableGutters>
                 <img 
           src={logoSVG} 
