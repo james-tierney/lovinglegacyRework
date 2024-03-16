@@ -10,6 +10,7 @@ import ProfileBio from '../footerComponents/ProfileBio';
 import ProfilePhotos from '../footerComponents/ProfilePhotos';
 import ProfileVideos from '../footerComponents/ProfileVideos';
 import ProfileLinks from '../footerComponents/ProfileLinks';
+import SiteNavigation from '../SiteNavigation';
 
 export default function Profile() {
 
@@ -26,6 +27,8 @@ export default function Profile() {
   // we can extract the username and use it to make
   // a call to the server func getProfileByUsername 
   // @ route -> /userProfile
+
+    const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
 
   const toggleMap = () => {
     setShowMap(!showMap);
@@ -93,7 +96,7 @@ export default function Profile() {
   
   return (
     <div className="bg-gray-100 p-4">
-
+<SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
       <div className="max-w-sm mx-auto my-8 bg-white p-4 rounded-lg shadow-md">
       <div className="flex items-center justify-between">
        <img src={LogoSVG} alt="loving-legacy-logo" className='logo-img'/>
