@@ -44,6 +44,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
       <Toolbar disableGutters>
         {isMobile ? (
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
             <IconButton
               size="large"
               aria-label="menu"
@@ -51,7 +52,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="#444242"
-              sx={{ marginRight: 'auto' }} // Align to the left
+              sx={{ marginLeft: 'auto' }} // Align to the right
             >
               <MenuIcon />
             </IconButton>
@@ -78,7 +79,6 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
                 </MenuItem>
               ))}
             </Menu>
-            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
           </Box>
         ) : (
           <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
