@@ -43,97 +43,88 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
-        {isMobile && (
-          <Box sx={{ width: '33%' }}>
-            <img src={logoSVG} style={{ width: '100%' }} alt="Logo" className="logo" />
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <Box>
+            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
           </Box>
-        )}
-
-        {isMobile && (
-          <>
-            <IconButton
-              size="large"
-              aria-label="menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
+          {isMobile && (
+            <Box>
+              <IconButton
+                size="large"
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+              >
+                {routes.map((route) => (
+                  <MenuItem key={route.label} onClick={handleCloseNavMenu}>
+                    <Link to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {route.label}
+                    </Link>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            {routes.map((route) => (
+              <Link
+                key={route.label}
+                to={route.path}
+                onClick={handleNavigationClick}
+                className={`link ${location.pathname === route.path ? 'active' : ''}`}
+              >
+                {route.label}
+              </Link>
+            ))}
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: '15px' }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
             <Menu
+              sx={{ mt: '45px' }}
               id="menu-appbar"
-              anchorEl={anchorElNav}
+              anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: 'top',
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'right',
               }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
             >
-              {routes.map((route) => (
-                <MenuItem key={route.label} onClick={handleCloseNavMenu}>
-                  <Link to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {route.label}
-                  </Link>
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  {setting}
                 </MenuItem>
               ))}
             </Menu>
-          </>
-        )}
-
-        {!isMobile && (
-          <Box sx={{ flexGrow: 1 }}>
-            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
           </Box>
-        )}
-
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
-          {routes.map((route) => (
-            <Link
-              key={route.label}
-              to={route.path}
-              onClick={handleNavigationClick}
-              className={`link ${location.pathname === route.path ? 'active' : ''}`}
-            >
-              {route.label}
-            </Link>
-          ))}
-        </Box>
-
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: '15px' }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            sx={{ mt: '45px' }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                {setting}
-              </MenuItem>
-            ))}
-          </Menu>
         </Box>
       </Toolbar>
     </AppBar>
