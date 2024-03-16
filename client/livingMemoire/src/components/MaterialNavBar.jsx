@@ -43,7 +43,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <Box sx={{ }}>
           <Box>
             <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
           </Box>
@@ -55,7 +55,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
+                color="#444242"
               >
                 <MenuIcon />
               </IconButton>

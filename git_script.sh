@@ -1,8 +1,9 @@
-# Add all changes to the staging area
+#!/bin/bash
+
+# Get current date and time
+current_time=$(date +"%Y-%m-%d %T")
+
+# Commit with current time in the message
 git add .
-
-# Commit changes with a default message
-git commit -m "script commit"
-
-# Push changes to the remote repository on the 'main' branch
+git commit -m "Script commit at $current_time"
 git push origin main
