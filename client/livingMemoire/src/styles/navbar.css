@@ -12,6 +12,10 @@ ul.nav-items {
    
 }
 
+.nav-container {
+    padding: 1rem;
+}
+
 .nav-item-content {
     color: #838383;
     font-weight: 500;  

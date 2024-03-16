@@ -12,7 +12,7 @@ const NavBar = ({ items }) => {
     };
 
     return (
-        <div>
+        <div className='nav-container'>
             <nav className="border-b mb-4">
                 <ul className="nav-items flex space-x-6 p-4"> {/* Added list-none class */}
                     {items.map((item, index) => (
