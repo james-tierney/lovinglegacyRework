@@ -40,11 +40,11 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: isMobile ? '50px' : '100px' }}>
       <Toolbar disableGutters style={{ height: '100%'}}>
         {isMobile ? (
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%', }}>
-            <img src={logoSVG} style={{ width: '20%', height: '60%'}} alt="Logo" className="logo" />
+            <img src={logoSVG} style={{ width: '20%',}} alt="Logo" className="logo" />
             <IconButton
               size="large"
               aria-label="menu"
