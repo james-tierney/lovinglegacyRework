@@ -43,13 +43,14 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: '100px' }}>
       <Toolbar disableGutters>
-        {/* <Box sx={{ flexGrow: 1 }}>
-          <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
-        </Box> */}
+        {isMobile && (
+          <Box sx={{ width: '33%' }}>
+            <img src={logoSVG} style={{ width: '100%' }} alt="Logo" className="logo" />
+          </Box>
+        )}
 
         {isMobile && (
           <>
-          <img src={logoSVG} style={{ width: '33%' }} alt="Logo" className="logo" />
             <IconButton
               size="large"
               aria-label="menu"
@@ -85,7 +86,13 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             </Menu>
           </>
         )}
-        <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
+
+        {!isMobile && (
+          <Box sx={{ flexGrow: 1 }}>
+            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
+          </Box>
+        )}
+
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
           {routes.map((route) => (
             <Link
