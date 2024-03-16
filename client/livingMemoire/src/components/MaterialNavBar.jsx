@@ -131,3 +131,4 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
   );
 }
 
+export default MaterialNavBar;
