@@ -9,6 +9,7 @@ const { file } = require("pdfkit");
 const axios = require("axios");
 require("dotenv").config();
 const sharp = require("sharp");
+
 const cloudinary = require("cloudinary").v2;
 
 const admin = require("firebase-admin");
@@ -303,5 +304,6 @@ module.exports = {
   getProfileByUsername,
   createMedallionProfile,
   getProfileByQrId,
+  compressAndSaveImage,
   // getUserNameFromQRCodeId,
 };

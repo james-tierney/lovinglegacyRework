@@ -1,0 +1,113 @@
+/* ProfileSettings.css */
+
+/* Base styles */
+.bg-white {
+    background-color: #fff;
+}
+
+/* Image styles */
+.profile-image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1181 / 200;
+}
+
+/* Button styles */
+.update-cover-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: #F59E0B;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Profile picture styles */
+.profile-picture-container {
+    position: absolute;
+    left: 12px;
+    bottom: -16px;
+}
+
+/* Text styles */
+.title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Status styles */
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Button group styles */
+.button-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* Action button styles */
+.action-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Card styles */
+.card {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card content styles */
+.card-content {
+    padding: 16px;
+}
+
+/* User info styles */
+.user-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* User avatar styles */
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* User details styles */
+.user-details {
+    flex: 1;
+}
+
+/* User name styles */
+.user-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* User joined date styles */
+.joined-date {
+    font-size: 14px;
+    color: #666;
+}

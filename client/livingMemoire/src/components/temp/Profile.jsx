@@ -32,7 +32,8 @@ export default function Profile() {
 
   const toggleMap = () => {
     setShowMap(!showMap);
-    setMapText("Hide Map")
+    // If showMap false, set map text to hide map otherwise set to show map
+    setMapText(showMap ? "Show Map" : "Hide Map");
   }
 
   const handleLinkClick = (link, e) => {
@@ -97,14 +98,15 @@ export default function Profile() {
   return (
     <div className="bg-gray-100">
       <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
-      <div className="max-w-sm mx-auto my-8 bg-white p-4 rounded-lg shadow-md">
-        <div className="flex items-center justify-between">
-          <img src={LogoSVG} alt="loving-legacy-logo" className='logo-img'/>
+
+      <div className="container mx-auto">
+        <div className="max-w-sm mx-auto ">
+          <div className="flex items-center justify-between">
+            <img src={LogoSVG} alt="loving-legacy-logo" className='logo-img'/>
+          </div>
         </div>
-      </div>
-      <div className="container mx-auto p-4">
         <div className='image-container'>
-          <img style={{ maxWidth: '100%', height: 'auto'}} src={medallionProfile.profilePicture}></img>
+          <img style={{ maxWidth: '90%', height: 'auto'}} src={medallionProfile.profilePicture}></img>
         </div>
         
         <div className="text-center">

@@ -2,6 +2,17 @@
     width: 200px;
 }
 
+/* Default padding for larger screens */
+.container {
+    padding-top: 7rem;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .container {
+        padding-top: 3rem; /* Adjust the value for smaller screens */
+    }
+}
 
 .profile-picture {
     position: relative;
@@ -18,8 +29,7 @@
     /* Equivalent to mx-auto in Tailwind CSS */
 
     /* Equivalent to bg-white in Tailwind CSS */
-    padding: 1rem;
-    /* Equivalent to p-4 in Tailwind CSS */
+
 
 }
 
@@ -67,6 +77,7 @@
 .map-btn {
    background-color: transparent; 
    color: rgb(56, 96, 228);
+   margin: 0.5rem;
 }
 
 .share-btn {

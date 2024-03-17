@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const { kStringMaxLength } = require("buffer");
 
 const medallionProfileSchema = new mongoose.Schema({
   firstName: {
@@ -87,6 +88,20 @@ const medallionProfileSchema = new mongoose.Schema({
     type: String,
     required: false,
     unique: false,
+  },
+  media: {
+    title: {
+      type: String,
+      required: false,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    url: {
+      type: String,
+      required: false,
+    },
   },
 });
 

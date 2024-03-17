@@ -15,6 +15,7 @@ const router = express.Router();
 const qrCodeController = require("../controller/qrCodeController");
 const profileController = require("../controller/profileController");
 const authController = require("../controller/authController");
+const mediaController = require("../controller/mediaController");
 const Profile = require("../models/Profile");
 const qrCodeSchema = require("../models/qrCodeSchema");
 const multer = require("multer");
@@ -57,4 +58,7 @@ router.post("/login", authController.handleLogin);
 router.post("/checkProfileExists", qrCodeController.doesQrCodeHaveProfile);
 router.post("/updateQRCode", qrCodeController.updateQrCode);
 router.get("/getQrUrl", qrCodeController.getQRCodeSVGUrl);
+
+router.post("/uploadMedia", mediaController.uploadProfileMedia);
+
 module.exports = router;

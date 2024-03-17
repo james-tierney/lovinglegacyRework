@@ -9,7 +9,7 @@ import ProfilePage from './temp/Profile';
 import PrivateRoutes from './PrivateRoutes';
 import Login from './Login';
 import QRCode from './QRCode';
-
+import ProfileSettings from './profileSettings/media/ProfileSettings';
 
 const AppRouter = () => {
   return (
@@ -24,6 +24,7 @@ const AppRouter = () => {
         {/* <Route element={<PrivateRoutes />}> */}
           <Route path="/userProfile" element={<UserProfile/>} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<ProfileSettings />} />
         
         {/* </Route> */}
         
