@@ -27,7 +27,6 @@ const UploadMedia = () => {
         <div>
           {/* Render the MediaForm component and pass onSubmit prop */}
           <MediaForm onSubmit={handleSubmit} />
-          {/* <StyledForm /> */}
         </div>
       )}
     </div>

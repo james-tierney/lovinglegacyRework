@@ -60,24 +60,67 @@ const MediaForm = () => {
 
   return (
     <form className="media-form" onSubmit={handleSubmit}>
-      {/* Title */}
-                      <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Images:</label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                    <div className="space-y-1 text-center">
-                      <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="flex text-sm text-gray-600">
-                        <label
-                          className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none"
-                          htmlFor="file-upload"
-                        >
-                          <span>Drag images or click to upload images</span>
-                          <input className="sr-only" id="file-upload" name="file-upload" type="file" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Media Type */}
+      <div className="media-type-options">
+        <label className="block text-sm font-medium text-gray-700">Media Type:</label>
+        <div>
+          <input
+            type="checkbox"
+            name="mediaType"
+            value="image"
+            checked={formData.mediaType === "image"}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          <span>Image</span>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="mediaType"
+            value="video"
+            checked={formData.mediaType === "video"}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          <span>Video</span>
+        </div>
+      </div>
+      {formData.mediaType === "image" ? (
+        <div className="mt-4">
+          
+          <label className="block text-sm font-medium text-gray-700">Images:</label>
+          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div className="space-y-1 text-center">
+              <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <div className="flex text-sm text-gray-600">
+                <label
+                  className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none"
+                  htmlFor="file-upload"
+                >
+                  <span>Drag images or click to upload images</span>
+                  <input
+                    type="file"
+                    name="file-upload"
+                    onChange={handleChange}
+                    className="sr-only"
+                    id="file-upload"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+       ) : (
+        <input
+          type="text"
+          name="videoUrl"
+          placeholder="YouTube Video URL"
+          value={formData.videoUrl}
+          onChange={handleChange}
+          className="video-url"
+        />
+      )}
       <div>
         <label className="block text-sm font-medium text-gray-700" htmlFor="title">
           Title:
@@ -104,36 +147,8 @@ const MediaForm = () => {
             className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
         ></textarea>
       </div>
-      {/* Media Type */}
-      <select
-        name="mediaType"
-        value={formData.mediaType}
-        onChange={handleChange}
-        className="select-field"
-      >
-        <option value="image">Image</option>
-        <option value="video">Video</option>
-      </select>
 
-      {/* File Upload or Video URL */}
-      {formData.mediaType === "image" ? (
-        <input
-          type="file"
-          name="file"
-          onChange={handleChange}
-          className="file-upload"
-        />
-      ) : (
-        <input
-          type="text"
-          name="videoUrl"
-          placeholder="YouTube Video URL"
-          value={formData.videoUrl}
-          onChange={handleChange}
-          className="video-url"
-        />
-      )}
-
+ 
       {/* Submit Button */}
       <button type="submit" className="submit-button">Upload</button>
     </form>
