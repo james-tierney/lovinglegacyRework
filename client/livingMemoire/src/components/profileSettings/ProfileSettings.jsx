@@ -3,6 +3,7 @@ import '../../styles/profileSettings.css';
 import TabbedNavigation from '../TabbedNavigation';
 import UploadMedia from './media/UploadMedia';
 import ProfileDetails from './details/ProfileDetails';
+import ProfileAbout from './about/ProfileAbout';
 
 const ProfileSettings = () => {
   return (
@@ -60,7 +61,7 @@ const ProfileSettings = () => {
           ]}
           components={{
             Timeline: <></>,
-            About: <></>,
+            About: <ProfileAbout />,
             Media: <UploadMedia />,
             Details: <ProfileDetails />,
             Admins: <></>,

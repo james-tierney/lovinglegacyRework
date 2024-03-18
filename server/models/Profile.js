@@ -89,6 +89,26 @@ const medallionProfileSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
+  cemeteryName: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  cemeteryPlotNumber: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  cemeteryCity: {
+    type: String,
+    required: false,
+    unique: false,
+  },
+  cemeteryState: {
+    type: String,
+    required: false,
+    unique: false,
+  },
   media: [
     {
       title: {

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import CreateNewMedallionProfile from "../../CreateMedallionProfile";
 import { useSelector } from "react-redux";
+import ProfileDetails from "../details/ProfileDetails";
 
-const ProfileDetails = () => {
+const ProfileAbout = () => {
     const profileData = useSelector(state => state.profile.data);
 
     useEffect(() => {
@@ -18,13 +19,9 @@ const ProfileDetails = () => {
     return (
         <div>
             
-            <CreateNewMedallionProfile username={profileData.username} profileData={profileData} includeCemetery={true}/>
+            <ProfileDetails />
         </div>
     );
 }
 
-export default ProfileDetails;
-
-// add a prop to the form 
-// whether to render with pre populated profile data here 
-// or empty and have the 
+export default ProfileAbout;

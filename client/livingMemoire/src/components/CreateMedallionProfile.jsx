@@ -4,7 +4,7 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import '../styles/medallionForm.css';
 import { useSelector } from 'react-redux';
 
-const CreateNewMedallionProfile = ({username, profileData}) => {
+const CreateNewMedallionProfile = ({username, profileData, includeCemetery}) => {
 
     console.log("in create new ")
     const location = useLocation();
@@ -43,6 +43,10 @@ const viewParam = urlParams.get('view');
     city: '',
     state: '',
     quoteSection: '',
+    cemeteryName: '',
+    cemeteryPlotNumber: '',
+    cemeteryCity: '',
+    cemeteryState: '',
 
   });
 
@@ -265,10 +269,60 @@ const handleMedallionInputChange = (event) => {
                   </div>
                 </div>
 
+
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>  
                   <input className="border p-2 input-field" type="date" name="birthDate" value={medallionFormData.birthDate} onChange={handleMedallionInputChange} />
                   <input className="border p-2 input-field" type="date" name="deathDate" value={medallionFormData.deathDate} onChange={handleMedallionInputChange} />
                 </div>
+
+
+
+
+                {includeCemetery ? (
+                  <div>
+                    <div className='flex items-center mb-6 border-bottom'>
+                      <label className="block mb-2">Cemetery information</label>
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                      <div className='label-above'>
+                        <label style={{float: 'left'}}>Cemetery name:</label>    
+                      </div>
+                      <div className='label-above'>
+                        <label style={{float: 'left'}}>Cemetery plot number:</label>
+                      </div>
+
+                    </div>
+                    
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>  
+                  <input className="border p-2 input-field" type="text" name="CemeteryName" value={medallionFormData.cemeteryName} onChange={handleMedallionInputChange} />
+                  <input className="border p-2 input-field" type="text" name="CemeteryPlotNumber" value={medallionFormData.cemeteryPlotNumber} onChange={handleMedallionInputChange} />
+                </div>
+
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                      <div className='label-above'>
+                        <label style={{float: 'left'}}>Cemetery City:</label>    
+                      </div>
+                      <div className='label-above'>
+                        <label style={{float: 'left'}}>Cemetery State:</label>
+                      </div>
+                  </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>  
+                  <input className="border p-2 input-field" type="text" name="CemeteryCity" value={medallionFormData.cemeteryCity} onChange={handleMedallionInputChange} />
+                  <input className="border p-2 input-field" type="text" name="CemeteryState" value={medallionFormData.cemeteryState} onChange={handleMedallionInputChange} />
+                </div>
+                
+
+                  </div>
+          
+                  
+
+                  
+                ) : null}
+
+
+
 
 
                 <div className='flex items-center mb-6 border-bottom'>
