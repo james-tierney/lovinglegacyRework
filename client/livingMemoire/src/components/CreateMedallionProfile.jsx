@@ -114,13 +114,15 @@ const handleMedallionInputChange = (event) => {
       <div className="form-container" > {/* Apply background color to this div */}
           <div className='container'>
             <div className="bg-white p-6 rounded-lg shadow-md">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Other content */}
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon style={{ width: "20px", height: "20px" }} />
-            <span >Create new profile</span>
-          </button>
-        </div>
+          {!includeCemetery && (
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {/* Other content */}
+              <button className="back-btn" onClick={() => navigate(-1)}>
+                <ChevronLeftIcon style={{ width: "20px", height: "20px" }} />
+                <span>Create new profile</span>
+              </button>
+            </div>
+          )}
               <div className='flex items-center mb-6 border-bottom'>
                 <p>Personal Details</p>
               </div>
