@@ -1,15 +1,10 @@
 import React from 'react';
 import infoSVG from '../assets/icons/info.svg';
 import '../styles/profileHeader.css';
+import { calculateDaysAgo } from '../utils/utils';
 
 const ProfileHeader = ({ username, email, dateCreated, profilePicture }) => {
-  const calcualteDaysAgo = (dateCreated) => {
-    const currentDate = new Date();
-    const creationDate = new Date(dateCreated);
-    const differenceInTime = currentDate.getTime() - creationDate.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-    return differenceInDays;
-  };
+
 
   return (
     <div
@@ -35,7 +30,7 @@ const ProfileHeader = ({ username, email, dateCreated, profilePicture }) => {
               <line x1="8" x2="8" y1="2" y2="6" />
               <line x1="3" x2="21" y1="10" y2="10" />
             </svg>
-            <span>Joined {calcualteDaysAgo(dateCreated)} days ago</span>
+            <span>Joined {calculateDaysAgo(dateCreated)} days ago</span>
           </p>
         </div>
         <div style={{ padding: '1rem', backgroundColor: '#F0E8D1', borderRadius: '0.25rem', border: '1px solid #D4A42F' }}>

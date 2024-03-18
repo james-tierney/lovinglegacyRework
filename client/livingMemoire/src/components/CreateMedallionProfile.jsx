@@ -313,12 +313,7 @@ const handleMedallionInputChange = (event) => {
                   <input className="border p-2 input-field" type="text" name="CemeteryState" value={medallionFormData.cemeteryState} onChange={handleMedallionInputChange} />
                 </div>
                 
-
-                  </div>
-          
-                  
-
-                  
+                </div>
                 ) : null}
 
 
@@ -362,7 +357,7 @@ const handleMedallionInputChange = (event) => {
                 </div>
               
                 <div className='btn-container'>
-                  <button className="submit-btn" type="submit">Create Medallion Account</button>
+                  <button className="submit-btn" type="submit">{includeCemetery ? 'Save Changes' : 'Create Medallion Account'}</button>
                 </div>
 
               </form>

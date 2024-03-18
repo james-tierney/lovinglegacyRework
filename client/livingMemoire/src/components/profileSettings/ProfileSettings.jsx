@@ -4,8 +4,18 @@ import TabbedNavigation from '../TabbedNavigation';
 import UploadMedia from './media/UploadMedia';
 import ProfileDetails from './details/ProfileDetails';
 import ProfileAbout from './about/ProfileAbout';
+import ProfileAdmin from './admin/ProfileAdmin';
+
+import { useSelector } from 'react-redux';
 
 const ProfileSettings = () => {
+
+  /* Need to add safety catching logic so that if profile Data isn't defined then */
+  /* we use our dispatch to the redux state to fetch it just to cover diff cases */
+
+  const profileData = useSelector(state => state.profile.data);
+  const medallionProfile = profileData.medallionProfile;
+
   return (
     <div className="bg-white">
       <div className="relative">
@@ -26,8 +36,8 @@ const ProfileSettings = () => {
         </div>
       </div>
       <div className="mt-16 px-4">
-        <h1 className="title">In loving memory of Tam Spraggings - Mr</h1>
-        <p className="subtitle">Lifetime: Feb 28, 2024 - Mar 11, 2024</p>
+        <h1 className="title">In loving memory of {medallionProfile.firstName} {medallionProfile.lastName} - {medallionProfile.title}</h1>
+        <p className="subtitle">Lifetime: {medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
         <div className="button-group">
           <div className="status">Profile status: Unverified</div>
           <button className="action-button">Public view</button>
@@ -64,26 +74,10 @@ const ProfileSettings = () => {
             About: <ProfileAbout />,
             Media: <UploadMedia />,
             Details: <ProfileDetails />,
-            Admins: <></>,
+            Admins: <ProfileAdmin profileData={profileData}/>,
           }}
         />
-        <div className="mt-4 flex justify-between">
-          <div className="status">Profile Admins 1</div>
-          <button className="action-button">Invite user</button>
-        </div>
-        <div className="card">
-          <div className="card-content">
-            <div className="user-info">
-              <span className="user-avatar">
-                <img alt="JTierney Tech" src="/placeholder.svg?height=40&amp;width=40" />
-              </span>
-              <div className="user-details">
-                <p className="user-name">JTierney Tech</p>
-                <p className="joined-date">Joined: 1 day ago</p>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   );
