@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../styles/profileSettings.css';
 import TabbedNavigation from '../TabbedNavigation';
 import UploadMedia from './media/UploadMedia';
@@ -6,7 +6,8 @@ import ProfileDetails from './details/ProfileDetails';
 import ProfileAbout from './about/ProfileAbout';
 import ProfileAdmin from './admin/ProfileAdmin';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
 
 const ProfileSettings = () => {
 
@@ -14,7 +15,9 @@ const ProfileSettings = () => {
   /* we use our dispatch to the redux state to fetch it just to cover diff cases */
 
   const profileData = useSelector(state => state.profile.data);
-  const medallionProfile = profileData.medallionProfile;
+
+
+  const medallionProfile = profileData?.medallionProfile;
 
   return (
     <div className="bg-white">

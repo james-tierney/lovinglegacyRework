@@ -19,7 +19,7 @@ const ProfileAbout = () => {
     return (
         <div>
             
-            <ProfileDetails />
+            <ProfileDetails notIncludeDetailsLinkSection={true}/>
         </div>
     );
 }
