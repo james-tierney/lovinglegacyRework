@@ -4,7 +4,7 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import '../styles/medallionForm.css';
 import { useSelector } from 'react-redux';
 
-const CreateNewMedallionProfile = ({username}) => {
+const CreateNewMedallionProfile = ({username, profileData}) => {
 
     console.log("in create new ")
     const location = useLocation();
@@ -12,6 +12,16 @@ const navigate = useNavigate();
 const queryString = location.search;
 const urlParams = new URLSearchParams(queryString);
 console.log("location.search in create new", location.search)
+
+  useEffect(() => {
+    if (profileData) {
+      setMedallionFormData((prevData) => ({
+        ...prevData,
+        ...profileData.medallionProfile, // Merge profileData into medallionFormData
+      }));
+      console.log("pre populated medallionFormData = ", medallionFormData);
+    }
+  }, [profileData]);
 
 const viewParam = urlParams.get('view');
   // State to track form input values for medallion data
@@ -86,7 +96,7 @@ const handleMedallionInputChange = (event) => {
     try {
  
       // Send POST request to server to create medallion account
-      const response = await axios.post('https://lovinglegacy.onrender.com/createMedallionProfile', formDataToSend);
+      const response = await axios.post('http://localhost:3002/createMedallionProfile', formDataToSend);
       console.log('Response from create medallion account:', response);
       // Optionally update state or show a success message
     } catch (error) {
@@ -95,9 +105,9 @@ const handleMedallionInputChange = (event) => {
     }
   };
   return (
-    <div class="root-div">
+    <div className="root-div">
   
-      <div class="form-container" > {/* Apply background color to this div */}
+      <div className="form-container" > {/* Apply background color to this div */}
           <div className='container'>
             <div className="bg-white p-6 rounded-lg shadow-md">
         <div style={{ display: "flex", justifyContent: "space-between" }}>

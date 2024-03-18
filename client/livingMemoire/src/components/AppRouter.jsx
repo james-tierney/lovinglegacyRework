@@ -9,7 +9,7 @@ import ProfilePage from './temp/Profile';
 import PrivateRoutes from './PrivateRoutes';
 import Login from './Login';
 import QRCode from './QRCode';
-import ProfileSettings from './profileSettings/media/ProfileSettings';
+import ProfileSettings from './profileSettings/ProfileSettings';
 
 const AppRouter = () => {
   return (

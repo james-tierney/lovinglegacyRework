@@ -8,7 +8,7 @@ function Home() {
 
   const generateQrCode = async () => {
     try {
-      const response = await axios.post('https://lovinglegacy.onrender.com/generateQrCode', {
+      const response = await axios.post('http://localhost:3002/generateQrCode', {
         qrData: 'https://lovinglegacy.vercel.app/signUp', // Replace with your desired QR data
       });
       setQrCodeData(response.data);

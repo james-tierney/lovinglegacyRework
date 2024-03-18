@@ -239,22 +239,6 @@ const createMedallionProfile = async (req, res) => {
   const imageUrl = await uploadProfilePicture(imagePath);
   console.log("firebase image url = ", imageUrl);
 
-  let cloudinaryImageUrl;
-  // cloudinary async func
-  // (async function run() {
-  //   console.log("In cloudinary");
-  //   const result = await cloudinary.uploader.upload(profilePicture);
-  //   cloudinaryImageUrl = result.url;
-  //   console.log("cloudinary image url = ", cloudinaryImageUrl);
-  //   console.log("cloudinary result = ", result);
-  // });
-
-  // cloudinary.uploader.upload(imagePath).then((result) => {
-  //   console.log("cloudinary result = ", result);
-  // });
-
-  // console.log("image path = ", imagePath);
-
   console.log("username ", username);
   console.log("bio ", bio);
   console.log("first name = ", firstName);

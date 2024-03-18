@@ -11,6 +11,7 @@ const routes = [
   { path: '/qrCode', label: 'QR Code' },
   { path: '/userProfile', label: 'User Profile' },
   { path: '/profile', label: 'Profile Page' },
+  { path: '/settings', label: 'Settings'}
 ];
 
 const SiteNavigation = ({ setIsNavigatedByApp }) => {

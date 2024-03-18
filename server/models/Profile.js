@@ -89,20 +89,26 @@ const medallionProfileSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
-  media: {
-    title: {
-      type: String,
-      required: false,
+  media: [
+    {
+      title: {
+        type: String,
+        required: false,
+      },
+      description: {
+        type: String,
+        required: false,
+      },
+      mediaType: {
+        type: String,
+        required: false,
+      },
+      mediaLink: {
+        type: String,
+        required: false,
+      },
     },
-    description: {
-      type: String,
-      required: false,
-    },
-    url: {
-      type: String,
-      required: false,
-    },
-  },
+  ],
 });
 
 const profileSchema = new mongoose.Schema({

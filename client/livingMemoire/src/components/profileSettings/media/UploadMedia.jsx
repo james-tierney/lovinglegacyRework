@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MediaForm from "./MediaForm"; // Import the MediaForm component
+import StyledForm from "./StyledForm";
 
 const UploadMedia = () => {
   // State to track whether the form is visible or not
@@ -26,6 +27,7 @@ const UploadMedia = () => {
         <div>
           {/* Render the MediaForm component and pass onSubmit prop */}
           <MediaForm onSubmit={handleSubmit} />
+          {/* <StyledForm /> */}
         </div>
       )}
     </div>

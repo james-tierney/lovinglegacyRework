@@ -1,7 +1,8 @@
 import React from 'react';
-import '../../../styles/profileSettings.css';
-import TabbedNavigation from '../../TabbedNavigation';
-import UploadMedia from './UploadMedia';
+import '../../styles/profileSettings.css';
+import TabbedNavigation from '../TabbedNavigation';
+import UploadMedia from './media/UploadMedia';
+import ProfileDetails from './details/ProfileDetails';
 
 const ProfileSettings = () => {
   return (
@@ -61,7 +62,7 @@ const ProfileSettings = () => {
             Timeline: <></>,
             About: <></>,
             Media: <UploadMedia />,
-            Details: <></>,
+            Details: <ProfileDetails />,
             Admins: <></>,
           }}
         />
