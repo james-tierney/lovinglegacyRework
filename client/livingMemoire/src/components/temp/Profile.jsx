@@ -70,7 +70,7 @@ export default function Profile() {
     // make a GET request to the server-side function
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3002/userProfile`, {
+        const response = await axios.get(`https://lovinglegacy.onrender.com/userProfile`, {
           params : {
             username: username
           }

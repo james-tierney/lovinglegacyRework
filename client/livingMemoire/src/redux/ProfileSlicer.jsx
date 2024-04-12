@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const fetchProfileByUsername = createAsyncThunk("profile/fetchByUsername", async (username) => {
     console.log("fetching by username in redux ")
-    const response = await axios.get('http://localhost:3002/userProfile', {
+    const response = await axios.get('https://lovinglegacy.onrender.com/userProfile', {
         params: {
             username: username
         }
@@ -14,7 +14,7 @@ export const fetchProfileByUsername = createAsyncThunk("profile/fetchByUsername"
 export const fetchProfileByQrId = createAsyncThunk("profile/fetchByQrId", async (qr_id) => {
     console.log("fetching by qr_id in redux ")
     //const response = await axios.get('https://lovinglegacy.onrender.com/getProfile', {
-    const response = await axios.get('http://localhost:3002/getProfile', {
+    const response = await axios.get('https://lovinglegacy.onrender.com/getProfile', {
     params: {
             qr_id: qr_id
         }

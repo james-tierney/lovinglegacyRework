@@ -22,7 +22,7 @@ const MediaForm = () => {
 
     try {
       // Send a POST request to the backend API endpoint
-      await axios.post("http://localhost:3002/uploadMedia", {
+      await axios.post("https://lovinglegacy.onrender.com/uploadMedia", {
         username,
         title: formData.title,
         description: formData.description,
