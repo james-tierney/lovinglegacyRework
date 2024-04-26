@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate} from 'react-router-dom';
 import '../styles/medallionForm.css';
 import { useSelector } from 'react-redux';
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../utils/config';
 
 const CreateNewMedallionProfile = ({username, profileData, includeCemetery}) => {
 
@@ -100,7 +101,7 @@ const handleMedallionInputChange = (event) => {
     try {
  
       // Send POST request to server to create medallion account
-      const response = await axios.post('https://lovinglegacy.onrender.com/createMedallionProfile', formDataToSend);
+      const response = await axios.post(`${BASE_URL_DEV}/createMedallionProfile`, formDataToSend);
       console.log('Response from create medallion account:', response);
       // Optionally update state or show a success message
     } catch (error) {

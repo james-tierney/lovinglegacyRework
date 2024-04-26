@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import axios
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../utils/config';
 
 function BatchQRGeneration() {
     const [qrDataArray, setQrDataArray] = useState([]); 
@@ -7,7 +8,7 @@ function BatchQRGeneration() {
 
     const generateQrCodes = async () => {
         try {
-            const response = await axios.get(`https://lovinglegacy.onrender.com/batchGenerateQrCodes?numberOfCodes=${numberOfCodes}`);
+            const response = await axios.get(`${BASE_URL_DEV}/batchGenerateQrCodes?numberOfCodes=${numberOfCodes}`);
             const qrCodesData = response.data;
             console.log('Generated QR Codes:', qrCodesData);
             // Handle the generated QR codes data as needed

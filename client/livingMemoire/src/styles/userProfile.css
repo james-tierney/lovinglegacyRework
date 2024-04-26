@@ -44,6 +44,13 @@
     /* Add space between text and underline */
 }
 
+.footer-links-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
 .footer-links:hover {
     color: #C9B292;
     /* Change color on hover */

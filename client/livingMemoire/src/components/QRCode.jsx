@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../utils/config';
 
 const QRCode = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const QRCode = () => {
         // logic to check if the qr code has a profile associated with it 
         const checkQRCodeProfile = async () => {
             try {
-                const response = await axios.post('https://lovinglegacy.onrender.com/checkProfileExists', {qr_id: qr_id});
+                const response = await axios.post(`${BASE_URL_DEV}/checkProfileExists`, {qr_id: qr_id});
                 const data = response.data;
                 console.log("response in qrCode loading = ", response);
                 console.log("data in qrCode loading = ", data);

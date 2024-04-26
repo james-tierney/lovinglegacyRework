@@ -11,6 +11,7 @@ import ProfilePhotos from '../footerComponents/ProfilePhotos';
 import ProfileVideos from '../footerComponents/ProfileVideos';
 import ProfileLinks from '../footerComponents/ProfileLinks';
 import SiteNavigation from '../SiteNavigation';
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../../utils/config';
 
 export default function Profile() {
 
@@ -28,7 +29,7 @@ export default function Profile() {
   // a call to the server func getProfileByUsername 
   // @ route -> /userProfile
 
-    const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
+  const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
 
   const toggleMap = () => {
     setShowMap(!showMap);
@@ -42,21 +43,18 @@ export default function Profile() {
     setActiveLink(link);
   }
   
-
   useEffect(() => {
     const username = localStorage.getItem('username');
     const qr_id = localStorage.getItem('qr_id');
     if(username) {
       console.log("username from local storage ")
       dispatch(fetchProfileByUsername(username));
-      
     }
     else if(qr_id) {
       console.log("qr_id from local storage");
       dispatch(fetchProfileByQrId(qr_id));
     }
     // Dispatch action to fetch profile data only on page refresh
-    
   }, [])
 
   // Effect to make GET request to sever function when profileData changes
@@ -65,28 +63,26 @@ export default function Profile() {
       // Extract the username from profileData
       const username = profileData.username;
       console.log("in here");
-    
 
-    // make a GET request to the server-side function
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`https://lovinglegacy.onrender.com/userProfile`, {
-          params : {
-            username: username
-          }
-        });
-        console.log("Response from server: ", response.data);
-        setMedallionProfile(response.data.medallionProfile); // store fetched data in the state
-        // Handle the response data as needed here 
-      } catch(error) {
-        console.error('Error fetching data: ', error);
-        // Rest of handling the error show error msg client side??
+      // make a GET request to the server-side function
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`https://lovinglegacy.onrender.com/userProfile`, {
+            params : {
+              username: username
+            }
+          });
+          console.log("Response from server: ", response.data);
+          setMedallionProfile(response.data.medallionProfile); // store fetched data in the state
+          // Handle the response data as needed here 
+        } catch(error) {
+          console.error('Error fetching data: ', error);
+          // Rest of handling the error show error msg client side??
         }
       };
-    fetchData() // Call the fetchData function
+      fetchData() // Call the fetchData function
     }
   }, [profileData])   // dependancy to run the effect when ever profile data changes
-
 
   // Check if profile data exists before rendering ai
   if(!profileData || !medallionProfile) {
@@ -110,8 +106,6 @@ export default function Profile() {
         </div>
         
         <div className="text-center">
-          {/* <h1>Profile Username for medallion {profileData.username}</h1> */}
-   
           <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
           <div className='flex items-center mb-6 underline-div'></div>
           <p className="text-sm text-gray-600 mb-2">{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
@@ -130,19 +124,25 @@ export default function Profile() {
             Click to share!
           </button>
           <p>{medallionProfile.bio}</p>
-          <footer className="flex justify-around text-sm text-gray-600 border-t pt-2">
-            <a href="#" className={`footer-links ${activeLink === 'bio' ? 'active' : ''}`} onClick={(event) => handleLinkClick('bio', event)}>Bio</a>
-            <a href="#" className={`footer-links ${activeLink === 'photos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('photos', event)}>Photos</a>
-            <a href="#" className={`footer-links ${activeLink === 'videos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('videos', event)}>Videos</a>
-            <a href="#" className={`footer-links ${activeLink === 'links' ? 'active' : ''}`} onClick={(event) => handleLinkClick('links', event)}>Links</a>
-
-            {/* Render appropriate component based on the active link */}
-            {activeLink === 'bio' && <ProfileBio bioText={medallionProfile.bio} />}
-            {activeLink === 'photos' && <ProfilePhotos />}
-            {activeLink === 'videos' && <ProfileVideos />}
-            {activeLink === 'links' && <ProfileLinks profileLinks={medallionProfile.linkToObituary} />}
-          </footer>
         </div>
+      </div>
+      
+<footer className="flex justify-center text-sm text-gray-600 border-t pt-2">
+  <div className="footer-links-container">
+    <a href="#" className={`footer-links ${activeLink === 'bio' ? 'active' : ''}`} onClick={(event) => handleLinkClick('bio', event)}>Bio</a>
+    <a href="#" className={`footer-links ${activeLink === 'photos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('photos', event)}>Photos</a>
+    <a href="#" className={`footer-links ${activeLink === 'videos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('videos', event)}>Videos</a>
+    <a href="#" className={`footer-links ${activeLink === 'links' ? 'active' : ''}`} onClick={(event) => handleLinkClick('links', event)}>Links</a>
+  </div>
+</footer>
+
+      
+      {/* Render appropriate component based on the active link */}
+      <div className="container mx-auto">
+        {activeLink === 'bio' && <ProfileBio bioText={medallionProfile.bio} />}
+        {activeLink === 'photos' && <ProfilePhotos />}
+        {activeLink === 'videos' && <ProfileVideos />}
+        {activeLink === 'links' && <ProfileLinks profileLinks={medallionProfile.linkToObituary} />}
       </div>
     </div>
   );

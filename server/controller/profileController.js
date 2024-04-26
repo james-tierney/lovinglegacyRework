@@ -283,11 +283,35 @@ const createMedallionProfile = async (req, res) => {
 //   }
 // }
 
+const getVideosByUsername = async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    // Find the profile by username
+    const profile = await Profile.findOne({ username });
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    console.log("profile = ", profile.medallionProfile);
+    // Extract video media items from the profile's media field
+    const videos = profile.medallionProfile.media.filter(
+      (mediaItem) => mediaItem.mediaType === "video"
+    );
+    console.log("VIDEOS = ", videos);
+    // Return the videos in the response
+    res.status(200).json({ videos });
+  } catch (error) {
+    console.error("Error retrieving videos:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createProfile,
   getProfileByUsername,
   createMedallionProfile,
   getProfileByQrId,
   compressAndSaveImage,
+  getVideosByUsername,
   // getUserNameFromQRCodeId,
 };

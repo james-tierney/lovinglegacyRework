@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../../../styles/mediaForm.css'
-
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../../../utils/config';
 const MediaForm = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -22,7 +22,7 @@ const MediaForm = () => {
 
     try {
       // Send a POST request to the backend API endpoint
-      await axios.post("https://lovinglegacy.onrender.com/uploadMedia", {
+      await axios.post(`${BASE_URL_DEV}/uploadMedia`, {
         username,
         title: formData.title,
         description: formData.description,

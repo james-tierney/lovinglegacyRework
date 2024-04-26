@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { BASE_URL_LIVE, BASE_URL_DEV } from '../utils/config';
 function Home() {
   const [qrCodeData, setQrCodeData] = useState(null);
   const navigate = useNavigate();
 
   const generateQrCode = async () => {
     try {
-      const response = await axios.post('https://lovinglegacy.onrender.com/generateQrCode', {
-        qrData: 'https://lovinglegacy.vercel.app/signUp', // Replace with your desired QR data
+      const response = await axios.post(`${BASE_URL_DEV}/generateQrCode`, {
+        qrData: `${BASE_URL_DEV}/signUp`, // Replace with your desired QR data
       });
       setQrCodeData(response.data);
       console.log("qr code data = ", qrCodeData.data)
