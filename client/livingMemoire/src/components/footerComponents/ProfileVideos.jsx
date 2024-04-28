@@ -60,9 +60,7 @@ const ProfileVideos = () => {
 
   return (
     <div>
-      <button onClick={handleGetVideos}>Get Videos</button>
       <p>This is the profile Videos Component</p>
-      {console.log("videos = ", videos)}
       {videos.map((video, index) => (
         <div key={index}>
           <h3>{video.title}</h3>

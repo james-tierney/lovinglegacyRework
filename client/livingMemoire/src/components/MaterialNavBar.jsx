@@ -81,7 +81,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             </Menu>
           </Box>
         ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
             <Box>
               {routes.map((route) => (
@@ -90,6 +90,7 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
                   to={route.path}
                   onClick={handleNavigationClick}
                   className={`link ${location.pathname === route.path ? 'active' : ''}`}
+                  style={{ margin: '0 10px' }} // Adjust margin between menu items
                 >
                   {route.label}
                 </Link>
