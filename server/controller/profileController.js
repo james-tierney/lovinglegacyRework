@@ -284,7 +284,7 @@ const createMedallionProfile = async (req, res) => {
 // }
 
 const getVideosByUsername = async (req, res) => {
-  const { username } = req.body;
+  const { username, mediaType } = req.body;
 
   try {
     // Find the profile by username
@@ -294,12 +294,12 @@ const getVideosByUsername = async (req, res) => {
     }
     console.log("profile = ", profile.medallionProfile);
     // Extract video media items from the profile's media field
-    const videos = profile.medallionProfile.media.filter(
-      (mediaItem) => mediaItem.mediaType === "video"
+    const media = profile.medallionProfile.media.filter(
+      (mediaItem) => mediaItem.mediaType === mediaType
     );
-    console.log("VIDEOS = ", videos);
+    console.log("media = ", media);
     // Return the videos in the response
-    res.status(200).json({ videos });
+    res.status(200).json({ media });
   } catch (error) {
     console.error("Error retrieving videos:", error);
     res.status(500).json({ message: "Internal server error" });

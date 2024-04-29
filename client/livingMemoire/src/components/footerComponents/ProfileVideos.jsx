@@ -31,13 +31,16 @@ const ProfileVideos = () => {
 
   useEffect(() => {
     const getVideos = async () => {
+      const mediaType = "video";
     if(profileData) {
       setUsername(profileData.username);
       try {
         console.log("username in here = ", profileData.username);
-        const response = await axios.post(`${BASE_URL_DEV}/getVideosByUsername`, { username });
+        const response = await axios.post(`${BASE_URL_DEV}/getVideosByUsername`, { username, mediaType});
+        console.log("response = ", response);
         console.log("Videos retrieved successfully:", response.data.videos);
-        const videoData = response.data.videos.filter(video => video.mediaType === "video");
+        // not needed this filter anymore since done on backend now 
+        const videoData = response.data.media;
         setVideos(videoData);
         setLoading(false);
         
