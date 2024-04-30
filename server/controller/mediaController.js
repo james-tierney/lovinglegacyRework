@@ -1,4 +1,5 @@
 const compressAndSaveImage = require("../controller/profileController");
+const uploadProfilePicture = require("../controller/profileController");
 const Profile = require("../models/Profile");
 
 const uploadProfileMedia = async (req, res) => {
@@ -9,11 +10,14 @@ const uploadProfileMedia = async (req, res) => {
     // Find the profile document associated with the provided username
     const profile = await Profile.findOne({ username });
     console.log("profile in uploading media ", profile);
-
+    console.log("mediaLink = ", mediaLink);
     // If the profile doesn't exist, return an error
     if (!profile) {
       return res.status(404).json({ error: "Profile not found" });
     }
+
+    // need to sort the medial link for images
+    // to point to the firebase image link
 
     // Push the new media object into the profile's media array
     // Add the new media to the profile

@@ -22,12 +22,13 @@ const MediaForm = () => {
 
     try {
       // Send a POST request to the backend API endpoint
+     console.log("formData = ", formData);
       await axios.post(`${BASE_URL_DEV}/uploadMedia`, {
         username,
         title: formData.title,
         description: formData.description,
         mediaType: formData.mediaType,
-        mediaLink: formData.mediaType === "image" ? formData.file : formData.videoUrl,
+        mediaLink: formData.mediaType === "image" ? formData.file.name : formData.videoUrl,
       });
 
       // Reset form fields
@@ -45,9 +46,14 @@ const MediaForm = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    console.log("name = ", name);
+    console.log("value = ", value);
+    console.log("files = ", files);
     if (name === "file") {
+      console.log("files = ", files[0].name);
       setFormData({
         ...formData,
+        file: files[0].name,
         [name]: files[0], // Store the file object in state
       });
     } else {
@@ -96,15 +102,15 @@ const MediaForm = () => {
               <div className="flex text-sm text-gray-600">
                 <label
                   className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none"
-                  htmlFor="file-upload"
+                  htmlFor="file"
                 >
                   <span>Drag images or click to upload images</span>
                   <input
                     type="file"
-                    name="file-upload"
+                    name="file"
                     onChange={handleChange}
                     className="sr-only"
-                    id="file-upload"
+                    id="file"
                   />
                 </label>
               </div>
