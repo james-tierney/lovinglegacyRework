@@ -313,5 +313,6 @@ module.exports = {
   getProfileByQrId,
   compressAndSaveImage,
   getVideosByUsername,
+  uploadProfilePicture,
   // getUserNameFromQRCodeId,
 };

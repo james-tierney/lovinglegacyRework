@@ -10,7 +10,7 @@ import PrivateRoutes from './PrivateRoutes';
 import Login from './Login';
 import QRCode from './QRCode';
 import ProfileSettings from './profileSettings/ProfileSettings';
-
+import HomeInfo from './HomeInfo';
 const AppRouter = () => {
   return (
     <Router>
@@ -20,6 +20,7 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/batchGeneration" element={<BatchQRGeneration />} />
         <Route path="/qrCode" element={<QRCode />} />
+        <Route path="/info" element={<HomeInfo />} />
         {/* <Route path="/userProfile" element={<UserProfile />} /> */}
         {/* <Route element={<PrivateRoutes />}> */}
           <Route path="/userProfile" element={<UserProfile/>} />

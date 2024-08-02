@@ -19,17 +19,19 @@ const MediaForm = () => {
       console.error("Username not found in local storage");
       return;
     }
+  try {
+    // Create a FormData object
+    const formDataToSend = new FormData();
+    formDataToSend.append('username', username);
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('mediaType', formData.mediaType);
+    formDataToSend.append('mediaLink', formData.mediaType === "image" ? formData.file.name : formData.videoUrl);
+    formDataToSend.append('mediaFile', formData.mediaType === "image" ? formData.file : "");
 
-    try {
-      // Send a POST request to the backend API endpoint
-     console.log("formData = ", formData);
-      await axios.post(`${BASE_URL_DEV}/uploadMedia`, {
-        username,
-        title: formData.title,
-        description: formData.description,
-        mediaType: formData.mediaType,
-        mediaLink: formData.mediaType === "image" ? formData.file.name : formData.videoUrl,
-      });
+    // Send a POST request to the backend API endpoint
+    const response = await axios.post(`${BASE_URL_DEV}/uploadMedia`, formDataToSend);
+
 
       // Reset form fields
       setFormData({
@@ -50,10 +52,10 @@ const MediaForm = () => {
     console.log("value = ", value);
     console.log("files = ", files);
     if (name === "file") {
-      console.log("files = ", files[0].name);
+      console.log("files = ", files[0].data);
       setFormData({
         ...formData,
-        file: files[0].name,
+        file: files[0],
         [name]: files[0], // Store the file object in state
       });
     } else {
@@ -65,7 +67,7 @@ const MediaForm = () => {
   };
 
   return (
-    <form className="media-form" onSubmit={handleSubmit}>
+    <form className="media-form" encType='multipart/form-data' onSubmit={handleSubmit}>
             {/* Media Type */}
       <div className="media-type-options">
         <label className="block text-sm font-medium text-gray-700">Media Type:</label>

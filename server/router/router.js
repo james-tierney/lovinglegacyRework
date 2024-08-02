@@ -59,7 +59,11 @@ router.post("/checkProfileExists", qrCodeController.doesQrCodeHaveProfile);
 router.post("/updateQRCode", qrCodeController.updateQrCode);
 router.get("/getQrUrl", qrCodeController.getQRCodeSVGUrl);
 
-router.post("/uploadMedia", mediaController.uploadProfileMedia);
+router.post(
+  "/uploadMedia",
+  upload.single("mediaFile"),
+  mediaController.uploadProfileMedia
+);
 router.post("/getVideosByUsername", profileController.getVideosByUsername);
 
 module.exports = router;

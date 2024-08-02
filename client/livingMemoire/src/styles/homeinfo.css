@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+
+    /* Optional: Set a background color */
+}
+
+.header {
+
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    /* Increase the font size for the header */
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: -40px;
+    /* Adjust based on header height */
+}
+
+.message h2,
+.footer h2 {
+    font-size: 2rem;
+    /* Increase font size for content headings */
+    margin-bottom: 10px;
+}
+
+.message p,
+.footer p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.connect-button,
+.buy-button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #333;
+    color: #fff;
+}
+
+.connect-button:hover,
+.buy-button:hover {
+    background-color: #555;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+}
+
+.divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+.divider span {
+    margin: 0 10px;
+    color: #555;
+}
+
+.connect-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #333;
+    color: #fff;
+}
+
+.connect-button .icon {
+    width: 20px;
+    height: 20px;
+    /* Adjust the icon size */
+    margin-right: 8px;
+    /* Space between icon and text */
+    display: inline-block;
+    /* Ensures the SVG is treated like text */
+    vertical-align: middle;
+    /* Aligns with text */
+}
