@@ -1,55 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import Cookies from 'js-cookie';
-import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 import SiteNavigation from './SiteNavigation';
-
+import GoogleSVG from '../assets/google-logo/google.svg'
 
 const Login = () => {
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const auth = getAuth();
-    const { loginUser, loading, user} = useContext(AuthContext);
-
-    // const handleLogin = async () => {
-    //     try {
-    //         // Make POST request to backend server route
-    //         const response = await axios.post('http://localhost:3001/login', {
-    //             username, 
-    //             password,
-    //         });
-    //             console.log("login response = ", response.data
-    //             )
-    //         if (response.status === 200) {
-    //             //const cookie = Cookies.get('token');
-                
-    //             const token = response.data.token;
-                
-    //             console.log("checking for cookie token in login ", token);
-                
-    //             document.cookie = `token=${token}; path=/`
-    //             // Handle successful login e.g redirect to another page
-    //             // TODO add IF statement here for the success logic
-    //             // based on response from the server
-    //             console.log("Login Successful", response.data);
-    //             setError('');
-    //             navigate('/userProfile', {
-    //                 state: { username: response.data.user.username },
-    //                 uName: response.data.user.username,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         // Handle login error (e.g. display error message)
-    //         console.error("Login failed", error.response.data.message);
-    //         setError(error.response.data.message);
-    //     }
-    // };
+    const { loginUser, loading, user } = useContext(AuthContext);
 
     const handleLogin = async () => {
         try {
@@ -58,7 +22,6 @@ const Login = () => {
             const firebaseUser = userCredential.user;
 
             console.log("firebase user on login page", firebaseUser);
-            // Retrieve the username from the user's displayName property
             const username = firebaseUser.displayName;
 
             // Redirect to the user profile page with the username as state
@@ -66,42 +29,67 @@ const Login = () => {
                 state: { username },
             });
         } catch (error) {
-            // Handle login error (e.g. display error message)
             console.error("Login failed", error.message);
             setError(error.message);
         }
-    }
+    };
+
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const firebaseUser = result.user;
+
+            console.log("firebase user on login page", firebaseUser);
+            const username = firebaseUser.displayName;
+
+            navigate('/userProfile', {
+                state: { username },
+            });
+        } catch (error) {
+            console.error("Google login failed", error.message);
+            setError(error.message);
+        }
+    };
 
     return (
-        <div>
-            <SiteNavigation/>
-            <h2>Login</h2>
-            <div>
-                <label>Username:</label>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
+            <SiteNavigation />
+            <h2 style={{ fontWeight: 'bold' }}>Login</h2>
+            <p>For login, no registration is necessary.</p>
+            <div style={{ width: '300px', marginBottom: '15px' }}>
                 <input 
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}        
-                />
-            </div>
-            <div>
-                <label>Email:</label>
-                <input
-                    type="text"
+                    placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                />
-                </div>
-            <div>
-                <label>Password:</label>
-                <input 
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                 />
             </div>
-            {error && <div style={{color: 'red'}}>{error}</div>}
-            <button onClick={handleLogin}>Login</button>
+            <div style={{ width: '300px', marginBottom: '15px' }}>
+                <input 
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                />
+            </div>
+            {error && <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>}
+            <button
+                onClick={handleLogin}
+                style={{ width: '300px', padding: '10px', marginBottom: '10px', borderRadius: '5px', backgroundColor: 'black', color: 'white', border: 'none', cursor: 'pointer' }}
+            >
+                Sign in
+            </button>
+            <button
+                onClick={handleGoogleLogin}
+                style={{ width: '300px', padding: '10px', borderRadius: '5px', backgroundColor: 'white', color: 'black', border: '1px solid #ccc', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+                <img src={GoogleSVG} alt="Google logo" style={{ width: '20px', height: '20px', marginRight: '10px' }} />
+                
+                Login with Google
+            </button>
         </div>
     );
 };

@@ -7,6 +7,7 @@ function Home() {
   const navigate = useNavigate();
 
   const generateQrCode = async () => {
+    console.log("base url = ", BASE_URL_DEV);
     try {
       const response = await axios.post(`${BASE_URL_DEV}/generateQrCode`, {
         qrData: `${BASE_URL_DEV}/signUp`, // Replace with your desired QR data
