@@ -1,58 +1,26 @@
-// AuthProvider.js
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { createContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { getAuth } from 'firebase/auth';
+import React, { createContext, useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-export const AuthContext = createContext(null);
-
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const auth = getAuth();
-  const createUser = (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  const loginUser = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            setUser(firebaseUser);
+            setLoading(false);
+        });
 
-  const logOut = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
+        // Cleanup subscription on unmount
+        return () => unsubscribe();
+    }, []);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  const authValue = {
-    createUser,
-    user,
-    loginUser,
-    logOut,
-    loading,
-  };
-
-  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
-};
-
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+    return (
+        <AuthContext.Provider value={{ user, loading }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

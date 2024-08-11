@@ -1,0 +1,15 @@
+
+
+.logo-container {
+    width: 100%;
+    /* Full width of the screen */
+    padding: 20px 0;
+    /* Adjust the padding as needed */
+}
+
+.logo-img {
+    max-width: 100%;
+    /* Ensure the logo does not exceed the container width */
+    height: auto;
+    /* Maintain aspect ratio */
+}

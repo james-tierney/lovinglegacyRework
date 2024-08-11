@@ -2,143 +2,169 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
-import Map from '../Map';
-import ProfileHeader from '../ProfileHeader';
-import LogoSVG from '../../assets/logo/logo.svg';
-import '../../styles/userProfile.css';
 import ProfileBio from '../footerComponents/ProfileBio';
 import ProfilePhotos from '../footerComponents/ProfilePhotos';
 import ProfileVideos from '../footerComponents/ProfileVideos';
 import ProfileLinks from '../footerComponents/ProfileLinks';
 import SiteNavigation from '../SiteNavigation';
-import { BASE_URL_LIVE, BASE_URL_DEV } from '../../utils/config';
 
 export default function Profile() {
-
-  const [activeLink, setActiveLink] = useState('bio'); // state to track active footer link
-  
-  // Access profile data from the Redux store 
+  const [activeLink, setActiveLink] = useState('bio');
   const profileData  = useSelector(state => state.profile.data);
   const dispatch = useDispatch();
-  console.log("profile data from redux store = ", profileData);
-  const [medallionProfile, setMedallionProfile] = useState(null); // state to store medallion data
-  const [showMap, setShowMap] = useState(false);
-  const [mapText, setMapText] = useState("Map");
-  // Now that we have the profile data from the redux store
-  // we can extract the username and use it to make
-  // a call to the server func getProfileByUsername 
-  // @ route -> /userProfile
+  const [medallionProfile, setMedallionProfile] = useState(null);
 
-  const [isNavigatedByApp, setIsNavigatedByApp] = useState(false) // state to track navigation intitiated by app 
-
-  const toggleMap = () => {
-    setShowMap(!showMap);
-    // If showMap false, set map text to hide map otherwise set to show map
-    setMapText(showMap ? "Show Map" : "Hide Map");
-  }
-
-  const handleLinkClick = (link, e) => {
-    e.preventDefault()
-    console.log("current active link = ", activeLink)
-    setActiveLink(link);
-  }
-  
   useEffect(() => {
     const username = localStorage.getItem('username');
     const qr_id = localStorage.getItem('qr_id');
-    if(username) {
-      console.log("username from local storage ")
+    if (username) {
       dispatch(fetchProfileByUsername(username));
-    }
-    else if(qr_id) {
-      console.log("qr_id from local storage");
+    } else if (qr_id) {
       dispatch(fetchProfileByQrId(qr_id));
     }
-    // Dispatch action to fetch profile data only on page refresh
-  }, [])
+  }, [dispatch]);
 
-  // Effect to make GET request to sever function when profileData changes
   useEffect(() => {
-    if(profileData) {
-      // Extract the username from profileData
-      const username = profileData.username;
-      console.log("in here");
-
-      // make a GET request to the server-side function
+    if (profileData) {
       const fetchData = async () => {
         try {
           const response = await axios.get(`https://lovinglegacy.onrender.com/userProfile`, {
-            params : {
-              username: username
-            }
+            params: { username: profileData.username }
           });
-          console.log("Response from server: ", response.data);
-          setMedallionProfile(response.data.medallionProfile); // store fetched data in the state
-          // Handle the response data as needed here 
-        } catch(error) {
+          setMedallionProfile(response.data.medallionProfile);
+        } catch (error) {
           console.error('Error fetching data: ', error);
-          // Rest of handling the error show error msg client side??
         }
       };
-      fetchData() // Call the fetchData function
+      fetchData();
     }
-  }, [profileData])   // dependancy to run the effect when ever profile data changes
+  }, [profileData]);
 
-  // Check if profile data exists before rendering ai
-  if(!profileData || !medallionProfile) {
-    return (
-      <div>Loading...</div>
-    );
+  if (!profileData || !medallionProfile) {
+    return <div>Loading...</div>;
   }
-  
-  return (
-    <div className="bg-gray-100">
-      <SiteNavigation  setIsNavigatedByApp={setIsNavigatedByApp} />
 
-      <div className="container mx-auto">
-        <div className="max-w-sm mx-auto ">
-          <div className="flex items-center justify-between">
-            <img src={LogoSVG} alt="loving-legacy-logo" className='logo-img'/>
-          </div>
+  const styles = {
+    profilePage: {
+      maxWidth: '935px',
+      margin: '0 auto',
+      paddingTop: '50px',
+      backgroundColor: '#fff',
+    },
+    headerImageContainer: {
+      width: '100%',
+      height: '200px',
+      backgroundImage: `url('https://via.placeholder.com/935x200?text=Header+Image')`, // Placeholder header image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'relative',
+    },
+    profileHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      marginBottom: '20px',
+      padding: '0 20px',
+      position: 'relative',
+      top: '-70px', // Moves the header up to partially overlay the header image
+      marginLeft: '0%', // Adjusts position to be closer to the left side
+      maxWidth: '60%', // Keeps content width within a specific range
+    },
+    profilePicContainer: {
+      zIndex: 1,
+    },
+    profilePicture: {
+      width: '150px',
+      height: '150px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '5px solid white',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+    },
+    profileInfo: {
+      textAlign: 'center',
+      marginTop: '20px', // Adds spacing between the profile picture and the text
+    },
+    inLovingMemory: {
+      fontSize: '18px',
+      color: '#8e8e8e',
+      marginBottom: '5px',
+    },
+    profileName: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      color: '#000',
+    },
+    profileDates: {
+      color: '#8e8e8e',
+    },
+    profileTabs: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      borderTop: '1px solid #dbdbdb',
+      borderBottom: '1px solid #dbdbdb',
+      backgroundColor: '#fafafa',
+    },
+    tab: {
+      flex: 1,
+      textAlign: 'center',
+      padding: '10px 0',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      color: '#262626',
+    },
+    tabActive: {
+      borderBottom: '2px solid #000',
+      color: '#000',
+    },
+    profileContent: {
+      padding: '20px',
+    },
+  };
+
+  return (
+    <div style={styles.profilePage}>
+      <SiteNavigation />
+      <div style={styles.headerImageContainer}></div> {/* Header Image */}
+      <div style={styles.profileHeader}>
+        <div style={styles.profilePicContainer}>
+          <img style={styles.profilePicture} src={medallionProfile.profilePicture} alt="Profile" />
         </div>
-        <div className='image-container'>
-          <img style={{ maxWidth: '90%', height: 'auto'}} src={medallionProfile.profilePicture}></img>
-        </div>
-        
-        <div className="text-center">
-          <h2 className="text-lg font-semibold">{medallionProfile.firstName} {medallionProfile.lastName}</h2>
-          <div className='flex items-center mb-6 underline-div'></div>
-          <p className="text-sm text-gray-600 mb-2">{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
-          <div className="text-sm text-gray-600 mb-4">
-            <p>City: {medallionProfile.city}</p>
-            <p>State: {medallionProfile.state}</p>
-            <p>Forest Lawn Memorial Park</p>
-            <p>Hollywood Hills, California</p>
-            <p>Plot Number: Lincoln Terrace section, Map #H89, Lot 5245, Companion Garden Crypt 2</p>
-            <div className='map-container'>
-              {showMap && <Map lat={medallionProfile.coordinates[0]} lng={medallionProfile.coordinates[1]} />}
-            </div>
-            <button className="text-blue-500 underline map-btn" onClick={toggleMap}>{mapText}</button>
-          </div>
-          <button className="share-btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors mb-4">
-            Click to share!
-          </button>
-          <p>{medallionProfile.bio}</p>
+        <div style={styles.profileInfo}>
+          <p style={styles.inLovingMemory}>In loving memory of</p>
+          <h2 style={styles.profileName}>{medallionProfile.firstName} {medallionProfile.lastName}</h2>
+          <p style={styles.profileDates}>{medallionProfile.birthDate} - {medallionProfile.deathDate}</p>
         </div>
       </div>
-      
-<footer className="flex justify-center text-sm text-gray-600 border-t pt-2">
-  <div className="footer-links-container">
-    <a href="#" className={`footer-links ${activeLink === 'bio' ? 'active' : ''}`} onClick={(event) => handleLinkClick('bio', event)}>Bio</a>
-    <a href="#" className={`footer-links ${activeLink === 'photos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('photos', event)}>Photos</a>
-    <a href="#" className={`footer-links ${activeLink === 'videos' ? 'active' : ''}`} onClick={(event) => handleLinkClick('videos', event)}>Videos</a>
-    <a href="#" className={`footer-links ${activeLink === 'links' ? 'active' : ''}`} onClick={(event) => handleLinkClick('links', event)}>Links</a>
-  </div>
-</footer>
 
-      
-      {/* Render appropriate component based on the active link */}
-      <div className="container mx-auto">
+      <div style={styles.profileTabs}>
+        <div
+          style={{ ...styles.tab, ...(activeLink === 'bio' ? styles.tabActive : {}) }}
+          onClick={() => setActiveLink('bio')}
+        >
+          Bio
+        </div>
+        <div
+          style={{ ...styles.tab, ...(activeLink === 'photos' ? styles.tabActive : {}) }}
+          onClick={() => setActiveLink('photos')}
+        >
+          Photos
+        </div>
+        <div
+          style={{ ...styles.tab, ...(activeLink === 'videos' ? styles.tabActive : {}) }}
+          onClick={() => setActiveLink('videos')}
+        >
+          Videos
+        </div>
+        <div
+          style={{ ...styles.tab, ...(activeLink === 'links' ? styles.tabActive : {}) }}
+          onClick={() => setActiveLink('links')}
+        >
+          Links
+        </div>
+      </div>
+
+      <div style={styles.profileContent}>
         {activeLink === 'bio' && <ProfileBio bioText={medallionProfile.bio} />}
         {activeLink === 'photos' && <ProfilePhotos />}
         {activeLink === 'videos' && <ProfileVideos />}

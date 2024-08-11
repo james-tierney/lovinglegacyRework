@@ -27,6 +27,27 @@ const Signup = () => {
         });
     };
 
+    const updateQRCodeWithUserProfile = async (username, qrId) => {
+    try {
+      const response = await fetch(`${BASE_URL_DEV}/updateQRCodeWithUserProfile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, qrId }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('QR code updated with user profile:', result);
+      } else {
+        console.error('Failed to update QR code with user profile');
+      }
+    } catch (error) {
+      console.error('Error updating QR code with user profile:', error);
+    }
+  };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -68,12 +89,13 @@ const Signup = () => {
         try {
             const result = await signInWithPopup(auth, new GoogleAuthProvider());
             const firebaseUser = result.user;
+            const email = firebaseUser.email;
             const username = firebaseUser.displayName;
 
             const response = await fetch(`${BASE_URL_DEV}/createProfile`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: firebaseUser.email, username, qrCodeId }),
+                body: JSON.stringify({ email, username, qrCodeId }),
             });
 
             if (response.ok) {

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu'; // Import the MenuIcon (Hamburger)
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
@@ -13,8 +13,6 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import logoSVG from '../assets/logo/logo.svg';
 import '../styles/materialNavBar.css';
 import { useLocation } from 'react-router-dom';
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function MaterialNavBar({ routes, handleNavigationClick }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -41,20 +39,20 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#EBF0EE', height: isMobile ? '50px' : '100px' }}>
-      <Toolbar disableGutters style={{ height: '100%'}}>
+      <Toolbar disableGutters style={{ height: '100%' }}>
         {isMobile ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%', }}>
-            <img src={logoSVG} style={{ width: '20%',}} alt="Logo" className="logo" />
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
+            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
             <IconButton
               size="large"
               aria-label="menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="#444242"
+              color="black"
               sx={{ marginLeft: 'auto' }} // Align to the right
             >
-              <MenuIcon />
+              <MenuIcon /> {/* Hamburger Icon */}
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -81,25 +79,25 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
             </Menu>
           </Box>
         ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-            <img src={logoSVG} style={{ width: '20%' }} alt="Logo" className="logo" />
-            <Box>
-              {routes.map((route) => (
-                <Link
-                  key={route.label}
-                  to={route.path}
-                  onClick={handleNavigationClick}
-                  className={`link ${location.pathname === route.path ? 'active' : ''}`}
-                  style={{ margin: '0 10px' }} // Adjust margin between menu items
-                >
-                  {route.label}
-                </Link>
-              ))}
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            {/* Centered logo */}
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+              <img src={logoSVG} style={{ height: '60px' }} alt="Logo" className="logo" />
             </Box>
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+
+            {/* Right-aligned avatar and settings */}
+            <Box sx={{ position: 'absolute', right: 16 }}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: '15px' }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <IconButton
+                  size="large"
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenUserMenu}
+                  color="black"
+                  sx={{ marginLeft: 'auto' }} // Align to the right
+                >
+                  <MenuIcon /> {/* Hamburger Icon */}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -118,9 +116,11 @@ function MaterialNavBar({ routes, handleNavigationClick }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    {setting}
+                {routes.map((route) => (
+                  <MenuItem key={route.label} onClick={handleCloseUserMenu}>
+                    <Link to={route.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {route.label}
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>

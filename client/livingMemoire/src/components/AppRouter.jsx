@@ -11,6 +11,9 @@ import Login from './Login';
 import QRCode from './QRCode';
 import ProfileSettings from './profileSettings/ProfileSettings';
 import HomeInfo from './HomeInfo';
+import ProfilePageTester from './Profile/ProfilePage';
+import authTest from './temp/authTest';
+import PrivateRoute from './temp/PrivateRoute';
 const AppRouter = () => {
   return (
     <Router>
@@ -26,6 +29,8 @@ const AppRouter = () => {
           <Route path="/userProfile" element={<UserProfile/>} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<ProfileSettings />} />
+          <Route path="/profileTester" element={<ProfilePageTester />} />
+            <Route path="/test" element={<PrivateRoute element={authTest} />} />
         
         {/* </Route> */}
         

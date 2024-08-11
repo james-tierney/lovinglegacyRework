@@ -2,6 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MaterialNavBar from './MaterialNavBar';
+import { useMediaQuery, useTheme } from '@mui/material';
+
+
 
 const routes = [
   { path: '/', label: 'Home' },
@@ -16,6 +19,9 @@ const routes = [
 
 const SiteNavigation = ({ setIsNavigatedByApp }) => {
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
     // func to handle nav click
     const handleNavigationClick = () => {
         // Set the flag indicating navigation initiated by app in local storge
@@ -26,7 +32,7 @@ const SiteNavigation = ({ setIsNavigatedByApp }) => {
 
   return (
     
-    <div>
+    <div style={{padding: isMobile ? '0px' : '0px'}}>
       <MaterialNavBar routes={routes} handleNavigationClick={handleNavigationClick}/>
     </div>
     // <nav className="border-b mb-4">

@@ -19,6 +19,56 @@
     z-index: -1;
 }
 
+.text-positioned {
+    margin-left: 10%;
+    /* Adjust to move the text more to the left or right */
+    max-width: 60%;
+    /* Adjust width to fit your design */
+    padding: 1rem;
+    /* Optional: Adds padding inside the container */
+    text-align: left;
+}
+
+.image-container {
+    margin-left: 10%;
+    /* Aligns the image similarly to the text */
+    max-width: 40%;
+    /* Control how much space the image container takes */
+    padding: 1rem;
+    /* Optional: Adds padding around the image */
+    text-align: left;
+    /* Ensures the image is aligned to the left */
+}
+
+.profile-picture {
+    width: 150px;
+    /* Set the width of the image */
+    height: 150px;
+    /* Set the height of the image, making it a square */
+    border-radius: 50%;
+    /* Makes the image circular */
+    object-fit: cover;
+    /* Ensures the image covers the entire area without distortion */
+    border: 2px solid #fff;
+    /* Optional: Adds a white border like Instagram */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds a subtle shadow for effect */
+}
+
+.text-positioned h2 {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    /* Adjust font size if necessary */
+}
+
+.text-positioned p {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    /* Adjust font size if necessary */
+    color: #4A4A4A;
+    /* Adjust color if necessary */
+}
+
 /* Container styles */
 .max-w-sm {
     max-width: 24rem;

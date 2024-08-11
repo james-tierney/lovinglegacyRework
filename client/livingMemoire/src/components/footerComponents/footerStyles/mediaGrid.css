@@ -1,0 +1,47 @@
+.profile-posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 images per row */
+    gap: 1px;
+    /* equal space between images on all sides */
+    padding: 0;
+    /* ensure no padding on the grid container */
+    margin: 0;
+    /* ensure no margin on the grid container */
+    box-sizing: border-box;
+    /* include padding and border in element's width and height */
+}
+
+.post {
+    margin: 0;
+    /* ensure no margin on each post element */
+    padding: 0;
+    /* ensure no padding on each post element */
+    box-sizing: border-box;
+    /* include padding and border in element's width and height */
+}
+
+.post img {
+    width: 100%;
+    /* make the image fill the grid cell */
+    height: auto;
+    /* keep the aspect ratio */
+    aspect-ratio: 1 / 1;
+    /* force the images to be square */
+    object-fit: cover;
+    /* crop the image to cover the entire grid cell */
+    display: block;
+    /* remove default inline spacing */
+}
+
+.tabs-container {
+    max-height: 100%;
+    max-width: 50%;
+    background-color: aqua;
+    padding: 0;
+    /* ensure no padding on the tabs container */
+    margin: 0 auto;
+    /* center the container */
+    box-sizing: border-box;
+    /* include padding and border in element's width and height */
+}

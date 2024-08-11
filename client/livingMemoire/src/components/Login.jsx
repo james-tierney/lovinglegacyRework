@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import Cookies from 'js-cookie';
 import { AuthContext } from '../context/AuthProvider';
 import SiteNavigation from './SiteNavigation';
 import GoogleSVG from '../assets/google-logo/google.svg'
@@ -13,21 +11,12 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const auth = getAuth();
-    const { loginUser, loading, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const handleLogin = async () => {
         try {
-            // Sign in the user with email and password using Firebase Authentication
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const firebaseUser = userCredential.user;
-
-            console.log("firebase user on login page", firebaseUser);
-            const username = firebaseUser.displayName;
-
-            // Redirect to the user profile page with the username as state
-            navigate('/userProfile', {
-                state: { username },
-            });
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/userProfile');
         } catch (error) {
             console.error("Login failed", error.message);
             setError(error.message);
@@ -37,15 +26,8 @@ const Login = () => {
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            const result = await signInWithPopup(auth, provider);
-            const firebaseUser = result.user;
-
-            console.log("firebase user on login page", firebaseUser);
-            const username = firebaseUser.displayName;
-
-            navigate('/userProfile', {
-                state: { username },
-            });
+            await signInWithPopup(auth, provider);
+            navigate('/userProfile');
         } catch (error) {
             console.error("Google login failed", error.message);
             setError(error.message);
