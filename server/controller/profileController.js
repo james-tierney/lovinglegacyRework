@@ -306,6 +306,26 @@ const getVideosByUsername = async (req, res) => {
   }
 };
 
+const editProfile = async (req, res) => {
+  const { username } = req.body;
+  console.log("req.body in editProfile func = ", req.body);
+  try {
+    // find profile by username
+    const profile = await Profile.findOne({ username });
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    console.log(
+      "This is the profile details you are trying to update ",
+      profile
+    );
+    console.log("These are the editted profile details ", req.body);
+  } catch (error) {
+    cosnole.error("Error updating profile ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createProfile,
   getProfileByUsername,
@@ -314,5 +334,6 @@ module.exports = {
   compressAndSaveImage,
   getVideosByUsername,
   uploadProfilePicture,
+  editProfile,
   // getUserNameFromQRCodeId,
 };

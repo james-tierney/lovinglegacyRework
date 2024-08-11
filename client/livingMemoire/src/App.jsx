@@ -4,12 +4,15 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import './components/AppRouter';
 import AppRouter from './components/AppRouter';
+import { AuthProvider } from './context/AuthProvider';
 
 function App() {
   
   return (
     <div className='app-div'>
-      <AppRouter/>
+      <AuthProvider>
+        <AppRouter/>
+      </AuthProvider>
     </div>
   )
 }

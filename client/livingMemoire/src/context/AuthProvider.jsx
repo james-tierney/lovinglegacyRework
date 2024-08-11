@@ -12,6 +12,10 @@ export const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser);
             setLoading(false);
+
+            if (firebaseUser) {
+                alert(`User logged in: \nName: ${firebaseUser.displayName}\nEmail: ${firebaseUser.email}`);
+            }
         });
 
         // Cleanup subscription on unmount
@@ -20,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ user, loading }}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     );
 };

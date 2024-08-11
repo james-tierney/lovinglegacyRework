@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProfileByUsername, fetchProfileByQrId } from '../../redux/ProfileSlicer'; 
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import ProfileBio from '../footerComponents/ProfileBio';
 import ProfilePhotos from '../footerComponents/ProfilePhotos';
 import ProfileVideos from '../footerComponents/ProfileVideos';
@@ -13,6 +14,7 @@ export default function Profile() {
   const profileData  = useSelector(state => state.profile.data);
   const dispatch = useDispatch();
   const [medallionProfile, setMedallionProfile] = useState(null);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -120,6 +122,15 @@ export default function Profile() {
     profileContent: {
       padding: '20px',
     },
+    editButton: {
+      marginTop: '20px',
+      padding: '10px 20px',
+      backgroundColor: '#000',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+    },
   };
 
   return (
@@ -170,6 +181,13 @@ export default function Profile() {
         {activeLink === 'videos' && <ProfileVideos />}
         {activeLink === 'links' && <ProfileLinks profileLinks={medallionProfile.linkToObituary} />}
       </div>
+
+      <button 
+        style={styles.editButton}
+        onClick={() => navigate('/editProfile')} // Navigate to the edit profile route when clicked
+      >
+        Edit Profile
+      </button>
     </div>
   );
 }

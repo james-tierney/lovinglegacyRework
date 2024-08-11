@@ -5,15 +5,16 @@ import Home from './Home';
 import Signup from './SignUp';
 import UserProfile from './UserProfile';
 import BatchQRGeneration from './BatchQRGeneration';
+
 import ProfilePage from './temp/Profile';
 import PrivateRoutes from './PrivateRoutes';
 import Login from './Login';
 import QRCode from './QRCode';
 import ProfileSettings from './profileSettings/ProfileSettings';
 import HomeInfo from './HomeInfo';
-import ProfilePageTester from './Profile/ProfilePage';
 import authTest from './temp/authTest';
 import PrivateRoute from './temp/PrivateRoute';
+import EditProfile from './temp/EditProfile';
 const AppRouter = () => {
   return (
     <Router>
@@ -29,7 +30,7 @@ const AppRouter = () => {
           <Route path="/userProfile" element={<UserProfile/>} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<ProfileSettings />} />
-          <Route path="/profileTester" element={<ProfilePageTester />} />
+          <Route path="/editProfile" element={<PrivateRoute element={EditProfile} />} />
             <Route path="/test" element={<PrivateRoute element={authTest} />} />
         
         {/* </Route> */}
