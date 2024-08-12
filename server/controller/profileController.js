@@ -308,20 +308,58 @@ const getVideosByUsername = async (req, res) => {
 
 const editProfile = async (req, res) => {
   const { username } = req.body;
-  console.log("req.body in editProfile func = ", req.body);
+  const {
+    firstName,
+    middleName,
+    lastName,
+    birthDate,
+    deathDate,
+    bioInfo,
+    profilePicture,
+    linkToObituary,
+    city,
+    state,
+    textOrPhrase,
+    quoteSection,
+  } = req.body;
+
   try {
-    // find profile by username
-    const profile = await Profile.findOne({ username });
-    if (!profile) {
+    const update = {
+      "medallionProfile.firstName": firstName,
+      "medallionProfile.middleName": middleName,
+      "medallionProfile.lastName": lastName,
+      "medallionProfile.birthDate": birthDate,
+      "medallionProfile.deathDate": deathDate,
+      "medallionProfile.bioInfo": bioInfo,
+      "medallionProfile.profilePicture": profilePicture,
+      "medallionProfile.linkToObituary": linkToObituary,
+      "medallionProfile.city": city,
+      "medallionProfile.state": state,
+      "medallionProfile.textOrPhrase": textOrPhrase,
+      "medallionProfile.quoteSection": quoteSection,
+    };
+
+    // Remove undefined fields
+    Object.keys(update).forEach(
+      (key) => update[key] === undefined && delete update[key]
+    );
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { username },
+      { $set: update },
+      { new: true }
+    );
+
+    if (!updatedProfile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-    console.log(
-      "This is the profile details you are trying to update ",
-      profile
-    );
-    console.log("These are the editted profile details ", req.body);
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      profile: updatedProfile,
+    });
   } catch (error) {
-    cosnole.error("Error updating profile ", error);
+    console.error("Error updating profile", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

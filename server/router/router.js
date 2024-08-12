@@ -65,6 +65,10 @@ router.post(
   mediaController.uploadProfileMedia
 );
 router.post("/getVideosByUsername", profileController.getVideosByUsername);
-router.put("/editProfile", profileController.editProfile);
+router.put(
+  "/editProfile",
+  upload.single("profilePicture"),
+  profileController.editProfile
+);
 
 module.exports = router;

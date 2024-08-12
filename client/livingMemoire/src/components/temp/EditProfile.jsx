@@ -49,6 +49,7 @@ export default function EditProfile() {
   }, [profileData]);
 
   const handleChange = (e) => {
+    console.log("form data in handle change = ", formData);
     const { name, value, files } = e.target;
     if (name === 'profilePicture') {
       setFormData({ ...formData, profilePicture: files[0] });
@@ -61,11 +62,19 @@ export default function EditProfile() {
     e.preventDefault();
 
     const formDataToSend = new FormData();
+
     for (const key in formData) {
+      console.log("key = ", key);
       if (formData[key]) {
         formDataToSend.append(key, formData[key]);
+        console.log("appended key = ", key);
       }
     }
+        // Log all entries in the FormData object
+    for (let [key, value] of formDataToSend.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    formDataToSend.append("username", profileData.username); // need to have this to lookup user details in databse
 
     try {
         console.log("form data to send", formDataToSend);
@@ -131,7 +140,7 @@ export default function EditProfile() {
           <label>Bio</label>
           <textarea
             name="bio"
-            value={formData.bio}
+            value={formData.bioInfo}
             onChange={handleChange}
             style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
